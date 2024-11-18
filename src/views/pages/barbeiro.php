@@ -121,7 +121,6 @@
 
 </body>
 <script src="<?= $base; ?>/js/barbeiros.js"></script>
-<!-- Bootstrap JS -->
 <script>
     const base = '<?= $base; ?>';
 </script>

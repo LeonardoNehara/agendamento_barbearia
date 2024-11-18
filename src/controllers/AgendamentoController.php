@@ -1,29 +1,35 @@
 <?php
 namespace src\controllers;
 
-use AgendamentoModel as GlobalAgendamentoModel;
-use src\models\AgendamentoModel;  // Corrigido para o namespace correto
-use src\Config;  // Certifique-se de que o Config está no namespace correto
+use src\models\AgendamentoModel;
+use src\Config;
 
 class AgendamentoController {
 
     private $agendamentoModel;
 
-    // Construtor recebe a conexão com o banco de dados
-    public function __construct($db) {
-        $this->agendamentoModel = new GlobalAgendamentoModel($db); // Instancia o modelo com a conexão
+    public function __construct(){
+        // Verifica apenas o token na sessão
+        if (!isset($_SESSION['token'])) {
+            header("Location: " . Config::BASE_DIR . '/');
+            exit();
+        }
     }
 
     // Método para exibir todos os agendamentos
     public function exibirAgendamentos() {
         $agendamentos = $this->agendamentoModel->obterAgendamentos();
-        include 'view/agendamentos.php'; // Inclui a view para exibir os agendamentos
+        echo json_encode([
+            "success" => true,
+            "data" => $agendamentos
+        ]);
+        die();
     }
 
     // Método para criar um agendamento
     public function criarAgendamento() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if (isset($_POST['datahora']) && isset($_POST['barbeiro']) && isset($_POST['servico']) && isset($_POST['idusuario'])) {
+            if (isset($_POST['datahora'], $_POST['barbeiro'], $_POST['servico'], $_POST['idusuario'])) {
                 $datahora = $_POST['datahora'];
                 $barbeiro_id = $_POST['barbeiro'];
                 $servico_id = $_POST['servico'];
@@ -31,11 +37,17 @@ class AgendamentoController {
 
                 $sucesso = $this->agendamentoModel->criarAgendamento($datahora, $barbeiro_id, $servico_id, $usuario_id);
                 if ($sucesso) {
-                    echo "Agendamento criado com sucesso!";
-                    header("Location: index.php");
+                    echo json_encode([
+                        "success" => true,
+                        "message" => "Agendamento criado com sucesso!"
+                    ]);
                     exit();
                 } else {
-                    echo "Erro ao criar agendamento.";
+                    echo json_encode([
+                        "success" => false,
+                        "message" => "Erro ao criar agendamento."
+                    ]);
+                    exit();
                 }
             }
         }
@@ -45,7 +57,7 @@ class AgendamentoController {
     // Método para atualizar um agendamento
     public function atualizarAgendamento() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_GET['id'])) {
-            if (isset($_POST['datahora']) && isset($_POST['barbeiro']) && isset($_POST['servico'])) {
+            if (isset($_POST['datahora'], $_POST['barbeiro'], $_POST['servico'])) {
                 $id = $_GET['id'];
                 $datahora = $_POST['datahora'];
                 $barbeiro_id = $_POST['barbeiro'];
@@ -53,11 +65,17 @@ class AgendamentoController {
 
                 $sucesso = $this->agendamentoModel->atualizarAgendamento($id, $datahora, $barbeiro_id, $servico_id);
                 if ($sucesso) {
-                    echo "Agendamento atualizado com sucesso!";
-                    header("Location: index.php");
+                    echo json_encode([
+                        "success" => true,
+                        "message" => "Agendamento atualizado com sucesso!"
+                    ]);
                     exit();
                 } else {
-                    echo "Erro ao atualizar agendamento.";
+                    echo json_encode([
+                        "success" => false,
+                        "message" => "Erro ao atualizar agendamento."
+                    ]);
+                    exit();
                 }
             }
         }
@@ -76,11 +94,17 @@ class AgendamentoController {
             $sucesso = $this->agendamentoModel->excluirAgendamento($id);
 
             if ($sucesso) {
-                echo "Agendamento excluído com sucesso!";
-                header("Location: index.php");
+                echo json_encode([
+                    "success" => true,
+                    "message" => "Agendamento excluído com sucesso!"
+                ]);
                 exit();
             } else {
-                echo "Erro ao excluir agendamento.";
+                echo json_encode([
+                    "success" => false,
+                    "message" => "Erro ao excluir agendamento."
+                ]);
+                exit();
             }
         }
     }

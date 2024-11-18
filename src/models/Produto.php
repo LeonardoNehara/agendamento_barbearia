@@ -1,5 +1,4 @@
 <?php
-
 namespace src\models;
 
 use \core\Model;
@@ -7,37 +6,37 @@ use core\Database;
 use PDO;
 use Throwable;
 
-class Servico extends Model
+class Produto extends Model
 {
-    public function cadastro($nome, $valor, $tempoMinutos)
+    public function cadastro($nome, $valorCompra, $valorVenda)
     {
         try {
             $sql = Database::getInstance()->prepare("
-                INSERT INTO servico (nome, valor, tempo_minutos, idsituacao)
-                VALUES (:nome, :valor, :tempo_minutos, 1)
+                INSERT INTO produto (nome, valor_compra, valor_venda, idsituacao)
+                VALUES (:nome, :valor_compra, :valor_venda, 1)  -- 1 para ativo
             ");
             $sql->bindValue(':nome', $nome);
-            $sql->bindValue(':valor', $valor);
-            $sql->bindValue(':tempo_minutos', $tempoMinutos);
+            $sql->bindValue(':valor_compra', $valorCompra);
+            $sql->bindValue(':valor_venda', $valorVenda);
             $sql->execute();
 
             return [
                 'sucesso' => true,
-                'result' => 'Serviço cadastrado com sucesso!'
+                'result' => 'Produto cadastrado com sucesso!'
             ];
         } catch (Throwable $error) {
             return [
                 'sucesso' => false,
-                'result' => 'Falha ao cadastrar serviço: ' . $error->getMessage()
+                'result' => 'Falha ao cadastrar produto: ' . $error->getMessage()
             ];
         }
     }
 
-    public function verificarServico($nome)
+    public function verificarProduto($nome)
     {
         try {
             $sql = Database::getInstance()->prepare("
-                SELECT CASE WHEN EXISTS(SELECT 1 FROM servico WHERE nome = :nome) THEN 1 ELSE 0 END AS existeServico
+                SELECT CASE WHEN EXISTS(SELECT 1 FROM produto WHERE nome = :nome) THEN 1 ELSE 0 END AS existeProduto
             ");
             $sql->bindValue(':nome', $nome);
             $sql->execute();
@@ -50,22 +49,22 @@ class Servico extends Model
         } catch (Throwable $error) {
             return [
                 'sucesso' => false,
-                'result' => 'Falha ao verificar serviço: ' . $error->getMessage()
+                'result' => 'Falha ao verificar produto: ' . $error->getMessage()
             ];
         }
     }
 
-    public function getServicos()
+    public function getProdutos()
     {
         try {
             $sql = Database::getInstance()->prepare("
                 SELECT
-                    s.id, 
-                    s.nome, 
-                    s.valor, 
-                    s.tempo_minutos AS tempoMinutos,
-                    CASE WHEN s.idsituacao = 1 THEN 'Ativo' ELSE 'Inativo' END AS situacao
-                FROM servico s
+                    p.id, 
+                    p.nome, 
+                    p.valor_compra AS valorCompra, 
+                    p.valor_venda AS valorVenda,
+                    CASE WHEN p.idsituacao = 1 THEN 'Ativo' ELSE 'Inativo' END AS situacao
+                FROM produto p
             ");
             $sql->execute();
             $result = $sql->fetchAll(PDO::FETCH_ASSOC);
@@ -77,7 +76,7 @@ class Servico extends Model
         } catch (Throwable $error) {
             return [
                 'sucesso' => false,
-                'result' => 'Falha ao buscar serviços: ' . $error->getMessage()
+                'result' => 'Falha ao buscar produtos: ' . $error->getMessage()
             ];
         }
     }
@@ -86,7 +85,7 @@ class Servico extends Model
     {
         try {
             $sql = Database::getInstance()->prepare("
-                UPDATE servico
+                UPDATE produto
                 SET idsituacao = :idsituacao
                 WHERE id = :id
             ");
@@ -96,38 +95,38 @@ class Servico extends Model
 
             return [
                 'sucesso' => true,
-                'result' => 'Situação do serviço atualizada com sucesso!'
+                'result' => 'Situação do produto atualizada com sucesso!'
             ];
         } catch (Throwable $error) {
             return [
                 'sucesso' => false,
-                'result' => 'Falha ao atualizar situação do serviço: ' . $error->getMessage()
+                'result' => 'Falha ao atualizar situação do produto: ' . $error->getMessage()
             ];
         }
     }
 
-    public function editar($id, $nome, $valor, $tempoMinutos)
+    public function editar($id, $nome, $valorCompra, $valorVenda)
     {
         try {
             $sql = Database::getInstance()->prepare("
-                UPDATE servico
-                SET nome = :nome, valor = :valor, tempo_minutos = :tempo_minutos
+                UPDATE produto
+                SET nome = :nome, valor_compra = :valor_compra, valor_venda = :valor_venda
                 WHERE id = :id
             ");
             $sql->bindValue(':id', $id);
             $sql->bindValue(':nome', $nome);
-            $sql->bindValue(':valor', $valor);
-            $sql->bindValue(':tempo_minutos', $tempoMinutos);
+            $sql->bindValue(':valor_compra', $valorCompra);
+            $sql->bindValue(':valor_venda', $valorVenda);
             $sql->execute();
 
             return [
                 'sucesso' => true,
-                'result' => 'Serviço atualizado com sucesso!'
+                'result' => 'Produto atualizado com sucesso!'
             ];
         } catch (Throwable $error) {
             return [
                 'sucesso' => false,
-                'result' => 'Falha ao atualizar serviço: ' . $error->getMessage()
+                'result' => 'Falha ao atualizar produto: ' . $error->getMessage()
             ];
         }
     }

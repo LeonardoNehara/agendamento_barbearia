@@ -29,10 +29,6 @@ class UsuarioController extends Controller {
         $dados['nome'] = $_POST["nome"];
         $dados['login'] = $_POST["login"];
         $dados['senha'] = $_POST["senha"];
-        // Removendo idfilial e idgrupo do cadastro
-        // $dados['idfilial'] = $_POST["idfilial"];
-        // $dados['idgrupo'] = $_POST["idgrupo"];
-        // Exemplo para depuração
         error_log("Dados recebidos para cadastro: " . print_r($dados, true)); 
 
 

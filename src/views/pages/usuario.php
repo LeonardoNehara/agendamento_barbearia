@@ -102,9 +102,6 @@
                     <input type="password" class="form-control pr-5" id="senha" name="senha" placeholder="Senha">
                     <i onclick="mostrarSenha()" class="fa fa-eye" style="position: absolute; top: 74%; right: 25px; transform: translateY(-50%); cursor: pointer;"></i>
                 </div>
-
-                <!-- Removido a parte do campo 'Grupo' -->
-                <!-- Removido a parte do campo 'Filial' -->
             </div>
             <div class="form-footer">
                 <button id="cadastro" class="btn-custom">Gravar</button>

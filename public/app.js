@@ -34,7 +34,8 @@ window.app = {
             type : config.method,
             success : function (a, b, c) {
                 var tmp = JSON.parse(a);
-                if (tmp[0].success == true) {
+                console.log(tmp);
+                if (tmp[0]?.success == true) {
                     if (typeof config.onSuccess == 'function') {
                         config.onSuccess(tmp);
                     }
