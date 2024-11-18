@@ -1,0 +1,129 @@
+
+ /* tables responsive */
+ .container {
+    max-width: 1000px !important;
+    margin: auto !important;
+}
+.dataTables_wrapper .dt-buttons {
+    float: left !important;
+}
+.dataTables_length {
+    float: right !important;
+    margin-right: 20px !important;
+}
+.dataTables_filter {
+    float: right !important;
+}
+
+.dataTables_wrapper {
+    width: 100% !important; 
+    overflow-x: auto !important;
+}
+.table-responsive {
+    width: 100% !important;
+    overflow-x: auto !important;
+}
+
+/* buttons datables */
+
+/* .dataTables_wrapper .dataTables_paginate .paginate_button {
+    padding: 05px !important;
+} */
+
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    padding: 01px !important;
+}
+#mytable_filter {
+    float: left !important; /* Coloca o campo de busca à direita */
+    margin-right: 20px !important; /* Ajusta o espaçamento à direita */
+    margin-top: 20px;
+}
+/* pesquisar datables */
+#mytable_filter label{
+display: flex; /* Usa flexbox para ajustar o alinhamento */    
+margin-bottom:  20px !important;
+float: left !important;
+margin-right: 20px !important;
+}
+#mytable_filter label input{
+    float: left !important;
+    text-align: left !important;
+    margin-right: 20px !important;
+    width: 250px !important; /* Ajuste a largura aqui */
+/* margin-right: 290px !important; */
+}
+/* Remove o texto "Pesquisa" */
+#mytable_filter label::before {
+    content: '' !important; /* Remove o texto padrão */
+}
+/* Estilos para o status da tabela */
+.status-ativo {
+    color: white; /* Cor do texto */
+    background-color: rgb(51, 170, 51); /* Cor de fundo para "Ativo" */
+    padding: 0px 20px; /* Espaçamento interno */
+    border-radius: 15px; /* Bordas arredondadas */
+    display: inline-block; /* Para que o padding funcione corretamente */
+    text-align: center; /* Centraliza o texto */
+    width: 100%; /* Faz o span ocupar 100% da largura da célula */
+    font-size: 13px;
+}
+
+.status-inativo {
+    color: white; /* Cor do texto */
+    background-color: rgb(235, 43, 43); /* Cor de fundo para "Inativo" */
+    padding: 0px 20px; /* Espaçamento interno */
+    border-radius: 15px; /* Bordas arredondadas */
+    display: inline-block; /* Para que o padding funcione corretamente */
+    text-align: center; /* Centraliza o texto */
+    width: 100%; /* Faz o span ocupar 100% da largura da célula */
+    font-size: 13px;
+}
+
+.status-pendente{
+    color: white; /* Cor do texto */
+    background-color: rgb(235, 190, 43); /* Cor de fundo para "Inativo" */
+    padding: 5px 10px; /* Espaçamento interno */
+    display: inline-block; /* Para que o padding funcione corretamente */
+    text-align: center; /* Centraliza o texto */
+    width: 100%; /* Faz o span ocupar 100% da largura da célula */
+    font-size: 13px;
+}
+
+.status-andamento {
+    color: white; /* Cor do texto */
+    background-color: rgb(43, 72, 235); /* Cor de fundo para "Inativo" */
+    padding: 5px 10px; /* Espaçamento interno */
+    display: inline-block; /* Para que o padding funcione corretamente */
+    text-align: center; /* Centraliza o texto */
+    width: 100%; /* Faz o span ocupar 100% da largura da célula */
+    font-size: 13px;
+}
+
+.status-recusado {
+    color: white; /* Cor do texto */
+    background-color: rgb(235, 43, 43); /* Cor de fundo para "Inativo" */
+    padding: 5px 10px; /* Espaçamento interno */
+    display: inline-block; /* Para que o padding funcione corretamente */
+    text-align: center; /* Centraliza o texto */
+    width: 100%; /* Faz o span ocupar 100% da largura da célula */
+    font-size: 13px;
+}
+
+.status-finalizado {
+    color: white; /* Cor do texto */
+    background-color: rgb(51, 170, 51); /* Cor de fundo para "Ativo" */
+    padding: 5px 10px; /* Espaçamento interno */
+    display: inline-block; /* Para que o padding funcione corretamente */
+    text-align: center; /* Centraliza o texto */
+    width: 100%; /* Faz o span ocupar 100% da largura da célula */
+    font-size: 13px;
+}
+.status-cancelado {
+    color: white; /* Cor do texto */
+    background-color: rgb(100, 11, 85); /* Cor de fundo para "Ativo" */
+    padding: 5px 10px; /* Espaçamento interno */
+    display: inline-block; /* Para que o padding funcione corretamente */
+    text-align: center; /* Centraliza o texto */
+    width: 100%; /* Faz o span ocupar 100% da largura da célula */
+    font-size: 13px;
+}

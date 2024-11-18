@@ -1,0 +1,147 @@
+
+.header {  
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1;
+    transition: margin-left 0.3s ease; 
+    margin-left: 250px;
+}
+
+.header i {
+    font-size: 18px;
+}
+.hamburger {
+    font-size: 24px;
+    cursor: pointer;
+}
+.sidebar {
+    width: 250px;
+    background-color: #fff;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    border-right: 2px solid #dbe1e8;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    transition: left 0.3s ease;
+    z-index: 2;
+} 
+.sidebar.open {
+    left: 0;
+}
+
+.sidebar img {
+    max-width: 80%;
+    margin-bottom: 20px;
+    padding: 15px;
+    display: block;
+    margin: 0 auto;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+.sidebar ul li a {
+    padding: 18px;
+    font-size: 1.1em;
+    display: flex;
+    align-items: center;
+    color: #000;
+    text-decoration: none;
+}
+.sidebar ul li a i {
+    margin-right: 10px;
+    font-size: 22px;
+}
+.sidebar ul li.active {
+    background-image: linear-gradient(to right, #0c4a1a, #155d27);
+}
+.sidebar ul li.active a {
+    color: rgb(255, 255, 255);
+}
+.content {
+    margin-top: 50px;
+    margin-left: 250px;
+    padding: 20px;
+    flex-grow: 1;
+    overflow-y: auto;
+    height: calc(100vh - 70px);
+    transition: margin-left 0.3s ease; 
+}
+.content.sidebar-open {
+    margin-left: 250px; 
+}
+body.sidebar-open {
+    margin-left: 250px; 
+}
+
+.header.sidebar-open {
+    margin-left: 250px; 
+}
+hr{
+    margin: 0;
+}
+
+.sair-icon{
+    position: fixed; 
+    top: 8px; 
+    right: 20px; 
+    z-index: 3;
+}
+/* Media query para telas menores */
+@media screen and (max-width: 1425px) {
+    .header {
+        left: 0;
+        width: 100%;
+    }
+
+    .content {
+        margin-top: 60px;
+        margin-left: 0;
+    } 
+    .main-div {
+        margin: 20px auto !important;
+    }
+
+}
+@media (min-width: 768px) {
+    .sair-icon {
+        left: 300px; 
+        top: 10px; 
+        position: fixed; 
+        flex-direction: row; 
+        justify-content: flex-end;
+    }
+}      
+
+
+@media (max-width: 768px) {
+    .sidebar {
+        left: -250px; /* Oculta a sidebar no mobile */
+    }
+    .sidebar.open {
+        left: 0; /* Mostra a sidebar ao abrir */
+    }
+    /* Ajuste de margens para conteúdo e header no mobile */
+    .header {
+        margin-left: 0;
+    }
+
+}
+
+
+
+
+
