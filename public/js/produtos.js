@@ -32,7 +32,7 @@ function listar() {
         url: base + '/getProdutos',
         params: null,
         onSuccess(res) {
-            Table(res.result);
+            Table(res[0].ret);
         },
         onFailure() {
             Swal.fire({

@@ -30,16 +30,10 @@ class ProdutoController extends Controller {
         $ret = $cad->getProdutos();
 
         if ($ret['sucesso'] == true) {
-            echo json_encode([
-                "success" => true,
-                "ret" => $ret['result']
-            ]);
+            echo json_encode(array(["success" => true,"ret" => $ret['result']]));
             die;
         } else {
-            echo json_encode([
-                "success" => false,
-                "ret" => $ret['result']
-            ]);
+            echo json_encode(array(["success" => false,"ret" => $ret['result']]));
             die;
         }
     }
@@ -56,10 +50,7 @@ class ProdutoController extends Controller {
         $existe = $cad->verificarProduto($nome);
         
         if ($existe['result'][0]['existeProduto'] == 1) {
-            echo json_encode([
-                "success" => false,
-                "ret" => $existe
-            ]);
+            echo json_encode(array(["success" => false,"ret" => $existe]));
             die;
         }
 
@@ -67,16 +58,10 @@ class ProdutoController extends Controller {
         $ret = $cad->cadastro($nome, $valorCompra, $valorVenda);
         
         if ($ret['sucesso'] == true) {
-            echo json_encode([
-                "success" => true,
-                "ret" => $ret
-            ]);
+            echo json_encode(array(["success" => true,"ret" => $ret]));
             die;
         } else {
-            echo json_encode([
-                "success" => false,
-                "ret" => $ret
-            ]);
+            echo json_encode(array(["success" => false,"ret" => $ret]));
             die;
         }   
     }
@@ -90,10 +75,10 @@ class ProdutoController extends Controller {
         $ret = $cad->updateSituacao($id, $idsituacao);
 
         if ($ret['sucesso'] == false) {
-            echo json_encode([ "success" => false, "ret" => $ret['result'] ]);
+            echo json_encode(array(["success" => false, "ret" => $ret['result'] ]));
             die;
         } else {
-            echo json_encode([ "success" => true, "ret" => $ret['result'] ]);
+            echo json_encode(array(["success" => true, "ret" => $ret['result'] ]));
             die;
         }
     }
@@ -109,10 +94,10 @@ class ProdutoController extends Controller {
         $result = $editar->editar($id, $nome, $valorCompra, $valorVenda);
 
         if (!$result['sucesso']) {
-            echo json_encode([ "success" => false, "result" => $result ]);
+            echo json_encode(array(["success" => false, "result" => $result ]));
             die;
         } else {
-            echo json_encode([ "success" => true, "result" => $result ]);
+            echo json_encode(array(["success" => true, "result" => $result ]));
             die;
         }  
     }

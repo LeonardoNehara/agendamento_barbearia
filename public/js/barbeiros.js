@@ -1,6 +1,5 @@
 $(document).ready(function () {
     listar();  // Carregar a lista de barbeiros
-    console.log("Iniciando script de Barbeiros");
 
     $('#telefone').mask('(00) 00000-0000', { placeholder: '(  ) _____-____' });
 
@@ -11,45 +10,39 @@ $(document).ready(function () {
             telefone: $('#telefone').val().replace(/[^\d]/g, '') // Removendo a máscara antes de enviar
         };
         
-        console.log("Dados coletados para cadastro/edição:", dados);
-        
-        if (!app.validarCampos(dados)) {
-            Swal.fire({
-                icon: "warning",
-                title: "Atenção!!",
-                text: "Preencha todos os campos!"
-            });
-            return;
-        }
+        // if (!app.validarCampos(dados)) {
+        //     Swal.fire({
+        //         icon: "warning",
+        //         title: "Atenção!!",
+        //         text: "Preencha todos os campos!"
+        //     });
+        //     return;
+        // }
 
-        if (!validarTelefone(dados.telefone)) {
-            Swal.fire({
-                icon: "warning",
-                title: "Atenção!!",
-                text: "Telefone inválido! Por favor, insira um telefone válido no formato (XX) XXXXX-XXXX."
-            });
-            return;
-        }
+        // if (!validarTelefone(dados.telefone)) {
+        //     Swal.fire({
+        //         icon: "warning",
+        //         title: "Atenção!!",
+        //         text: "Telefone inválido! Por favor, insira um telefone válido no formato (XX) XXXXX-XXXX."
+        //     });
+        //     return;
+        // }
 
         if (idbarbeiro) {
-            console.log("Editando barbeiro com ID:", idbarbeiro);
             editar(dados, idbarbeiro);
         } else {
-            console.log("Cadastrando novo barbeiro");
             cadastro(dados);
         }
     });
 });
 
 function listar() {
-    console.log("Chamando API para listar barbeiros");
     app.callController({
         method: 'GET',
         url: base + '/getbarbeiros',
         params: null,
         onSuccess(res) {
-            console.log("Dados recebidos da API:", res);
-            Table(res.result);
+            Table(res[0].ret);
         },
         onFailure() {
             Swal.fire({
@@ -61,9 +54,41 @@ function listar() {
     });
 }
 
+function validarTelefone(telefone) {
+    // Expressão regular para validar o formato de telefone brasileiro
+    const regexTelefone = /^\(\d{2}\) \d{4,5}-\d{4}$/;
+
+    return regexTelefone.test(telefone);
+}
+
+// Função de cadastro de usuário
+function cadastro(dados) {
+    app.callController({
+        method: 'POST',
+        url: base + '/cadbarbeiro',
+        params: dados,
+        onSuccess() {
+            listar();
+            limparForm();
+            Swal.fire({
+                icon: "success",
+                title: "Sucesso!",
+                text: "Cadastrado com sucesso!"
+            });
+        },
+        onFailure() {
+            Swal.fire({
+                icon: "error",
+                title: "Atenção!!",
+                text: "Erro ao cadastrar usuário!"
+            });
+        }
+    });
+}
+
+
 // Função para renderizar os dados na tabela com logs
 const Table = function (dados) {
-    console.log("Renderizando tabela com os dados:", dados);
     $('#mytable').DataTable({
         dom: 'Bfrtip',
         responsive: true,
@@ -78,7 +103,6 @@ const Table = function (dados) {
                 title: 'Nome',
                 data: 'nome',
                 render: function (data) {
-                    console.log("Renderizando nome:", data);
                     return `<strong>${data}</strong>`;
                 }
             },
@@ -86,7 +110,6 @@ const Table = function (dados) {
                 title: 'Telefone',
                 data: 'telefone',
                 render: function (data) {
-                    console.log("Renderizando telefone:", data);
                     if (data.length === 10) {
                         return data.replace(/^(\d{2})(\d{4})(\d{4})$/, "($1) $2-$3");
                     } else if (data.length === 11) {
@@ -101,7 +124,6 @@ const Table = function (dados) {
                 data: 'situacao',
                 render: function (data) {
                     const statusClass = data === 'Ativo' ? 'status-ativo' : 'status-inativo';
-                    console.log("Renderizando status:", data);
                     return `<span class="${statusClass}">${data}</span>`;
                 }
             },
@@ -110,7 +132,6 @@ const Table = function (dados) {
                 data: null,
                 render: function (data, type, row) {
                     const rowData = JSON.stringify(row).replace(/"/g, '&quot;');
-                    console.log("Renderizando ações para o barbeiro:", row.nome);
                     return `<div class="dropdown" style="display: inline-block; cursor: pointer;">
                                 <a class="text-secondary" id="actionsDropdown${row.id}" data-bs-toggle="dropdown" aria-expanded="false" style="text-decoration: none; cursor: pointer;">
                                     <i class="fas fa-ellipsis-h"></i>

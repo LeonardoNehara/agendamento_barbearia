@@ -14,7 +14,7 @@ class Barbeiro extends Model
         try {
             $sql = Database::getInstance()->prepare("
                 INSERT INTO barbeiro (nome, telefone, idsituacao)
-                VALUES (:nome, :telefone, 1)  -- 1 para ativo
+                VALUES (':nome', ':telefone', 1)  -- 1 para ativo
             ");
             $sql->bindValue(':nome', $nome);
             $sql->bindValue(':telefone', $telefone);

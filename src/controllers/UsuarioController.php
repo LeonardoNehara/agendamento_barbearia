@@ -62,13 +62,12 @@ class UsuarioController extends Controller {
 
     public function editar() {
         $dados = [];
-
         // Removendo idfilial e idgrupo do processo de edição
-        $dados['idusuario'] = $_GET['idusuario'];
-        $dados['login'] = $_GET['login'];
-        $dados['nome'] = $_GET['nome'];
+        $dados['idusuario'] = $_POST['idusuario'];
+        $dados['login'] = $_POST['login'];
+        $dados['nome'] = $_POST['nome'];
 
-        $hashedSenha = md5($_GET['senha']); 
+        $hashedSenha = md5($_POST['senha']); 
 
         $dados['senha'] = $hashedSenha;
 
@@ -86,8 +85,8 @@ class UsuarioController extends Controller {
 
 
     public function updateSituacaoUsuario() {
-        $id = $_GET['id'];
-        $idsituacao = $_GET['idsituacao'];
+        $id = $_POST['idusuario'];
+        $idsituacao = $_POST['idsituacao'];
 
         $cad = new Usuario();
         $ret = $cad->updateSituacao($id, $idsituacao);

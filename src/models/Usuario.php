@@ -66,7 +66,7 @@ class Usuario extends Model
     {
         // Removendo idgrupo e idfilial do SQL de atualização
         $sql = "UPDATE usuarios 
-                SET nome = :nome, login = :login, senha = :senha
+                SET nome = ':nome', login = ':login', senha = ':senha'
                 WHERE idusuario = :idusuario";  // Removido idgrupo e idfilial
 
         $sql = $this->switchParams($sql, $dados);
@@ -94,8 +94,10 @@ class Usuario extends Model
                 SET idsituacao = :idsituacao
                 WHERE idusuario = :idusuario;
             ");
-            $sql->bindParam(':idsituacao', $idsituacao);
-            $sql->bindParam(':idusuario', $id);
+            $idsituacaointeger = intval($idsituacao);
+            $idusuariointeger = intval($id);
+            $sql->bindParam(':idsituacao', $idsituacaointeger);
+            $sql->bindParam(':idusuario', $idusuariointeger);
             $sql->execute();
             return [
                 'sucesso' => true,

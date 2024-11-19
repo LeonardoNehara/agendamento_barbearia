@@ -225,7 +225,7 @@ function confirmUpdateSituacao(id, idsituacao, atualsituacao, acao) {
 function updateSituacao(id, idsituacao) {
     app.callController({
         method: 'POST',
-        url: base + '/atualizasituacao',
+        url: base + '/updatesituacaousuario',
         params: { idusuario: id, idsituacao },
         onSuccess() {
             listar();

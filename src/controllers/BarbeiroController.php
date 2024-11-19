@@ -32,16 +32,10 @@ class BarbeiroController extends Controller {
         $ret = $cad->getBarbeiros();
 
         if ($ret['sucesso'] == true) {
-            echo json_encode([
-                "success" => true,
-                "ret" => $ret['result']
-            ]);
+            echo json_encode(array(["success" => true,"ret" => $ret['result']]));
             die;
         } else {
-            echo json_encode([
-                "success" => false,
-                "ret" => $ret['result']
-            ]);
+            echo json_encode(array(["success" => false,"ret" => $ret['result']]));
             die;
         }
     }
@@ -55,12 +49,10 @@ class BarbeiroController extends Controller {
         
         // Verifica se o telefone já está cadastrado
         $existe = $cad->verificarTelefone($telefone);
+
         
         if ($existe['result'][0]['existeTelefone'] == 1) {
-            echo json_encode([
-                "success" => false,
-                "ret" => $existe
-            ]);
+            echo json_encode(array(["success" => false,"ret" => $existe]));
             die;
         }
 
@@ -69,17 +61,11 @@ class BarbeiroController extends Controller {
         
         if ($ret['sucesso'] == true) {
             // Retorne diretamente o objeto JSON, sem envolver em um array adicional
-            echo json_encode([
-                "success" => true,
-                "ret" => $ret
-            ]);
+            echo json_encode(array(["success" => true,"ret" => $ret]));
             die;
         } else {
             // Retorne diretamente o objeto JSON, sem envolver em um array adicional
-            echo json_encode([
-                "success" => false,
-                "ret" => $ret
-            ]);
+            echo json_encode(array(["success" => false,"ret" => $ret]));
             die;
         }   
     }
@@ -94,10 +80,10 @@ class BarbeiroController extends Controller {
 
         // Corrigir retorno da resposta para não envolver o resultado em um array extra
         if ($ret['sucesso'] == false) {
-            echo json_encode([ "success" => false, "ret" => $ret['result'] ]);
+            echo json_encode(array([ "success" => false, "ret" => $ret['result'] ]));
             die;
         } else {
-            echo json_encode([ "success" => true, "ret" => $ret['result'] ]);
+            echo json_encode(array([ "success" => true, "ret" => $ret['result'] ]));
             die;
         }
     }

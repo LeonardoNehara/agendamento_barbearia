@@ -23,16 +23,15 @@ $router->get('/dashboard', 'DashboardController@index');
 $router->get('/barbeiros', 'BarbeiroController@index');  // Página de barbeiros
 $router->get('/getbarbeiros', 'BarbeiroController@getBarbeiros');  // Listagem de barbeiros
 $router->post('/cadbarbeiro', 'BarbeiroController@cadastro');  // Cadastro de barbeiro
-$router->get('/updateSituacaoBarbeiro', 'BarbeiroController@updateSituacaoBarbeiro');  // Atualizar situação do barbeiro
-$router->get('/editarbarbeiro', 'BarbeiroController@editar');  // Editar barbeiro
+$router->post('/updateSituacaoBarbeiro', 'BarbeiroController@updateSituacaoBarbeiro');  // Atualizar situação do barbeiro
+$router->post('/editarbarbeiro', 'BarbeiroController@editar');  // Editar barbeiro
 
 // Cadastro de Usuário
 $router->get('/usuario', 'UsuarioController@index');
 $router->post('/cadusuario', 'UsuarioController@cadastro');
 $router->get('/getusuarios', 'UsuarioController@getUsuarios');
-$router->get('/updatesituacaousuario', 'UsuarioController@updateSituacaoUsuario');
-$router->get('/editarusuario', 'UsuarioController@editar');
-$router->get('/getfilialporgrupo', 'UsuarioController@getFilialPorGrupo');
+$router->post('/updatesituacaousuario', 'UsuarioController@updateSituacaoUsuario');
+$router->post('/editarusuario', 'UsuarioController@editar');
 
 // Produtos
 $router->get('/produtos', 'ProdutoController@index');  // Página de produtos
