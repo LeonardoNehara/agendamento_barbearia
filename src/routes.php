@@ -35,10 +35,10 @@ $router->post('/editarusuario', 'UsuarioController@editar');
 
 // Produtos
 $router->get('/produtos', 'ProdutoController@index');  // Página de produtos
-$router->get('/listar-produtos', 'ProdutoController@getProdutos');  // Listagem de produtos
-$router->post('/cadastrar-produto', 'ProdutoController@cadastro');  // Cadastro de produto
-$router->get('/editar-produto', 'ProdutoController@editar');  // Editar produto
-$router->get('/atualizar-situacao-produto', 'ProdutoController@updateSituacaoProduto');  // Atualizar situação do produto
+$router->get('/getProdutos', 'ProdutoController@getProdutos');  // Listagem de produtos
+$router->post('/cadProduto', 'ProdutoController@cadastro');  // Cadastro de produto
+$router->post('/editarProduto', 'ProdutoController@editar');  // Editar produto
+$router->post('/updateSituacaoProduto', 'ProdutoController@updateSituacaoProduto');  // Atualizar situação do produto
 
 // Serviços
 $router->get('/servicos', 'ServicoController@index');  // Página de serviços

@@ -35,6 +35,7 @@ $(document).ready(function () {
 });
 
 function listar() {
+    console.log('Teste');
     app.callController({
         method: 'GET',
         url: base + '/getbarbeiros',
@@ -57,7 +58,6 @@ function validarTelefone(telefone) {
     const apenasNumeros = telefone;
     const ddd = apenasNumeros.slice(0, 2); // Primeiros dois dígitos
     const numero = apenasNumeros.slice(2); // O restante do número
-
     const telefoneFormatado = `(${ddd}) ${numero.slice(0, 5)}-${numero.slice(5)}`;
  
 

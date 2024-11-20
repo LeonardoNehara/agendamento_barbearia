@@ -94,19 +94,19 @@
 
         <div style="margin-top: 50px;">
             <div class="row">
-                <input id="idproduto" type="text" class="form-control" hidden>
+                <input id="idProduto" type="text" class="form-control" hidden>
 
                 <div class="col-md-6 mb-3">
                     <label for="nome" class="form-label">Nome<span class="text-danger">*</span></label>
                     <input id="nome" type="text" class="form-control" placeholder="Nome do Produto">
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label for="valor_compra" class="form-label">Valor de Compra<span class="text-danger">*</span></label>
-                    <input id="valor_compra" type="text" class="form-control" placeholder="Valor de Compra">
+                    <label for="valorCompra" class="form-label">Valor de Compra<span class="text-danger">*</span></label>
+                    <input id="valorCompra" type="text" class="form-control" placeholder="Valor de Compra">
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label for="valor_venda" class="form-label">Valor de Venda<span class="text-danger">*</span></label>
-                    <input id="valor_venda" type="text" class="form-control" placeholder="Valor de Venda">
+                    <label for="valorVenda" class="form-label">Valor de Venda<span class="text-danger">*</span></label>
+                    <input id="valorVenda" type="text" class="form-control" placeholder="Valor de Venda">
                 </div>
             </div>
 

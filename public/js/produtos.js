@@ -1,25 +1,28 @@
 $(document).ready(function () {
-    listar();  // Carregar a lista de produtos
-
+    listar(); // Carregar a lista de produtos
+    // Ao clicar no botão de cadastro/edição
     $('#cadastro').on('click', function () {
         const idProduto = $('#idProduto').val();
+        const teste = $('#valorCompra').val();
         let dados = {
             nome: $('#nome').val(),
-            valorCompra: $('#valorCompra').val(),
-            valorVenda: $('#valorVenda').val()
+            valorCompra: parseFloat(($('#valorCompra').val() || '').replace(',', '.')) || 0,
+            valorVenda: parseFloat(($('#valorVenda').val() || '').replace(',', '.')) || 0
         };
-
-        if (!app.validarCampos(dados)) {
+        console.log(teste);
+        
+        if (!app.validarCampos(dados) || dados.valorCompra <= 0 || dados.valorVenda <= 0) {
             Swal.fire({
                 icon: "warning",
                 title: "Atenção!!",
-                text: "Preencha todos os campos!"
+                text: "Preencha todos os campos corretamente! Os valores de compra e venda devem ser maiores que zero."
             });
             return;
         }
 
-        if (idProduto) {
-            editar(dados, idProduto);
+        if ($('#idProduto').val()) {
+            dados.id = idProduto; // Adiciona o ID ao objeto
+            editar(dados);
         } else {
             cadastro(dados);
         }
@@ -68,8 +71,31 @@ function cadastro(dados) {
     });
 }
 
-// Função para exibir os dados dos produtos na tabela
-const Table = function (dados) {
+function editar(dados) {
+    app.callController({
+        method: 'POST',
+        url: base + '/editarProduto',
+        params: dados,
+        onSuccess() {
+            listar();
+            limparForm();
+            Swal.fire({
+                icon: "success",
+                title: "Sucesso!",
+                text: "Produto editado com sucesso!"
+            });
+        },
+        onFailure() {
+            Swal.fire({
+                icon: "error",
+                title: "Atenção!!",
+                text: "Erro ao editar Produto!"
+            });
+        }
+    });
+}
+
+function Table(dados) {
     $('#mytable').DataTable({
         dom: 'Bfrtip',
         responsive: true,
@@ -91,14 +117,14 @@ const Table = function (dados) {
                 title: 'Valor de Compra',
                 data: 'valorCompra',
                 render: function (data) {
-                    return `R$ ${parseFloat(data).toFixed(2)}`;
+                    return `R$ ${parseFloat(data).toFixed(2)}`.replace('.', ',');
                 }
             },
             {
                 title: 'Valor de Venda',
                 data: 'valorVenda',
                 render: function (data) {
-                    return `R$ ${parseFloat(data).toFixed(2)}`;
+                    return `R$ ${parseFloat(data).toFixed(2)}`.replace('.', ',');
                 }
             },
             {
@@ -120,15 +146,15 @@ const Table = function (dados) {
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="actionsDropdown${row.id}">
                                     <li><a class="dropdown-item text-primary" onclick="setEditar(${rowData})">Editar</a></li>
-                                    <li><a class="dropdown-item text-danger" onclick="confirmUpdateSituacao(${row.id}, 2, 'Inativar')">Inativar</a></li>
-                                    <li><a class="dropdown-item text-success" onclick="confirmUpdateSituacao(${row.id}, 1, 'Ativar')">Ativar</a></li>
+                                    <li><a class="dropdown-item text-danger" onclick="confirmUpdateSituacao(${row.id}, 2, '${row.situacao}')">Inativar</a></li>
+                                    <li><a class="dropdown-item text-success" onclick="confirmUpdateSituacao(${row.id}, 1, '${row.situacao}')">Ativar</a></li>
                                 </ul>
                             </div>`;
                 }
             }
         ]
     });
-};
+}
 
 function setEditar(row) {
     $('#form-title').text('Editando Produto').css('color', 'blue');
@@ -136,40 +162,57 @@ function setEditar(row) {
     $('#nome').val(row.nome);
     $('#valorCompra').val(row.valorCompra);
     $('#valorVenda').val(row.valorVenda);
-    
-    $('html, body').animate({
-        scrollTop: $(".form-container").offset().top
+    $('html, body').animate({scrollTop: $(".form-container").offset().top
     }, 100);
 }
 
-function editar(dados, id) {
-    app.callController({
-        method: 'POST',
-        url: base + '/editarProduto',
-        params: { id: id, nome: dados.nome, valorCompra: dados.valorCompra, valorVenda: dados.valorVenda },
-        onSuccess() {
-            listar();
-            limparForm();
-            Swal.fire({
-                icon: "success",
-                title: "Sucesso!",
-                text: "Produto editado com sucesso!"
-            });
-        },
-        onFailure() {
-            Swal.fire({
-                icon: "error",
-                title: "Atenção!!",
-                text: "Erro ao editar Produto!"
-            });
-        }
-    });
-}
-
 function limparForm() {
-    $('#form-title').text('Cadastrando Produtos');
+    $('#form-title').text('Cadastrando Produtos').css('color', 'black');
     $('#nome').val('');
     $('#valorCompra').val('');
     $('#valorVenda').val('');
     $('#idProduto').val('');
+}
+
+function confirmUpdateSituacao(id, situacao, atualSituacao) {
+    if (atualSituacao === (situacao === 1 ? 'Ativo' : 'Inativo')) {
+        Swal.fire({
+            icon: "warning",
+            title: "Atenção!",
+            text: `Produto já está ${atualSituacao.toLowerCase()}!`
+        });
+        return;
+    }
+
+    Swal.fire({
+        title: 'Confirmação',
+        text: `Deseja realmente ${situacao === 1 ? 'ativar' : 'inativar'} o produto?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sim',
+        cancelButtonText: 'Não',
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            updateSituacao(id, situacao);
+        }
+    });
+}
+
+function updateSituacao(id, situacao) {
+    app.callController({
+        method: 'POST',
+        url: base + '/updateSituacaoProduto',
+        params: { id, situacao },
+        onSuccess() {
+            listar();
+        },
+        onFailure() {
+            Swal.fire({
+                icon: "error",
+                title: "Erro!",
+                text: "Erro ao atualizar situação!"
+            });
+        }
+    });
 }

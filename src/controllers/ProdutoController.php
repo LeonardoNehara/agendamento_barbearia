@@ -49,7 +49,7 @@ class ProdutoController extends Controller {
         // Verifica se o produto já está cadastrado pelo nome
         $existe = $cad->verificarProduto($nome);
         
-        if ($existe['result'][0]['existeProduto'] == 1) {
+        if ($existe['result']['existeProduto'] == 1) {
             echo json_encode(array(["success" => false,"ret" => $existe]));
             die;
         }
@@ -68,8 +68,8 @@ class ProdutoController extends Controller {
 
     // Atualizar situação do produto (Ativo/Inativo)
     public function updateSituacaoProduto() {
-        $id = $_GET['id'];
-        $idsituacao = $_GET['idsituacao'];
+        $id = $_POST['id'];
+        $idsituacao = $_POST['situacao'];
 
         $cad = new Produto();
         $ret = $cad->updateSituacao($id, $idsituacao);
@@ -85,10 +85,10 @@ class ProdutoController extends Controller {
 
     // Editar dados do produto
     public function editar() {
-        $id = $_GET['id'];
-        $nome = $_GET['nome'];
-        $valorCompra = $_GET['valorCompra'];
-        $valorVenda = $_GET['valorVenda'];
+        $id = $_POST['id'];
+        $nome = $_POST['nome'];
+        $valorCompra = $_POST['valorCompra'];
+        $valorVenda = $_POST['valorVenda'];
 
         $editar = new Produto();
         $result = $editar->editar($id, $nome, $valorCompra, $valorVenda);
