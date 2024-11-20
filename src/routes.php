@@ -43,10 +43,10 @@ $router->post('/updateSituacaoProduto', 'ProdutoController@updateSituacaoProduto
 // Serviços
 $router->get('/servicos', 'ServicoController@index');  // Página de serviços
 $router->get('/getservicos', 'ServicoController@getServicos');  // Listagem de serviços
-$router->post('/cadservico', 'ServicoController@cadastro');  // Cadastro de serviço
-$router->get('/editarservico', 'ServicoController@editar');  // Editar serviço
+$router->post('/cadServico', 'ServicoController@cadastro');  // Cadastro de serviço
+$router->post('/editarservico', 'ServicoController@editar');  // Editar serviço
 $router->post('/atualizarservico', 'ServicoController@atualizar');  // Atualizar serviço
-$router->get('/updatesituacaoservico', 'ServicoController@updateSituacao');  // Atualizar situação do serviço
+$router->post('/updateSituacao', 'ServicoController@updateSituacao');  // Atualizar situação do serviço
 
 // Agendamentos
 $router->get('/agendamentos', 'AgendamentoController@index');  // Página de agendamentos

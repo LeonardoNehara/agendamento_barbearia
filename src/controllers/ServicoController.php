@@ -49,7 +49,7 @@ class ServicoController extends Controller {
         // Verifica se o serviço já está cadastrado pelo nome
         $existe = $cad->verificarServico($nome);
         
-        if ($existe['result'][0]['existeServico'] == 1) {
+        if ($existe['result']['existeServico'] == 1) {
             echo json_encode(array(["success" => false,"ret" => $existe]));
             die;
         }
@@ -67,9 +67,9 @@ class ServicoController extends Controller {
     }
 
     // Atualizar situação do serviço (Ativo/Inativo)
-    public function updateSituacaoServico() {
-        $id = $_GET['id'];
-        $idsituacao = $_GET['idsituacao'];
+    public function updateSituacao() {
+        $id = $_POST['id'];
+        $idsituacao = $_POST['idsituacao'];
 
         $cad = new Servico();
         $ret = $cad->updateSituacao($id, $idsituacao);
@@ -85,10 +85,10 @@ class ServicoController extends Controller {
 
     // Editar dados do serviço
     public function editar() {
-        $id = $_GET['id'];
-        $nome = $_GET['nome'];
-        $valor = $_GET['valor'];
-        $tempoMinutos = $_GET['tempoMinutos'];
+        $id = $_POST['id'];
+        $nome = $_POST['nome'];
+        $valor = $_POST['valor'];
+        $tempoMinutos = $_POST['tempoMinutos'];
 
         $editar = new Servico();
         $result = $editar->editar($id, $nome, $valor, $tempoMinutos);

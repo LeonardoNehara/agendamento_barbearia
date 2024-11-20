@@ -189,7 +189,6 @@ const Table = function (dados) {
 
     // Função de edição de usuário
     function editar(dados) {
-        console.log('chegou aqui');
         app.callController({
             method: 'POST',
             url: base + '/editarbarbeiro',

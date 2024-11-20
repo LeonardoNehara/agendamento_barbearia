@@ -72,7 +72,7 @@
 
         <div style="margin-top: 50px;">
             <div class="row">
-                <input id="idservico" type="text" class="form-control" hidden>
+                <input id="idServico" type="text" class="form-control" hidden>
 
                 <div class="col-md-6 mb-3">
                     <label for="nome" class="form-label">Nome<span class="text-danger">*</span></label>
@@ -83,8 +83,8 @@
                     <input id="valor" type="text" class="form-control" placeholder="Valor do Serviço">
                 </div>
                 <div class="col-md-6 mb-3">
-                    <label for="tempo" class="form-label">Tempo (minutos)<span class="text-danger">*</span></label>
-                    <input id="tempo" type="number" class="form-control" placeholder="Duração do Serviço em Minutos">
+                    <label for="tempoMinutos" class="form-label">Tempo (minutos)<span class="text-danger">*</span></label>
+                    <input id="tempoMinutos" type="number" class="form-control" placeholder="Duração do Serviço em Minutos">
                 </div>
             </div>
 
@@ -102,7 +102,7 @@
 </main>
 
 </body>
-<script src="<?= $base; ?>/js/servicos.js"></script>
+<script src="<?= $base; ?>/js/servico.js"></script>
 <script>
     const base = '<?= $base; ?>';
 </script>
