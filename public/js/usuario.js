@@ -1,12 +1,12 @@
 $(document).ready(function () {
     listar();  // Carregar a lista de agendamentos ou usuários
     $('#cadastro').on('click', function () {
+        
         const dados = {
             nome: $('#nome').val(),
             login: $('#login').val(),
             senha: $('#senha').val()
         };
-
         if (!validarCampos(dados)) {
             Swal.fire({
                 icon: "warning",
@@ -132,15 +132,6 @@ const Table = function (dados) {
     });
 };
 
-// Função de edição do usuário
-function setEditar(row) {
-    $('#form-title').text('Editando Usuário').css('color', 'blue');
-    $('#idusuario').val(row.idusuario);
-    $('#nome').val(row.nome);
-    $('#login').val(row.login);
-    $('html, body').animate({ scrollTop: $(".form-container").offset().top }, 100);
-}
-
 // Função de cadastro de usuário
 function cadastro(dados) {
     app.callController({
@@ -164,6 +155,25 @@ function cadastro(dados) {
             });
         }
     });
+}
+
+
+// Função de edição do usuário
+function setEditar(row) {
+    $('#form-title').text('Editando Usuário').css('color', 'blue');
+    $('#idusuario').val(row.idusuario);
+    $('#nome').val(row.nome);
+    $('#login').val(row.login);
+    $('html, body').animate({ scrollTop: $(".form-container").offset().top }, 100);
+}
+
+// Limpar o formulário de cadastro/edição
+function limparForm() {
+    $('#form-title').text('Cadastrando Usuários');
+    $('#nome').val('');
+    $('#login').val('');
+    $('#senha').val('');
+    $('#idusuario').val('');
 }
 
 // Função de edição de usuário
@@ -191,14 +201,7 @@ function editar(dados) {
     });
 }
 
-// Limpar o formulário de cadastro/edição
-function limparForm() {
-    $('#form-title').text('Cadastrando Usuários');
-    $('#nome').val('');
-    $('#login').val('');
-    $('#senha').val('');
-    $('#idusuario').val('');
-}
+
 
 // Função para confirmar a alteração de status
 function confirmUpdateSituacao(id, idsituacao, atualsituacao, acao) {

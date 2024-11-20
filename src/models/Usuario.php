@@ -94,10 +94,10 @@ class Usuario extends Model
                 SET idsituacao = :idsituacao
                 WHERE idusuario = :idusuario;
             ");
-            $idsituacaointeger = intval($idsituacao);
             $idusuariointeger = intval($id);
-            $sql->bindParam(':idsituacao', $idsituacaointeger);
+            $idsituacaointeger = intval($idsituacao);
             $sql->bindParam(':idusuario', $idusuariointeger);
+            $sql->bindParam(':idsituacao', $idsituacaointeger);
             $sql->execute();
             return [
                 'sucesso' => true,

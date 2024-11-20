@@ -61,6 +61,9 @@ class UsuarioController extends Controller {
     }
 
     public function editar() {
+        echo'<pre>';
+        print_r($_POST);
+        echo'</pre>';
         $dados = [];
         // Removendo idfilial e idgrupo do processo de edição
         $dados['idusuario'] = $_POST['idusuario'];
@@ -87,6 +90,9 @@ class UsuarioController extends Controller {
     public function updateSituacaoUsuario() {
         $id = $_POST['idusuario'];
         $idsituacao = $_POST['idsituacao'];
+        echo '<pre>';
+        print_r($_POST);
+        echo '</pre>';
 
         $cad = new Usuario();
         $ret = $cad->updateSituacao($id, $idsituacao);

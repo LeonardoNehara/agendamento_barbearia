@@ -79,19 +79,17 @@
     <div class="form-container1">
         <h1><strong>Filtros</strong></h1>
         <div class="row">
-            <div class="col-md-6 mb-3">
+            <div class="col-md-3 mb-3">
                 <label for="idtipofilial" class="form-label">Serviços<span class="text-danger">*</span></label>
                 <select <?php if ($_SESSION['idgrupo'] == 2) { ?> disabled <?php }  ?> class="form-select oppt" id="idtransportadora" name="idtransportadora">
 
                 </select>
             </div>
-
-
-            <div class="col-md-6 mb-3">
+            <div class="col-md-3 mb-3">
                 <label for="data" class="form-label">Data Inicial<span class="text-danger">*</span></label>
                 <input type="date" class="form-control" id="datainicio" name="data" required>
             </div>
-            <div class="col-md-6 mb-3">
+            <div class="col-md-3 mb-3">
                 <label for="data" class="form-label">Data Final<span class="text-danger">*</span></label>
                 <input type="date" class="form-control" id="datafim" name="data" required>
             </div>

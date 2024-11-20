@@ -94,7 +94,7 @@
 
         <div style="margin-top: 50px;">
             <div class="row">
-                <input id="idfilial" type="text" class="form-control" hidden>
+                <input id="id" type="text" class="form-control" hidden>
 
                 <div class="col-md-6 mb-3">
                     <label for="nome" class="form-label">Nome<span class="text-danger">*</span></label>

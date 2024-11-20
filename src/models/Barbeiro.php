@@ -14,10 +14,11 @@ class Barbeiro extends Model
         try {
             $sql = Database::getInstance()->prepare("
                 INSERT INTO barbeiro (nome, telefone, idsituacao)
-                VALUES (':nome', ':telefone', 1)  -- 1 para ativo
+                VALUES (:nome, :telefone, 1)
             ");
             $sql->bindValue(':nome', $nome);
             $sql->bindValue(':telefone', $telefone);
+
 
             $sql->execute();
 
@@ -89,8 +90,10 @@ class Barbeiro extends Model
                 SET idsituacao = :idsituacao
                 WHERE id = :id
             ");
-            $sql->bindValue(':id', $id);
-            $sql->bindValue(':idsituacao', $idsituacao);
+            $idusuariointeger = intval($id);
+            $idsituacaointeger = intval($idsituacao);
+            $sql->bindValue(':id', $idusuariointeger);
+            $sql->bindValue(':idsituacao', $idsituacaointeger);
             $sql->execute();
 
             return [

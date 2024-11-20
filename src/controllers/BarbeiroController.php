@@ -50,8 +50,7 @@ class BarbeiroController extends Controller {
         // Verifica se o telefone já está cadastrado
         $existe = $cad->verificarTelefone($telefone);
 
-        
-        if ($existe['result'][0]['existeTelefone'] == 1) {
+        if ($existe['result']['existeTelefone'] == 1) {
             echo json_encode(array(["success" => false,"ret" => $existe]));
             die;
         }
@@ -72,8 +71,10 @@ class BarbeiroController extends Controller {
 
     // Atualizar situação do barbeiro (Ativo/Inativo)
     public function updateSituacaoBarbeiro() {
-        $id = $_GET['id'];
-        $idsituacao = $_GET['idsituacao'];
+        echo('Teste');
+        $id = $_POST['id'];
+
+        $idsituacao = $_POST['idsituacao'];
 
         $cad = new Barbeiro();
         $ret = $cad->updateSituacao($id, $idsituacao);
@@ -91,9 +92,9 @@ class BarbeiroController extends Controller {
 
     // Editar dados do barbeiro
     public function editar() {
-        $id = $_GET['id'];
-        $nome = $_GET['nome'];
-        $telefone = $_GET['telefone'];
+        $id = $_POST['id'];
+        $nome = $_POST['nome'];
+        $telefone = $_POST['telefone'];
 
         $editar = new Barbeiro();
         $result = $editar->editar($id, $nome, $telefone);

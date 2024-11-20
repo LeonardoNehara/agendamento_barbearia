@@ -1,35 +1,33 @@
 $(document).ready(function () {
     listar();  // Carregar a lista de barbeiros
-
     $('#telefone').mask('(00) 00000-0000', { placeholder: '(  ) _____-____' });
-
     $('#cadastro').on('click', function () {
-        const idbarbeiro = $('#idbarbeiro').val();
+
         let dados = {
             nome: $('#nome').val(),
             telefone: $('#telefone').val().replace(/[^\d]/g, '') // Removendo a máscara antes de enviar
         };
-        
-        // if (!app.validarCampos(dados)) {
-        //     Swal.fire({
-        //         icon: "warning",
-        //         title: "Atenção!!",
-        //         text: "Preencha todos os campos!"
-        //     });
-        //     return;
-        // }
+        if (!app.validarCampos(dados)) {
+            Swal.fire({
+                icon: "warning",
+                title: "Atenção!!",
+                text: "Preencha todos os campos!"
+            });
+            return;
+        }
 
-        // if (!validarTelefone(dados.telefone)) {
-        //     Swal.fire({
-        //         icon: "warning",
-        //         title: "Atenção!!",
-        //         text: "Telefone inválido! Por favor, insira um telefone válido no formato (XX) XXXXX-XXXX."
-        //     });
-        //     return;
-        // }
+        if (!validarTelefone(dados.telefone)) {
+            Swal.fire({
+                icon: "warning",
+                title: "Atenção!!",
+                text: "Telefone inválido! Por favor, insira um telefone válido no formato (XX) XXXXX-XXXX."
+            });
+            return;
+        }
 
-        if (idbarbeiro) {
-            editar(dados, idbarbeiro);
+        if ($('#id').val()) {
+            dados.id = $('#id').val()
+            editar(dados);
         } else {
             cadastro(dados);
         }
@@ -55,10 +53,15 @@ function listar() {
 }
 
 function validarTelefone(telefone) {
-    // Expressão regular para validar o formato de telefone brasileiro
-    const regexTelefone = /^\(\d{2}\) \d{4,5}-\d{4}$/;
 
-    return regexTelefone.test(telefone);
+    const apenasNumeros = telefone;
+    const ddd = apenasNumeros.slice(0, 2); // Primeiros dois dígitos
+    const numero = apenasNumeros.slice(2); // O restante do número
+
+    const telefoneFormatado = `(${ddd}) ${numero.slice(0, 5)}-${numero.slice(5)}`;
+ 
+
+    return telefoneFormatado;
 }
 
 // Função de cadastro de usuário
@@ -138,8 +141,8 @@ const Table = function (dados) {
                                 </a>
                                 <ul class="dropdown-menu" aria-labelledby="actionsDropdown${row.id}">
                                     <li><a class="dropdown-item text-primary" onclick="setEditar(${rowData})">Editar</a></li>
-                                    <li><a class="dropdown-item text-danger" onclick="confirmUpdateSituacao(${row.id}, 2, 'Inativar')">Inativar</a></li>
-                                    <li><a class="dropdown-item text-success" onclick="confirmUpdateSituacao(${row.id}, 1, 'Ativar')">Ativar</a></li>
+                                    <li><a class="dropdown-item text-danger" onclick="confirmUpdateSituacao(${row.id}, 2, '${row.idsituacao}', 'Inativar')">Inativar</a></li>
+                                    <li><a class="dropdown-item text-success" onclick="confirmUpdateSituacao(${row.id}, 1, '${row.idsituacao}', 'Ativar')">Ativar</a></li>
                                 </ul>
                             </div>`;
                 }
@@ -147,3 +150,82 @@ const Table = function (dados) {
         ]
     });
 };
+
+    // Função para confirmar a alteração de status
+    function confirmUpdateSituacao(id, idsituacao, atualsituacao, acao) {
+    if (idsituacao == atualsituacao) {
+        Swal.fire({ icon: "warning", title: "Atenção!", text: `Barbeiro já está ${atualsituacao === 2 ? 'Inativo' : 'Ativo'}` });
+        return;
+    }
+    Swal.fire({
+        title: 'Confirmação',
+        text: `Você tem certeza que deseja ${acao.toLowerCase()} o Barbeiro ?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sim',
+        cancelButtonText: 'Não',
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            updateSituacao(id, idsituacao);
+        }
+    });
+    }
+
+    // Função para atualizar o status do usuário
+    function updateSituacao(id, idsituacao) {
+        app.callController({
+            method: 'POST',
+            url: base + '/updateSituacaoBarbeiro',
+            params: { id, idsituacao },
+            onSuccess() {
+                listar();
+            },
+            onFailure() {
+                Swal.fire({ icon: "error", title: "Atenção!!", text: "Erro ao atualizar situação!" });
+            }
+        });
+    }
+
+    // Função de edição de usuário
+    function editar(dados) {
+        console.log('chegou aqui');
+        app.callController({
+            method: 'POST',
+            url: base + '/editarbarbeiro',
+            params: dados,
+            onSuccess() {
+                listar();
+                limparForm();
+                Swal.fire({
+                    icon: "success",
+                    title: "Sucesso!",
+                    text: "Editado com sucesso!"
+                });
+            },
+            onFailure() {
+                Swal.fire({
+                    icon: "error",
+                    title: "Atenção!!",
+                    text: "Erro ao editar usuário!"
+                });
+            }
+        });
+    }
+
+    // Função de edição do usuário
+    function setEditar(row) {
+        $('#form-title').text('Editando Barbeiro').css('color', 'blue');
+        $('#id').val(row.id);
+        $('#nome').val(row.nome);
+        $('#telefone').val(row.telefone);
+        $('html, body').animate({ scrollTop: $(".form-container").offset().top }, 100);
+    }
+
+    function limparForm() {
+        $('#form-title').text('Cadastrando Barbeiro').css('color', 'black'); // Corrige o título e cor padrão
+        $('#nome').val(''); // Limpa o campo de nome
+        $('#telefone').val(''); // Limpa o campo de telefone
+        $('#id').val(''); // Limpa o ID oculto
+    }
+
