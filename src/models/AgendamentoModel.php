@@ -1,88 +1,156 @@
 <?php
 
 namespace src\models;
-use src\Config;
 
-class AgendamentoModel {
-    private $conn;
+use \core\Model;
+use core\Database;
+use PDO;
+use Throwable;
 
-    public function __construct(){
-        // Verifica apenas o token na sessão
-        if (!isset($_SESSION['token'])) {
-            header("Location: " . Config::BASE_DIR . '/');
-            exit();
+class Agendamento extends Model
+{
+    // Cadastro de agendamento
+    public function cadastro($cliente, $telefone, $barbeiro_id, $servico_id, $datahora)
+    {
+        try {
+            $sql = Database::getInstance()->prepare("
+                INSERT INTO agendamento (cliente, telefone, barbeiro_id, servico_id, datahora, situacao)
+                VALUES (:cliente, :telefone, :barbeiro_id, :servico_id, :datahora, 1)
+            ");
+            $sql->bindValue(':cliente', $cliente);
+            $sql->bindValue(':telefone', $telefone);
+            $sql->bindValue(':barbeiro_id', $barbeiro_id);
+            $sql->bindValue(':servico_id', $servico_id);
+            $sql->bindValue(':datahora', $datahora);
+
+            $sql->execute();
+
+            return [
+                'sucesso' => true,
+                'result' => 'Agendamento realizado com sucesso!'
+            ];
+        } catch (Throwable $error) {
+            return [
+                'sucesso' => false,
+                'result' => 'Falha ao realizar agendamento: ' . $error->getMessage()
+            ];
         }
     }
 
-    // Criar um novo agendamento
-    public function criarAgendamento($datahora, $barbeiro_id, $servico_id, $usuario_id) {
-        // Prepara a query para inserir o agendamento
-        $query = "INSERT INTO agendamentos (datahora, barbeiro_id, servico_id, usuario_id) VALUES (?, ?, ?, ?)";
-        $stmt = $this->conn->prepare($query);
+    // Verificar se já existe agendamento no horário
+    public function verificarDisponibilidade($barbeiro_id, $datahora)
+    {
+        try {
+            $sql = Database::getInstance()->prepare("
+                SELECT CASE WHEN EXISTS(SELECT 1 FROM agendamento WHERE barbeiro_id = :barbeiro_id AND datahora = :datahora AND situacao = 1) THEN 1 ELSE 0 END AS disponivel
+            ");
+            $sql->bindValue(':barbeiro_id', $barbeiro_id);
+            $sql->bindValue(':datahora', $datahora);
+            $sql->execute();
+            $result = $sql->fetch(PDO::FETCH_ASSOC);
 
-        // Associa os parâmetros à query
-        $stmt->bind_param("siii", $datahora, $barbeiro_id, $servico_id, $usuario_id);
-
-        // Executa a query e retorna o resultado
-        return $stmt->execute();
+            return [
+                'sucesso' => true,
+                'result' => $result
+            ];
+        } catch (Throwable $error) {
+            return [
+                'sucesso' => false,
+                'result' => 'Falha ao verificar disponibilidade: ' . $error->getMessage()
+            ];
+        }
     }
 
-    // Obter todos os agendamentos
-    public function obterAgendamentos() {
-        // Query para buscar todos os agendamentos com as informações completas
-        $query = "SELECT a.id, a.datahora, b.nome AS barbeiro, s.nome AS servico, u.nome AS usuario
-                  FROM agendamentos a
-                  JOIN barbeiro b ON a.barbeiro_id = b.id
-                  JOIN servico s ON a.servico_id = s.id
-                  JOIN usuarios u ON a.usuario_id = u.idusuario";
+    // Buscar agendamentos (opcional: por barbeiro, cliente, etc.)
+    public function getAgendamentos($barbeiro_id = null, $cliente = null)
+    {
+        try {
+            $sqlQuery = "SELECT a.id, a.cliente, a.telefone, b.nome AS barbeiro, s.nome AS servico, a.datahora, a.situacao
+                         FROM agendamento a
+                         INNER JOIN barbeiro b ON a.barbeiro_id = b.id
+                         INNER JOIN servico s ON a.servico_id = s.id";
+            
+            if ($barbeiro_id) {
+                $sqlQuery .= " WHERE a.barbeiro_id = :barbeiro_id";
+            }
+            if ($cliente) {
+                $sqlQuery .= " WHERE a.cliente LIKE :cliente";
+            }
 
-        // Executa a consulta
-        $result = $this->conn->query($query);
+            $sql = Database::getInstance()->prepare($sqlQuery);
+            if ($barbeiro_id) {
+                $sql->bindValue(':barbeiro_id', $barbeiro_id);
+            }
+            if ($cliente) {
+                $sql->bindValue(':cliente', "%" . $cliente . "%");
+            }
 
-        // Retorna todos os agendamentos como array associativo
-        return $result->fetch_all(MYSQLI_ASSOC);
+            $sql->execute();
+            $result = $sql->fetchAll(PDO::FETCH_ASSOC);
+
+            return [
+                'sucesso' => true,
+                'result' => $result
+            ];
+        } catch (Throwable $error) {
+            return [
+                'sucesso' => false,
+                'result' => 'Falha ao buscar agendamentos: ' . $error->getMessage()
+            ];
+        }
     }
 
-    // Atualizar um agendamento
-    public function atualizarAgendamento($id, $datahora, $barbeiro_id, $servico_id) {
-        // Query para atualizar o agendamento
-        $query = "UPDATE agendamentos 
-                  SET datahora = ?, barbeiro_id = ?, servico_id = ?, updated_at = CURRENT_TIMESTAMP
-                  WHERE id = ?";
+    // Atualizar situação do agendamento (confirmar, cancelar)
+    public function updateSituacao($id, $situacao)
+    {
+        try {
+            $sql = Database::getInstance()->prepare("
+                UPDATE agendamento
+                SET situacao = :situacao
+                WHERE id = :id
+            ");
+            $sql->bindValue(':id', $id);
+            $sql->bindValue(':situacao', $situacao); // 1 = Confirmado, 2 = Cancelado
+            $sql->execute();
 
-        $stmt = $this->conn->prepare($query);
-        $stmt->bind_param("siii", $datahora, $barbeiro_id, $servico_id, $id);
-
-        // Retorna o resultado da execução da query
-        return $stmt->execute();
+            return [
+                'sucesso' => true,
+                'result' => 'Situação do agendamento atualizada com sucesso!'
+            ];
+        } catch (Throwable $error) {
+            return [
+                'sucesso' => false,
+                'result' => 'Falha ao atualizar situação do agendamento: ' . $error->getMessage()
+            ];
+        }
     }
 
-    // Excluir um agendamento
-    public function excluirAgendamento($id) {
-        // Query para excluir o agendamento
-        $query = "DELETE FROM agendamentos WHERE id = ?";
+    // Editar agendamento
+    public function editar($id, $cliente, $telefone, $barbeiro_id, $servico_id, $datahora)
+    {
+        try {
+            $sql = Database::getInstance()->prepare("
+                UPDATE agendamento
+                SET cliente = :cliente, telefone = :telefone, barbeiro_id = :barbeiro_id, servico_id = :servico_id, datahora = :datahora
+                WHERE id = :id
+            ");
+            $sql->bindValue(':id', $id);
+            $sql->bindValue(':cliente', $cliente);
+            $sql->bindValue(':telefone', $telefone);
+            $sql->bindValue(':barbeiro_id', $barbeiro_id);
+            $sql->bindValue(':servico_id', $servico_id);
+            $sql->bindValue(':datahora', $datahora);
+            $sql->execute();
 
-        // Prepara a execução da query
-        $stmt = $this->conn->prepare($query);
-        $stmt->bind_param("i", $id);
-
-        // Retorna o resultado da execução
-        return $stmt->execute();
-    }
-
-    // Buscar um agendamento específico
-    public function obterAgendamentoPorId($id) {
-        // Query para buscar um agendamento específico
-        $query = "SELECT a.id, a.datahora, a.barbeiro_id, a.servico_id, a.usuario_id
-                  FROM agendamentos a
-                  WHERE a.id = ?";
-
-        $stmt = $this->conn->prepare($query);
-        $stmt->bind_param("i", $id);
-        $stmt->execute();
-
-        // Retorna o agendamento encontrado como array associativo
-        $result = $stmt->get_result();
-        return $result->fetch_assoc();
+            return [
+                'sucesso' => true,
+                'result' => 'Agendamento atualizado com sucesso!'
+            ];
+        } catch (Throwable $error) {
+            return [
+                'sucesso' => false,
+                'result' => 'Falha ao atualizar agendamento: ' . $error->getMessage()
+            ];
+        }
     }
 }

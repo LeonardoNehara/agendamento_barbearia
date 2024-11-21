@@ -52,10 +52,9 @@ $router->post('/updateSituacao', 'ServicoController@updateSituacao');  // Atuali
 $router->get('/agendamentos', 'AgendamentoController@index');  // Página de agendamentos
 $router->get('/getagendamentos', 'AgendamentoController@getAgendamentos');  // Listagem de agendamentos
 $router->post('/cadagendamento', 'AgendamentoController@cadastro');  // Cadastro de agendamento
-$router->get('/editaragendamento', 'AgendamentoController@editar');  // Editar agendamento
-$router->post('/atualizarsituacaoagendamento', 'AgendamentoController@atualizarSituacao');  // Atualizar situação do agendamento
-$router->get('/agendamento/{id}', 'AgendamentoController@obterAgendamento');  // Obter um agendamento específico pelo ID
-$router->post('/editar-agendamento', 'AgendamentoController@editarAgendamento');  // Atualizar agendamento
-$router->get('/excluir-agendamento', 'AgendamentoController@excluir');  // Excluir agendamento
+$router->post('/updateSituacaoAgendamento', 'AgendamentoController@updateSituacaoAgendamento');  // Atualizar situação do agendamento
+$router->post('/editaragendamento', 'AgendamentoController@editar');  // Editar agendamento
+
+
 
 

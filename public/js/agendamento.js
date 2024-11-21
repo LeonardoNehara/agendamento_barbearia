@@ -1,16 +1,19 @@
 $(document).ready(function () {
-    listar();  // Carregar a lista de agendamentos
+    carregarBarbeiros();  // Carregar lista de barbeiros
+    carregarServicos();   // Carregar lista de serviços
+    $('#telefone').mask('(00) 00000-0000', { placeholder: '(  ) _____-____' });
 
+    // Evento ao clicar no botão de agendamento
     $('#cadastro').on('click', function () {
-        const idAgendamento = $('#idAgendamento').val();
         let dados = {
-            datahora: $('#datahora').val(),
-            barbeiro: $('#barbeiro').val(),
-            servico: $('#servico').val(),
-            usuario: $('#usuario').val()
+            nome_completo: $('#nome_completo').val(),
+            telefone: $('#telefone').val().replace(/[^\d]/g, ''),  // Remover máscara
+            barbeiro_id: $('#barbeiro_id').val(),
+            servico_id: $('#servico_id').val(),
+            datahora: $('#datahora').val()
         };
-
-        if (!app.validarCampos(dados)) {
+    
+        if (!validarCampos(dados)) {
             Swal.fire({
                 icon: "warning",
                 title: "Atenção!!",
@@ -19,167 +22,102 @@ $(document).ready(function () {
             return;
         }
 
-        if (idAgendamento) {
-            editar(dados, idAgendamento);
-        } else {
-            cadastro(dados);
+        if (!validarTelefone(dados.telefone)) {
+            Swal.fire({
+                icon: "warning",
+                title: "Atenção!!",
+                text: "Telefone inválido! Por favor, insira um telefone válido."
+            });
+            return;
         }
+
+        agendar(dados);  // Chamar a função de agendamento
     });
 });
 
-function listar() {
+// Função para carregar os barbeiros
+function carregarBarbeiros() {
     app.callController({
         method: 'GET',
-        url: base + '/getAgendamentos',
+        url: base + '/getbarbeiros',  // API ou controller que retorna a lista de barbeiros
         params: null,
         onSuccess(res) {
-            Table(res.result);
+            let barbeiros = res[0].ret;
+            
+            let options = '<option value="">Selecione o Barbeiro</option>';
+            barbeiros.forEach(barbeiro => {
+                options += `<option value="${barbeiro.id}">${barbeiro.nome}</option>`;
+            });
+            $('#barbeiro_id').html(options);  // Preenche o select com os barbeiros
         },
         onFailure() {
             Swal.fire({
                 icon: "error",
                 title: "Atenção!!",
-                text: "Erro ao listar Agendamentos!"
+                text: "Erro ao carregar barbeiros!"
             });
         }
     });
 }
 
-function cadastro(dados) {
+// Função para carregar os serviços
+function carregarServicos() {
+    app.callController({
+        method: 'GET',
+        url: base + '/getservicos',  // API ou controller que retorna a lista de serviços
+        params: null,
+        onSuccess(res) {
+            let servicos = res[0].ret;
+
+            let options = '<option value="">Selecione o Serviço</option>';
+            servicos.forEach(servico => {
+                options += `<option value="${servico.id}">${servico.nome} - R$ ${servico.valor}</option>`;
+            });
+            $('#servico_id').html(options);  // Preenche o select com os serviços
+        },
+        onFailure() {
+            Swal.fire({
+                icon: "error",
+                title: "Atenção!!",
+                text: "Erro ao carregar serviços!"
+            });
+        }
+    });
+}
+
+// Função para validar campos obrigatórios
+function validarCampos(dados) {
+    for (let key in dados) {
+        if (dados[key] === "") return false;  // Verifica se algum campo está vazio
+    }
+    return true;
+}
+
+// Função para validar telefone
+function validarTelefone(telefone) {
+    const apenasNumeros = telefone.replace(/\D/g, '');
+    return apenasNumeros.length === 11;  // Verifica se o telefone tem o formato correto (11 dígitos)
+}
+
+// Função para agendar o serviço
+function agendar(dados) {
     app.callController({
         method: 'POST',
-        url: base + '/cadAgendamento',
+        url: base + '/agendar',  // API ou controller que realiza o agendamento
         params: dados,
         onSuccess() {
-            listar();
-            limparForm();
             Swal.fire({
                 icon: "success",
-                title: "Sucesso!",
-                text: "Agendamento cadastrado com sucesso!"
-            });
-        },
-        onFailure() {
-            Swal.fire({
-                icon: "error",
-                title: "Erro",
-                text: "Erro ao cadastrar agendamento!"
-            });
-        }
-    });
-}
-
-// Função para exibir os dados dos agendamentos na tabela
-const Table = function (dados) {
-    $('#mytable').DataTable({
-        dom: 'Bfrtip',
-        responsive: true,
-        stateSave: true,
-        bDestroy: true,
-        language: {
-            url: "https://cdn.datatables.net/plug-ins/1.10.25/i18n/Portuguese-Brasil.json"
-        },
-        data: dados,
-        columns: [
-            {
-                title: 'Data e Hora',
-                data: 'datahora',
-                render: function (data) {
-                    return `<strong>${data}</strong>`;
-                }
-            },
-            {
-                title: 'Barbeiro',
-                data: 'barbeiro',
-                render: function (data) {
-                    return data;
-                }
-            },
-            {
-                title: 'Serviço',
-                data: 'servico',
-                render: function (data) {
-                    return data;
-                }
-            },
-            {
-                title: 'Usuário',
-                data: 'usuario',
-                render: function (data) {
-                    return data;
-                }
-            },
-            {
-                title: 'Status',
-                data: 'situacao',
-                render: function (data) {
-                    const statusClass = data === 'Ativo' ? 'status-ativo' : 'status-inativo';
-                    return `<span class="${statusClass}">${data}</span>`;
-                }
-            },
-            {
-                title: 'Ações',
-                data: null,
-                render: function (data, type, row) {
-                    const rowData = JSON.stringify(row).replace(/"/g, '&quot;');
-                    return `<div class="dropdown" style="display: inline-block; cursor: pointer;">
-                                <a class="text-secondary" id="actionsDropdown${row.id}" data-bs-toggle="dropdown" aria-expanded="false" style="text-decoration: none; cursor: pointer;">
-                                    <i class="fas fa-ellipsis-h"></i>
-                                </a>
-                                <ul class="dropdown-menu" aria-labelledby="actionsDropdown${row.id}">
-                                    <li><a class="dropdown-item text-primary" onclick="setEditar(${rowData})">Editar</a></li>
-                                    <li><a class="dropdown-item text-danger" onclick="confirmUpdateSituacao(${row.id}, 2, 'Inativar')">Inativar</a></li>
-                                    <li><a class="dropdown-item text-success" onclick="confirmUpdateSituacao(${row.id}, 1, 'Ativar')">Ativar</a></li>
-                                </ul>
-                            </div>`;
-                }
-            }
-        ]
-    });
-};
-
-function setEditar(row) {
-    $('#form-title').text('Editando Agendamento').css('color', 'blue');
-    $('#idAgendamento').val(row.id);
-    $('#datahora').val(row.datahora);
-    $('#barbeiro').val(row.barbeiro);
-    $('#servico').val(row.servico);
-    $('#usuario').val(row.usuario);
-
-    $('html, body').animate({
-        scrollTop: $(".form-container").offset().top
-    }, 100);
-}
-
-function editar(dados, id) {
-    app.callController({
-        method: 'POST',
-        url: base + '/editarAgendamento',
-        params: { id: id, datahora: dados.datahora, barbeiro: dados.barbeiro, servico: dados.servico, usuario: dados.usuario },
-        onSuccess() {
-            listar();
-            limparForm();
-            Swal.fire({
-                icon: "success",
-                title: "Sucesso!",
-                text: "Agendamento editado com sucesso!"
+                title: "Agendamento realizado!",
+                text: "Seu agendamento foi realizado com sucesso!"
             });
         },
         onFailure() {
             Swal.fire({
                 icon: "error",
                 title: "Atenção!!",
-                text: "Erro ao editar Agendamento!"
+                text: "Erro ao realizar o agendamento!"
             });
         }
     });
-}
-
-function limparForm() {
-    $('#form-title').text('Cadastrando Agendamentos');
-    $('#datahora').val('');
-    $('#barbeiro').val('');
-    $('#servico').val('');
-    $('#usuario').val('');
-    $('#idAgendamento').val('');
 }
