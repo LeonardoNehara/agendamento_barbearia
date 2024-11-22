@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 18/11/2024 às 16:08
+-- Tempo de geração: 22/11/2024 às 18:18
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.2.12
 
@@ -24,18 +24,39 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `agendamentos`
+-- Estrutura para tabela `agendamento`
 --
 
-CREATE TABLE `agendamentos` (
+CREATE TABLE `agendamento` (
   `id` int(11) NOT NULL,
+  `cliente` varchar(255) NOT NULL,
+  `telefone` varchar(15) NOT NULL,
+  `barbeiro_id` int(11) DEFAULT NULL,
+  `servico_id` int(11) DEFAULT NULL,
   `datahora` datetime NOT NULL,
-  `barbeiro_id` int(11) NOT NULL,
-  `servico_id` int(11) NOT NULL,
-  `usuario_id` bigint(20) UNSIGNED NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `situacao` int(11) DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `agendamento`
+--
+
+INSERT INTO `agendamento` (`id`, `cliente`, `telefone`, `barbeiro_id`, `servico_id`, `datahora`, `situacao`) VALUES
+(1, 'José Santos', '988123456', 1, 1, '2024-11-23 10:00:00', 1),
+(2, 'Maria Oliveira', '999234567', 2, 2, '2024-11-23 11:00:00', 1),
+(3, 'Lucas Almeida', '977345678', 3, 3, '2024-11-23 12:00:00', 1),
+(4, 'Fernanda Costa', '966456789', 4, 4, '2024-11-23 13:00:00', 1),
+(5, 'Carlos Pereira', '955567890', 5, 5, '2024-11-23 14:00:00', 1),
+(6, 'Ricardo Lima', '944678901', 6, 6, '2024-11-23 15:00:00', 1),
+(7, 'Juliana Martins', '933789012', 7, 7, '2024-11-23 16:00:00', 1),
+(8, 'Bruna Rocha', '922890123', 8, 8, '2024-11-23 17:00:00', 1),
+(9, 'Thiago Souza', '911901234', 9, 9, '2024-11-23 18:00:00', 1),
+(10, 'Carla Pereira', '900012345', 10, 10, '2024-11-23 19:00:00', 1),
+(11, 'Ricardo Costa', '988123457', 11, 11, '2024-11-24 10:00:00', 1),
+(12, 'Eduardo Rocha', '977234568', 12, 12, '2024-11-24 11:00:00', 1),
+(13, 'Gustavo Oliveira', '966345679', 13, 13, '2024-11-24 12:00:00', 1),
+(14, 'Patricia Lima', '955456780', 14, 14, '2024-11-24 13:00:00', 1),
+(15, 'Tatiane Silva', '944567891', 15, 15, '2024-11-24 14:00:00', 1);
 
 -- --------------------------------------------------------
 
@@ -56,62 +77,22 @@ CREATE TABLE `barbeiro` (
 --
 
 INSERT INTO `barbeiro` (`id`, `nome`, `telefone`, `idsituacao`, `criado_em`) VALUES
-(74, 'JOSÉ MARCOS', '44984465435', 1, '2024-11-18 00:55:25'),
-(75, 'JOSÉ MARCOS', '44984465435', 1, '2024-11-18 00:56:44'),
-(76, 'JOSÉ MARCOS', '44984465435', 1, '2024-11-18 01:00:25'),
-(77, 'JOSÉ MARCOS', '44984465435', 1, '2024-11-18 01:00:32'),
-(78, 'JOSÉ MARCOS', '44984465435', 1, '2024-11-18 01:10:00'),
-(79, 'Leonardo', '44984465435', 1, '2024-11-18 01:16:42'),
-(80, 'Leonardo', '44984465435', 1, '2024-11-18 01:17:01');
-
--- --------------------------------------------------------
-
---
--- Estrutura para tabela `filial`
---
-
-CREATE TABLE `filial` (
-  `idfilial` int(11) NOT NULL,
-  `nome` varchar(200) NOT NULL,
-  `cnpj_cpf` varchar(14) NOT NULL,
-  `email` varchar(200) DEFAULT NULL,
-  `telefone` varchar(11) DEFAULT NULL,
-  `idsituacao` smallint(6) NOT NULL COMMENT '1 - Ativo\r\n2 - Inativo',
-  `idtipofilial` smallint(6) NOT NULL COMMENT '1 - ADMIN\r\n2 - TRANSPORTADORA\r\n3 - CD'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Despejando dados para a tabela `filial`
---
-
-INSERT INTO `filial` (`idfilial`, `nome`, `cnpj_cpf`, `email`, `telefone`, `idsituacao`, `idtipofilial`) VALUES
-(1, 'Matriz', '11331494990123', 'lucas.dossantos@gazin.com.br', '44998487185', 1, 1),
-(22, 'IDH', '11111111111111', 'idh@transportes.com', '44111111111', 1, 2),
-(23, 'ALFA', '22222222222222', 'alfa@transportes.com', '44222222222', 1, 2),
-(24, 'RODONAVES', '33333333333333', 'rodonaves@transportes.com', '44333333333', 1, 2),
-(25, 'DOURADINA', '44444444444444', 'douradina@transportes.com', '44444444444', 1, 3),
-(26, 'IPAMERI', '55555555555555', 'ipameri@transportes.com', '55555555555', 1, 3),
-(27, 'FEIRA DE SANTANA', '66666666666666', 'feira@transportes.com', '66666666666', 1, 3);
-
--- --------------------------------------------------------
-
---
--- Estrutura para tabela `grupos`
---
-
-CREATE TABLE `grupos` (
-  `idgrupo` int(11) NOT NULL,
-  `descricao` varchar(200) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Despejando dados para a tabela `grupos`
---
-
-INSERT INTO `grupos` (`idgrupo`, `descricao`) VALUES
-(1, 'ADMIN'),
-(2, 'TRANSPORTADORA'),
-(3, 'CD');
+(1, 'João Silva', '999999999', 1, '2024-11-22 17:14:46'),
+(2, 'Carlos Pereira', '988888888', 1, '2024-11-22 17:14:46'),
+(3, 'Ana Souza', '977777777', 1, '2024-11-22 17:14:46'),
+(4, 'Luciano Santos', '966666666', 1, '2024-11-22 17:14:46'),
+(5, 'Marcos Oliveira', '955555555', 1, '2024-11-22 17:14:46'),
+(6, 'Ricardo Costa', '944444444', 1, '2024-11-22 17:14:46'),
+(7, 'Paula Lima', '933333333', 1, '2024-11-22 17:14:46'),
+(8, 'Eduardo Rocha', '922222222', 1, '2024-11-22 17:14:46'),
+(9, 'Renata Alves', '911111111', 1, '2024-11-22 17:14:46'),
+(10, 'Fábio Costa', '900000000', 1, '2024-11-22 17:14:46'),
+(11, 'Thiago Martins', '899999999', 1, '2024-11-22 17:14:46'),
+(12, 'Camila Ferreira', '888888888', 1, '2024-11-22 17:14:46'),
+(13, 'Juliana Gomes', '877777777', 1, '2024-11-22 17:14:46'),
+(14, 'André Oliveira', '866666666', 1, '2024-11-22 17:14:46'),
+(15, 'Felipe Martins', '855555555', 1, '2024-11-22 17:14:46'),
+(16, 'Jorginho', '33333333333', 1, '2024-11-22 17:17:57');
 
 -- --------------------------------------------------------
 
@@ -132,12 +113,21 @@ CREATE TABLE `produto` (
 --
 
 INSERT INTO `produto` (`id`, `nome`, `valor_compra`, `valor_venda`, `idsituacao`) VALUES
-(1, 'Shampoo para Barba', 10.50, 20.00, 1),
-(2, 'Cera de Cabelo', 8.00, 15.00, 1),
-(3, 'Óleo para Barba', 12.00, 25.00, 1),
-(4, 'Máquina de Corte', 50.00, 100.00, 1),
-(5, 'Creme de Barbear', 5.00, 12.00, 1),
-(6, 'Pente de Madeira', 3.00, 7.00, 1);
+(1, 'Shampoo', 10.00, 20.00, 1),
+(2, 'Cera para cabelo', 15.00, 30.00, 1),
+(3, 'Pente', 5.00, 10.00, 1),
+(4, 'Tesoura', 20.00, 40.00, 1),
+(5, 'Navalha', 25.00, 50.00, 1),
+(6, 'Gel fixador', 7.00, 15.00, 1),
+(7, 'Creme de barbear', 12.00, 25.00, 1),
+(8, 'Pomada', 18.00, 35.00, 1),
+(9, 'Óleo de cabelo', 8.00, 18.00, 1),
+(10, 'Escova', 6.00, 12.00, 1),
+(11, 'Cabelo sintético', 50.00, 100.00, 1),
+(12, 'Spray fixador', 9.00, 18.00, 1),
+(13, 'Tintura', 30.00, 60.00, 1),
+(14, 'Loção pós-barba', 14.00, 28.00, 1),
+(15, 'Condicionador', 11.00, 22.00, 1);
 
 -- --------------------------------------------------------
 
@@ -153,27 +143,26 @@ CREATE TABLE `servico` (
   `idsituacao` int(11) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- --------------------------------------------------------
-
 --
--- Estrutura para tabela `situacao`
+-- Despejando dados para a tabela `servico`
 --
 
-CREATE TABLE `situacao` (
-  `idsituacao` int(11) NOT NULL,
-  `situacao` varchar(200) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Despejando dados para a tabela `situacao`
---
-
-INSERT INTO `situacao` (`idsituacao`, `situacao`) VALUES
-(1, 'PEDENTE CONFIRMAÇÂO'),
-(2, 'EM ANDAMENTO'),
-(3, 'FINALIZADO'),
-(4, 'RECUSADO'),
-(5, 'CANCELADO');
+INSERT INTO `servico` (`id`, `nome`, `valor`, `tempo_minutos`, `idsituacao`) VALUES
+(1, 'Corte de cabelo', 30.00, 30, 1),
+(2, 'Barba', 20.00, 20, 1),
+(3, 'Corte e barba', 50.00, 45, 1),
+(4, 'Sobrancelha', 15.00, 15, 1),
+(5, 'Hidratação capilar', 40.00, 60, 1),
+(6, 'Tinte de cabelo', 60.00, 90, 1),
+(7, 'Corte infantil', 25.00, 25, 1),
+(8, 'Corte masculino', 35.00, 40, 1),
+(9, 'Corte feminino', 45.00, 50, 1),
+(10, 'Shampoo e corte', 40.00, 40, 1),
+(11, 'Lavagem de cabelo', 10.00, 10, 1),
+(12, 'Barba e sobrancelha', 25.00, 30, 1),
+(13, 'Corte e hidratação', 60.00, 70, 1),
+(14, 'Corte e penteado', 50.00, 60, 1),
+(15, 'Corte e coloração', 80.00, 100, 1);
 
 -- --------------------------------------------------------
 
@@ -194,43 +183,55 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`idusuario`, `nome`, `login`, `senha`, `idsituacao`) VALUES
-(28, 'Lucas Gabriel', 'lucas.gabriel', '28284886917f9a2fa6952251e64ebea3', 1),
-(29, 'Lucas Rico', 'lucas.bonfim', '7e246b7e60e825d99c65351fdd25752d', 1),
-(30, 'Robson Alves', 'robson.alves', '7e246b7e60e825d99c65351fdd25752d', 1),
-(31, 'Amanda Dias', 'amanda.dias', '7e246b7e60e825d99c65351fdd25752d', 1),
-(32, 'Luana Delgado', 'luana.delgado', '28284886917f9a2fa6952251e64ebea3', 1),
-(33, 'Altair Neves', 'altair.neves', '7e246b7e60e825d99c65351fdd25752d', 1),
-(34, 'Tenisson Ben', 'ben.tenisson', '7e246b7e60e825d99c65351fdd25752d', 1),
-(35, 'Tailan Loro', 'tailan.loro', '7e246b7e60e825d99c65351fdd25752d', 1),
-(36, 'Leonardo', 'nehara', '6e5cb51c0581b4e0cd68b3127505fdb6', 1),
-(37, 'Leonardo Saraiva Ferreira Nehara', 'Leonardo.Nehara', 'b4d2459a8fc2c8d3210aff517588962c', 1),
-(38, 'Jorginho', 'Leonardo.Nehara', 'b4d2459a8fc2c8d3210aff517588962c', 1),
-(39, 'Jorginho', 'Leonardo.Nehara333', 'b4d2459a8fc2c8d3210aff517588962c', 1);
+(1, 'Administrador', 'admin', 'senha123', 1),
+(2, 'João Silva', 'joao', 'senha123', 1),
+(3, 'Carlos Pereira', 'carlos', 'senha123', 1),
+(4, 'Ana Souza', 'ana', 'senha123', 1),
+(5, 'Luciano Santos', 'luciano', 'senha123', 1),
+(6, 'Marcos Oliveira', 'marcos', 'senha123', 1),
+(7, 'Ricardo Costa', 'ricardo', 'senha123', 1),
+(8, 'Paula Lima', 'paula', 'senha123', 1),
+(9, 'Eduardo Rocha', 'eduardo', 'senha123', 1),
+(10, 'Renata Alves', 'renata', 'senha123', 1),
+(11, 'Fábio Costa', 'fabio', 'senha123', 1),
+(12, 'Thiago Martins', 'thiago', 'senha123', 1),
+(13, 'Camila Ferreira', 'camila', 'senha123', 1),
+(14, 'Juliana Gomes', 'juliana', 'senha123', 1),
+(15, 'André Oliveira', 'andre', 'senha123', 1),
+(16, 'Administrador', 'admin', 'senha123', 1),
+(17, 'João Silva', 'joao', 'senha123', 1),
+(18, 'Carlos Pereira', 'carlos', 'senha123', 1),
+(19, 'Ana Souza', 'ana', 'senha123', 1),
+(20, 'Luciano Santos', 'luciano', 'senha123', 1),
+(21, 'Marcos Oliveira', 'marcos', 'senha123', 1),
+(22, 'Ricardo Costa', 'ricardo', 'senha123', 1),
+(23, 'Paula Lima', 'paula', 'senha123', 1),
+(24, 'Eduardo Rocha', 'eduardo', 'senha123', 1),
+(25, 'Renata Alves', 'renata', 'senha123', 1),
+(26, 'Fábio Costa', 'fabio', 'senha123', 1),
+(27, 'Thiago Martins', 'thiago', 'senha123', 1),
+(28, 'Camila Ferreira', 'camila', 'senha123', 1),
+(29, 'Juliana Gomes', 'juliana', 'senha123', 1),
+(30, 'André Oliveira', 'andre', 'senha123', 1),
+(31, 'Leonardo Nehara', 'Leonardo.Nehara', 'b4d2459a8fc2c8d3210aff517588962c', 1);
 
 --
 -- Índices para tabelas despejadas
 --
 
 --
--- Índices de tabela `agendamentos`
+-- Índices de tabela `agendamento`
 --
-ALTER TABLE `agendamentos`
+ALTER TABLE `agendamento`
   ADD PRIMARY KEY (`id`),
   ADD KEY `barbeiro_id` (`barbeiro_id`),
-  ADD KEY `servico_id` (`servico_id`),
-  ADD KEY `usuario_id` (`usuario_id`);
+  ADD KEY `servico_id` (`servico_id`);
 
 --
 -- Índices de tabela `barbeiro`
 --
 ALTER TABLE `barbeiro`
   ADD PRIMARY KEY (`id`);
-
---
--- Índices de tabela `filial`
---
-ALTER TABLE `filial`
-  ADD PRIMARY KEY (`idfilial`);
 
 --
 -- Índices de tabela `produto`
@@ -255,52 +256,45 @@ ALTER TABLE `usuarios`
 --
 
 --
--- AUTO_INCREMENT de tabela `agendamentos`
+-- AUTO_INCREMENT de tabela `agendamento`
 --
-ALTER TABLE `agendamentos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `agendamento`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT de tabela `barbeiro`
 --
 ALTER TABLE `barbeiro`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=81;
-
---
--- AUTO_INCREMENT de tabela `filial`
---
-ALTER TABLE `filial`
-  MODIFY `idfilial` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT de tabela `produto`
 --
 ALTER TABLE `produto`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT de tabela `servico`
 --
 ALTER TABLE `servico`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT de tabela `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `idusuario` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
+  MODIFY `idusuario` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- Restrições para tabelas despejadas
 --
 
 --
--- Restrições para tabelas `agendamentos`
+-- Restrições para tabelas `agendamento`
 --
-ALTER TABLE `agendamentos`
-  ADD CONSTRAINT `agendamentos_ibfk_1` FOREIGN KEY (`barbeiro_id`) REFERENCES `barbeiro` (`id`),
-  ADD CONSTRAINT `agendamentos_ibfk_2` FOREIGN KEY (`servico_id`) REFERENCES `servico` (`id`),
-  ADD CONSTRAINT `agendamentos_ibfk_3` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`idusuario`);
+ALTER TABLE `agendamento`
+  ADD CONSTRAINT `agendamento_ibfk_1` FOREIGN KEY (`barbeiro_id`) REFERENCES `barbeiro` (`id`),
+  ADD CONSTRAINT `agendamento_ibfk_2` FOREIGN KEY (`servico_id`) REFERENCES `servico` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -1,7 +1,6 @@
 $(document).ready(function () {
-    listar(); // Carregar a lista de serviços
+    listar();
 
-    // Ao clicar no botão de cadastro/edição
     $('#cadastro').on('click', function () {
         const idServico = $('#idServico').val();
         let dados = {
@@ -20,7 +19,7 @@ $(document).ready(function () {
         }
 
         if (idServico) {
-            dados.id = idServico; // Adiciona o ID ao objeto
+            dados.id = idServico;
             editar(dados);
         } else {
             cadastro(dados);
@@ -31,7 +30,7 @@ $(document).ready(function () {
 function listar() {
     app.callController({
         method: 'GET',
-        url: base + '/getServicos', // Rota para listar serviços
+        url: base + '/getServicos',
         params: null,
         onSuccess(res) {
                 Table(res[0].ret);
@@ -49,7 +48,7 @@ function listar() {
 function cadastro(dados) {
     app.callController({
         method: 'POST',
-        url: base + '/cadServico', // Rota para cadastro de serviços
+        url: base + '/cadServico',
         params: dados,
         onSuccess() {
             listar();
@@ -73,7 +72,7 @@ function cadastro(dados) {
 function editar(dados) {
     app.callController({
         method: 'POST',
-        url: base + '/editarServico', // Rota para edição de serviços
+        url: base + '/editarServico',
         params: dados,
         onSuccess() {
                 listar();
@@ -180,12 +179,11 @@ function confirmAlterarSituacao(id, idsituacao, atualSituacao, acao) {
     });
 }
 
-
 function alterarSituacao(id, idsituacao) {
     console.log('Chegou aqui');
     app.callController({
         method: 'POST',
-        url: base + '/updateSituacao', // Rota para alteração de situação
+        url: base + '/updateSituacao',
         params: { id, idsituacao },
         onSuccess() {
                 listar();

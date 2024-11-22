@@ -1,6 +1,5 @@
 $(document).ready(function () {
-    listar(); // Carregar a lista de produtos
-    // Ao clicar no botão de cadastro/edição
+    listar();
     $('#cadastro').on('click', function () {
         const idProduto = $('#idProduto').val();
         const teste = $('#valorCompra').val();
@@ -21,7 +20,7 @@ $(document).ready(function () {
         }
 
         if ($('#idProduto').val()) {
-            dados.id = idProduto; // Adiciona o ID ao objeto
+            dados.id = idProduto;
             editar(dados);
         } else {
             cadastro(dados);

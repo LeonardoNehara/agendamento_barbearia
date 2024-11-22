@@ -1,7 +1,6 @@
 <?php $render('header'); ?>
 
 <style>
-    /* Seu estilo aqui */
     .form-container {
         max-width: 80%;
         margin: 20px auto;
@@ -34,7 +33,6 @@
         margin-left: 100px;
     }
 
-    /* Responsividade */
     @media (max-width: 395px) {
         .form-cad {
             font-size: 0.90rem;

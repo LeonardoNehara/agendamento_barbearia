@@ -111,5 +111,4 @@ class Usuario extends Model
         }
     }
 
-    // Método getFilialPorGrupo foi removido, pois não é mais necessário.
 }

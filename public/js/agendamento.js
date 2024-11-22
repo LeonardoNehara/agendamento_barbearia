@@ -42,16 +42,13 @@ $(document).ready(function () {
 });
 
 function validarTelefone(telefone) {
-
     const apenasNumeros = telefone;
-    const ddd = apenasNumeros.slice(0, 2); // Primeiros dois dígitos
-    const numero = apenasNumeros.slice(2); // O restante do número
+    const ddd = apenasNumeros.slice(0, 2);
+    const numero = apenasNumeros.slice(2);
     const telefoneFormatado = `(${ddd}) ${numero.slice(0, 5)}-${numero.slice(5)}`;
- 
 
     return telefoneFormatado;
 }
-
 
 function listarAgendamentos() {
     app.callController({
@@ -71,7 +68,6 @@ function listarAgendamentos() {
     });
 }
 
-// Função para carregar os barbeiros
 function carregarBarbeiros() {
     app.callController({
         method: 'GET',
@@ -95,7 +91,6 @@ function carregarBarbeiros() {
     });
 }
 
-// Função para carregar os serviços
 function carregarServicos() {
     app.callController({
         method: 'GET',
@@ -149,20 +144,20 @@ const Table = function (dados) {
                 title: 'Data', 
                 data: 'datahora',
                 render: data => {
-                    const date = data.split(' ')[0]; // Extrai a data (YYYY-MM-DD)
-                    const time = data.split(' ')[1]; // Extrai a hora (HH:mm:ss)
-                    return `<strong>${date}</strong>`; // Exibe apenas a data
+                    const date = data.split(' ')[0]; 
+                    const time = data.split(' ')[1]; 
+                    return `<strong>${date}</strong>`; 
                 },
-                orderData: [4]  // Configura a ordenação da tabela pela data
+                orderData: [4]  
             },
             { 
                 title: 'Hora', 
                 data: 'datahora',
                 render: data => {
-                    const time = data.split(' ')[1]; // Extrai apenas a hora
-                    return time ? time.substring(0, 5) : ''; // Exibe no formato HH:mm
+                    const time = data.split(' ')[1]; 
+                    return time ? time.substring(0, 5) : ''; 
                 },
-                orderData: [4]  // Ordena pelo mesmo índice de data, mas exibe apenas a hora
+                orderData: [4] 
             },
             {
                 title: 'Ações',
@@ -181,53 +176,45 @@ const Table = function (dados) {
                 }
             }
         ],
-        order: [[4, 'asc']] // Ordenar a tabela inicialmente pela data (coluna 4)
+        order: [[4, 'asc']] 
     });
 
-    // Limpar filtros ao recarregar a tabela
     $('#btnBuscar').off('click').on('click', function () {
         const startDate = $('#start_date').val();
         const endDate = $('#end_date').val();
     
-        // Verifica se a data final é menor que a data inicial
         if (startDate && endDate && endDate < startDate) {
             Swal.fire({
                 icon: "warning",
                 title: "Atenção!",
                 text: "A data final não pode ser menor que a data inicial."
             });
-            return; // Impede a busca se a data for inválida
+            return; 
         }
     
-        // Atualiza a tabela com os filtros aplicados
         $('#mytable').DataTable().draw();
     });
 
-    // Customização do filtro para data e barbeiro
     $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
         const startDate = $('#start_date').val();
         const endDate = $('#end_date').val();
         const filterBarbeiro = $('#filter_barbeiro').val();
 
-        const dateColumnIndex = 4; // Índice da coluna com data
-        const rowDate = data[dateColumnIndex]; // A data está sendo armazenada sem a hora
+        const dateColumnIndex = 4; 
+        const rowDate = data[dateColumnIndex];
 
-        const barbeiroColumnIndex = 2; // Índice da coluna com barbeiro
+        const barbeiroColumnIndex = 2; 
         const rowBarbeiro = data[barbeiroColumnIndex];
 
-        // Filtro por data
         if (startDate && rowDate < startDate) return false;
         if (endDate && rowDate > endDate) return false;
 
-        // Filtro por barbeiro
         if (filterBarbeiro && filterBarbeiro !== rowBarbeiro) return false;
 
         return true;
     });
 };
 
-
-// Atualizar filtro de barbeiros ao carregar dados
 function carregarBarbeirosFiltro() {
     app.callController({
         method: 'GET',
@@ -235,7 +222,7 @@ function carregarBarbeirosFiltro() {
         params: null,
         onSuccess(res) {
             let barbeiros = res[0].ret;
-            let options = '<option value="">Todos os Barbeiros</option>'; // Opção para todos
+            let options = '<option value="">Todos os Barbeiros</option>';
             barbeiros.forEach(barbeiro => {
                 options += `<option value="${barbeiro.nome}">${barbeiro.nome}</option>`;
             });
@@ -251,29 +238,23 @@ function carregarBarbeirosFiltro() {
     });
 }
 
-// Chame esta função ao carregar a página para popular os filtros
 $(document).ready(function () {
     carregarBarbeirosFiltro();
 });
 
 $(document).ready(function () {
-    // Adicionar evento ao botão "Limpar Filtros"
     $('#btnLimpar').on('click', function () {
-        // Limpar campos de filtro
         $('#start_date').val('');
         $('#end_date').val('');
         $('#filter_barbeiro').val('');
 
-        // Atualizar a tabela sem filtros
         $('#mytable').DataTable().draw();
     });
 
-    // Evento de busca continua funcionando
     $('#btnBuscar').on('click', function () {
         const startDate = $('#start_date').val();
         const endDate = $('#end_date').val();
 
-        // Validar se a data final é menor que a data inicial
         if (startDate && endDate && endDate < startDate) {
             Swal.fire({
                 icon: "warning",
@@ -283,12 +264,10 @@ $(document).ready(function () {
             return;
         }
 
-        // Atualiza a tabela com os filtros aplicados
         $('#mytable').DataTable().draw();
     });
 });
 
-// Função de agendamento
 function agendar(dados) {
     app.callController({
         method: 'POST',

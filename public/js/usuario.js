@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    listar();  // Carregar a lista de agendamentos ou usuários
+    listar(); 
     $('#cadastro').on('click', function () {
         
         const dados = {
@@ -18,14 +18,13 @@ $(document).ready(function () {
 
         if ($('#idusuario').val()) {
             dados.idusuario = $('#idusuario').val();
-            editar(dados);  // Editar usuário
+            editar(dados);  
         } else {
-            cadastro(dados); // Cadastrar novo usuário
+            cadastro(dados); 
         }
     });
 });
 
-// Função genérica para validação de campos
 function validarCampos(dados) {
     if (!dados.nome || !dados.login || !dados.senha) {
         return false;
@@ -36,7 +35,6 @@ function validarCampos(dados) {
     return true;
 }
 
-// Validação de Login
 function validarLogin(login) {
     let mensagens = [];
     if (login.length < 3 || login.length > 20) mensagens.push("O login deve ter entre 3 e 20 caracteres.");
@@ -51,7 +49,6 @@ function validarLogin(login) {
     return true;
 }
 
-// Validação de Senha
 function validarSenha(senha) {
     let mensagens = [];
     if (senha.length < 8) mensagens.push("A senha deve ter pelo menos 8 caracteres.");
@@ -65,7 +62,6 @@ function validarSenha(senha) {
     return true;
 }
 
-// Validação de Nome
 function validarNome(nome) {
     const nomeRegex = /^[A-Za-zÀ-ÿ\s]+$/;
     if (!nomeRegex.test(nome)) {
@@ -75,14 +71,13 @@ function validarNome(nome) {
     return true;
 }
 
-// Função para listar os agendamentos ou usuários
 function listar() {
     app.callController({
         method: 'GET',
-        url: base + '/getusuarios',  // Alterar conforme necessidade
+        url: base + '/getusuarios',  
         params: null,
         onSuccess(res) {
-            Table(res[0].ret); // Chama a função de renderização da tabela
+            Table(res[0].ret); 
         },
         onFailure() {
             Swal.fire({
@@ -94,7 +89,6 @@ function listar() {
     });
 }
 
-// Função para renderizar os dados na tabela
 const Table = function (dados) {
     $('#mytable').DataTable({
         dom: 'Bfrtip',
@@ -132,7 +126,6 @@ const Table = function (dados) {
     });
 };
 
-// Função de cadastro de usuário
 function cadastro(dados) {
     app.callController({
         method: 'POST',
@@ -201,9 +194,6 @@ function editar(dados) {
     });
 }
 
-
-
-// Função para confirmar a alteração de status
 function confirmUpdateSituacao(id, idsituacao, atualsituacao, acao) {
     if (idsituacao == atualsituacao) {
         Swal.fire({ icon: "warning", title: "Atenção!", text: `Usuário já está ${atualsituacao === 2 ? 'Inativo' : 'Ativo'}` });
@@ -224,7 +214,6 @@ function confirmUpdateSituacao(id, idsituacao, atualsituacao, acao) {
     });
 }
 
-// Função para atualizar o status do usuário
 function updateSituacao(id, idsituacao) {
     app.callController({
         method: 'POST',

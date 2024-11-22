@@ -9,7 +9,6 @@ use Throwable;
 
 class AgendamentoModel extends Model
 {
-    // Cadastro de agendamento
     public function cadastro($cliente, $telefone, $barbeiro_id, $servico_id, $datahora)
     {
         try {
@@ -37,7 +36,6 @@ class AgendamentoModel extends Model
         }
     }
 
-    // Verificar se já existe agendamento no horário
     public function verificarDisponibilidade($barbeiro_id, $datahora)
     {
         try {
@@ -61,7 +59,6 @@ class AgendamentoModel extends Model
         }
     }
 
-    // Buscar agendamentos (opcional: por barbeiro, cliente, etc.)
     public function getAgendamentos($barbeiro_id = null, $cliente = null)
     {
         try {
@@ -100,7 +97,6 @@ class AgendamentoModel extends Model
         }
     }
 
-    // Atualizar situação do agendamento (confirmar, cancelar)
     public function updateSituacao($id, $situacao)
     {
         try {
@@ -110,7 +106,7 @@ class AgendamentoModel extends Model
                 WHERE id = :id
             ");
             $sql->bindValue(':id', $id);
-            $sql->bindValue(':situacao', $situacao); // 1 = Confirmado, 2 = Cancelado
+            $sql->bindValue(':situacao', $situacao);
             $sql->execute();
 
             return [
@@ -125,7 +121,6 @@ class AgendamentoModel extends Model
         }
     }
 
-    // Editar agendamento
     public function editar($id, $cliente, $telefone, $barbeiro_id, $servico_id, $datahora)
     {
         try {

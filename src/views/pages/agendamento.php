@@ -1,7 +1,6 @@
 <?php $render('header'); ?>
 
 <style>
-    /* Estilo para os containers de formulário */
     .form-container {
         max-width: 80%;
         margin: 20px auto;
@@ -13,7 +12,6 @@
         margin-top: 100px;
     }
 
-    /* Container do cabeçalho */
     .header-container {
         display: flex;
         justify-content: space-between;
@@ -27,7 +25,6 @@
         color: #6c757d;
     }
 
-    /* Botão de cadastro */
     .form-footer {
         text-align: center;
         margin-top: 20px;
@@ -47,7 +44,6 @@
         background-color: #0056b3;
     }
 
-    /* Botão de limpar o filtro */
     .filter-container {
     display: flex;
     gap: 10px;
@@ -59,8 +55,6 @@
         min-width: 150px;
     }
 
-
-    /* Estilo dos campos de input */
     select, input[type="datetime-local"], input[type="text"] {
         width: 100%;
         padding: 10px;
@@ -68,7 +62,6 @@
         border-radius: 4px;
     }
 
-    /* Responsividade */
     @media (max-width: 600px) {
         .form-container {
             padding: 15px;
@@ -86,25 +79,21 @@
         </div>
         <div style="margin-top: 50px;">
             <div class="row">
-                <!-- Campo Cliente -->
                 <div class="col-md-6 mb-3">
                     <label for="nome_completo" class="form-label">Nome Completo<span class="text-danger">*</span></label>
                     <input type="text" id="nome_completo" class="form-control" required>
                 </div>
 
-                <!-- Campo Telefone -->
                 <div class="col-md-6 mb-3">
                     <label for="telefone" class="form-label">Telefone<span class="text-danger">*</span></label>
                     <input type="text" id="telefone" class="form-control" required>
                 </div>
 
-                <!-- Data e Hora do Agendamento -->
                 <div class="col-md-6 mb-3">
                     <label for="datahora" class="form-label">Data e Hora<span class="text-danger">*</span></label>
                     <input type="datetime-local" class="form-control" id="datahora" name="datahora" required>
                 </div>
 
-                <!-- Barbeiro -->
                 <div class="col-md-6 mb-3">
                     <label for="barbeiro_id" class="form-label">Barbeiro<span class="text-danger">*</span></label>
                     <select class="form-select" id="barbeiro_id" name="barbeiro_id" required>
@@ -112,7 +101,6 @@
                     </select>
                 </div>
 
-                <!-- Serviço -->
                 <div class="col-md-6 mb-3">
                     <label for="servico_id" class="form-label">Serviço<span class="text-danger">*</span></label>
                     <select class="form-select" id="servico_id" name="servico_id" required>
@@ -138,7 +126,6 @@
                 <label for="filter_barbeiro">Barbeiro:</label>
                 <select id="filter_barbeiro" class="form-control" style="display: inline-block; width: auto;">
                     <option value="">Todos os Barbeiros</option>
-                    <!-- As opções serão preenchidas dinamicamente -->
                 </select>
 
                 <button id="btnBuscar" class="btn btn-primary">Buscar</button>

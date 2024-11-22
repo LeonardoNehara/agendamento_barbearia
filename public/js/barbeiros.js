@@ -1,11 +1,11 @@
 $(document).ready(function () {
-    listar();  // Carregar a lista de barbeiros
+    listar();
     $('#telefone').mask('(00) 00000-0000', { placeholder: '(  ) _____-____' });
     $('#cadastro').on('click', function () {
 
         let dados = {
             nome: $('#nome').val(),
-            telefone: $('#telefone').val().replace(/[^\d]/g, '') // Removendo a máscara antes de enviar
+            telefone: $('#telefone').val().replace(/[^\d]/g, '')
         };
         if (!app.validarCampos(dados)) {
             Swal.fire({
@@ -53,17 +53,14 @@ function listar() {
 }
 
 function validarTelefone(telefone) {
-
     const apenasNumeros = telefone;
-    const ddd = apenasNumeros.slice(0, 2); // Primeiros dois dígitos
-    const numero = apenasNumeros.slice(2); // O restante do número
+    const ddd = apenasNumeros.slice(0, 2);
+    const numero = apenasNumeros.slice(2);
     const telefoneFormatado = `(${ddd}) ${numero.slice(0, 5)}-${numero.slice(5)}`;
- 
 
     return telefoneFormatado;
 }
 
-// Função de cadastro de barbeiro
 function cadastro(dados) {
     app.callController({
         method: 'POST',
@@ -88,8 +85,6 @@ function cadastro(dados) {
     });
 }
 
-
-// Função para renderizar os dados na tabela com logs
 const Table = function (dados) {
     $('#mytable').DataTable({
         dom: 'Bfrtip',
@@ -150,80 +145,76 @@ const Table = function (dados) {
     });
 };
 
-    // Função para confirmar a alteração de status
-    function confirmUpdateSituacao(id, idsituacao, atualsituacao, acao) {
-    if (idsituacao == atualsituacao) {
-        Swal.fire({ icon: "warning", title: "Atenção!", text: `Barbeiro já está ${atualsituacao === 2 ? 'Inativo' : 'Ativo'}` });
-        return;
+function confirmUpdateSituacao(id, idsituacao, atualsituacao, acao) {
+if (idsituacao == atualsituacao) {
+    Swal.fire({ icon: "warning", title: "Atenção!", text: `Barbeiro já está ${atualsituacao === 2 ? 'Inativo' : 'Ativo'}` });
+    return;
+}
+Swal.fire({
+    title: 'Confirmação',
+    text: `Você tem certeza que deseja ${acao.toLowerCase()} o Barbeiro ?`,
+    icon: 'warning',
+    showCancelButton: true,
+    confirmButtonText: 'Sim',
+    cancelButtonText: 'Não',
+    reverseButtons: true
+}).then((result) => {
+    if (result.isConfirmed) {
+        updateSituacao(id, idsituacao);
     }
-    Swal.fire({
-        title: 'Confirmação',
-        text: `Você tem certeza que deseja ${acao.toLowerCase()} o Barbeiro ?`,
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Sim',
-        cancelButtonText: 'Não',
-        reverseButtons: true
-    }).then((result) => {
-        if (result.isConfirmed) {
-            updateSituacao(id, idsituacao);
+});
+}
+
+function updateSituacao(id, idsituacao) {
+    app.callController({
+        method: 'POST',
+        url: base + '/updateSituacaoBarbeiro',
+        params: { id, idsituacao },
+        onSuccess() {
+            listar();
+        },
+        onFailure() {
+            Swal.fire({ icon: "error", title: "Atenção!!", text: "Erro ao atualizar situação!" });
         }
     });
-    }
+}
 
-    // Função para atualizar o status do usuário
-    function updateSituacao(id, idsituacao) {
-        app.callController({
-            method: 'POST',
-            url: base + '/updateSituacaoBarbeiro',
-            params: { id, idsituacao },
-            onSuccess() {
-                listar();
-            },
-            onFailure() {
-                Swal.fire({ icon: "error", title: "Atenção!!", text: "Erro ao atualizar situação!" });
-            }
-        });
-    }
+function editar(dados) {
+    app.callController({
+        method: 'POST',
+        url: base + '/editarbarbeiro',
+        params: dados,
+        onSuccess() {
+            listar();
+            limparForm();
+            Swal.fire({
+                icon: "success",
+                title: "Sucesso!",
+                text: "Editado com sucesso!"
+            });
+        },
+        onFailure() {
+            Swal.fire({
+                icon: "error",
+                title: "Atenção!!",
+                text: "Erro ao editar usuário!"
+            });
+        }
+    });
+}
 
-    // Função de edição de usuário
-    function editar(dados) {
-        app.callController({
-            method: 'POST',
-            url: base + '/editarbarbeiro',
-            params: dados,
-            onSuccess() {
-                listar();
-                limparForm();
-                Swal.fire({
-                    icon: "success",
-                    title: "Sucesso!",
-                    text: "Editado com sucesso!"
-                });
-            },
-            onFailure() {
-                Swal.fire({
-                    icon: "error",
-                    title: "Atenção!!",
-                    text: "Erro ao editar usuário!"
-                });
-            }
-        });
-    }
+function setEditar(row) {
+    $('#form-title').text('Editando Barbeiro').css('color', 'blue');
+    $('#id').val(row.id);
+    $('#nome').val(row.nome);
+    $('#telefone').val(row.telefone);
+    $('html, body').animate({ scrollTop: $(".form-container").offset().top }, 100);
+}
 
-    // Função de edição do usuário
-    function setEditar(row) {
-        $('#form-title').text('Editando Barbeiro').css('color', 'blue');
-        $('#id').val(row.id);
-        $('#nome').val(row.nome);
-        $('#telefone').val(row.telefone);
-        $('html, body').animate({ scrollTop: $(".form-container").offset().top }, 100);
-    }
-
-    function limparForm() {
-        $('#form-title').text('Cadastrando Barbeiro').css('color', 'black'); // Corrige o título e cor padrão
-        $('#nome').val(''); // Limpa o campo de nome
-        $('#telefone').val(''); // Limpa o campo de telefone
-        $('#id').val(''); // Limpa o ID oculto
-    }
+function limparForm() {
+    $('#form-title').text('Cadastrando Barbeiro').css('color', 'black');
+    $('#nome').val('');
+    $('#telefone').val('');
+    $('#id').val('');
+}
 

@@ -8,25 +8,20 @@ use src\models\Barbeiro;
 class BarbeiroController extends Controller {
 
     public function __construct(){
-        // Verificando apenas o token na sessão (removendo o idgrupo da sessão)
         if (!isset($_SESSION['token'])) {
             header("Location: " . Config::BASE_DIR . '/');
             exit();
         }
     }
 
-    // Página principal de cadastro
     public function index() {
-        // Verifica se o token está presente na sessão, sem a necessidade de idgrupo
-        if ($_SESSION['token']) {  // Usuário autenticado
+        if ($_SESSION['token']) {  
             $this->render('barbeiro', ['base' => Config::BASE_DIR]);
         } else {
-            // Caso contrário, renderiza a página de erro 404
             $this->render('404');
         }
     }
 
-    // Buscar todos os barbeiros cadastrados
     public function getBarbeiros() {
         $cad = new Barbeiro();
         $ret = $cad->getBarbeiros();
@@ -40,14 +35,10 @@ class BarbeiroController extends Controller {
         }
     }
 
-    // Cadastro de novo barbeiro
     public function cadastro() {
         $nome = $_POST["nome"];
         $telefone = $_POST["telefone"];
-
         $cad = new Barbeiro();
-        
-        // Verifica se o telefone já está cadastrado
         $existe = $cad->verificarTelefone($telefone);
 
         if ($existe['result']['existeTelefone'] == 1) {
@@ -55,30 +46,23 @@ class BarbeiroController extends Controller {
             die;
         }
 
-        // Realiza o cadastro
         $ret = $cad->cadastro($nome, $telefone);
         
         if ($ret['sucesso'] == true) {
-            // Retorne diretamente o objeto JSON, sem envolver em um array adicional
             echo json_encode(array(["success" => true,"ret" => $ret]));
             die;
         } else {
-            // Retorne diretamente o objeto JSON, sem envolver em um array adicional
             echo json_encode(array(["success" => false,"ret" => $ret]));
             die;
         }   
     }
 
-    // Atualizar situação do barbeiro (Ativo/Inativo)
     public function updateSituacaoBarbeiro() {
         $id = $_POST['id'];
-
         $idsituacao = $_POST['idsituacao'];
-
         $cad = new Barbeiro();
         $ret = $cad->updateSituacao($id, $idsituacao);
 
-        // Corrigir retorno da resposta para não envolver o resultado em um array extra
         if ($ret['sucesso'] == false) {
             echo json_encode(array([ "success" => false, "ret" => $ret['result'] ]));
             die;
@@ -88,8 +72,6 @@ class BarbeiroController extends Controller {
         }
     }
 
-
-    // Editar dados do barbeiro
     public function editar() {
         $id = $_POST['id'];
         $nome = $_POST['nome'];

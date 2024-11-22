@@ -8,25 +8,20 @@ use src\models\AgendamentoModel;
 class AgendamentoController extends Controller {
 
     public function __construct() {
-        // Verificando se o token está presente na sessão
         if (!isset($_SESSION['token'])) {
             header("Location: " . Config::BASE_DIR . '/');
             exit();
         }
     }
 
-    // Página principal de agendamento
     public function index() {
-        // Verifica se o token está presente na sessão, sem a necessidade de idgrupo
-        if ($_SESSION['token']) {  // Usuário autenticado
+        if ($_SESSION['token']) {  
             $this->render('agendamento', ['base' => Config::BASE_DIR]);
         } else {
-            // Caso contrário, renderiza a página de erro 404
             $this->render('404');
         }
     }
 
-    // Buscar todos os agendamentos
     public function getAgendamentos() {
         $agendamento = new AgendamentoModel();
         $ret = $agendamento->getAgendamentos();
@@ -40,17 +35,14 @@ class AgendamentoController extends Controller {
         }
     }
 
-    // Cadastro de novo agendamento
     public function cadastro() {
         $cliente = $_POST["nome_completo"];
         $telefone = $_POST["telefone"];
         $datahora = $_POST["datahora"];
         $barbeiro_id = $_POST["barbeiro_id"];
         $servico_id = $_POST["servico_id"];
-
         $agendamento = new AgendamentoModel();
 
-        // Realiza o cadastro de agendamento
         $ret = $agendamento->cadastro($cliente, $telefone, $barbeiro_id, $servico_id, $datahora);
 
         if ($ret['sucesso'] == true) {
@@ -62,7 +54,6 @@ class AgendamentoController extends Controller {
         }
     }
 
-    // Atualizar situação do agendamento (Agendado, Cancelado)
     public function updateSituacaoAgendamento() {
         $id = $_POST['id'];
         $situacao = $_POST['situacao'];
@@ -79,7 +70,6 @@ class AgendamentoController extends Controller {
         }
     }
 
-    // Editar dados do agendamento
     public function editar() {
         $id = $_POST['id'];
         $cliente = $_POST['cliente'];
