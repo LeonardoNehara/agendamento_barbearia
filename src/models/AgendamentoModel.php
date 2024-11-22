@@ -61,27 +61,31 @@ class AgendamentoModel extends Model
 
     public function getAgendamentos($barbeiro_id = null, $cliente = null)
     {
+        
         try {
-            $sqlQuery = "SELECT a.id, a.cliente, a.telefone, b.nome AS barbeiro, s.nome AS servico, a.datahora, a.situacao
-                         FROM agendamento a
-                         INNER JOIN barbeiro b ON a.barbeiro_id = b.id
-                         INNER JOIN servico s ON a.servico_id = s.id";
-            
+            // Query base com cláusula WHERE dinâmica
+            $sqlQuery = "
+                SELECT a.id, a.cliente, a.telefone, b.nome AS barbeiro, s.nome AS servico, a.datahora, a.situacao
+                FROM agendamento a
+                INNER JOIN barbeiro b ON a.barbeiro_id = b.id
+                INNER JOIN servico s ON a.servico_id = s.id
+                WHERE 1=1
+            ";
+
+            // Adiciona filtro por barbeiro, se necessário
             if ($barbeiro_id) {
-                $sqlQuery .= " WHERE a.barbeiro_id = :barbeiro_id";
-            }
-            if ($cliente) {
-                $sqlQuery .= " WHERE a.cliente LIKE :cliente";
+                $sqlQuery .= " AND a.barbeiro_id = :barbeiro_id";
             }
 
+            // Prepara a query
             $sql = Database::getInstance()->prepare($sqlQuery);
+
+            // Vincula o parâmetro barbeiro_id, se fornecido
             if ($barbeiro_id) {
-                $sql->bindValue(':barbeiro_id', $barbeiro_id);
-            }
-            if ($cliente) {
-                $sql->bindValue(':cliente', "%" . $cliente . "%");
+                $sql->bindValue(':barbeiro_id', $barbeiro_id, PDO::PARAM_INT);
             }
 
+            // Executa a query
             $sql->execute();
             $result = $sql->fetchAll(PDO::FETCH_ASSOC);
 
@@ -96,6 +100,8 @@ class AgendamentoModel extends Model
             ];
         }
     }
+
+
 
     public function updateSituacao($id, $situacao)
     {
@@ -149,3 +155,4 @@ class AgendamentoModel extends Model
         }
     }
 }
+

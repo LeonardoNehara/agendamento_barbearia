@@ -104,7 +104,7 @@ function Table(dados) {
         },
         data: dados,
         columns: [
-            { title: 'Nome', data: 'nome' },
+            { title: 'Nome', data: 'nome', render: (data) => `<strong>${data}</strong>` },
             {
                 title: 'Valor',
                 data: 'valor',
@@ -126,10 +126,18 @@ function Table(dados) {
                 data: null,
                 render: function (data, type, row) {
                     const rowData = JSON.stringify(row).replace(/"/g, '&quot;');
-                    return `<button class="btn btn-primary" onclick="setEditar(${rowData})">Editar</button>
-                            <button class="btn btn-danger" onclick="confirmAlterarSituacao(${row.id}, 2, ${row.idsituacao}, 'Inativar')">Inativar</button>
-                            <button class="btn btn-success" onclick="confirmAlterarSituacao(${row.id}, 1, ${row.idsituacao}, 'Ativar')">Ativar</button>`;
+                    return `<div class="dropdown" style="display: inline-block; cursor: pointer;">
+                        <a class="text-secondary" id="actionsDropdown${row.id}" data-bs-toggle="dropdown" aria-expanded="false" style="text-decoration: none; cursor: pointer;">
+                            <i class="fas fa-ellipsis-h"></i>
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="actionsDropdown${row.id}">
+                            <li><a class="dropdown-item text-primary" onclick="setEditar(${rowData})">Editar</a></li>
+                            <li><a class="dropdown-item text-danger" onclick="confirmAlterarSituacao(${row.id}, 2, ${row.idsituacao}, 'Inativar')">Inativar</a></li>
+                            <li><a class="dropdown-item text-success" onclick="confirmAlterarSituacao(${row.id}, 1, ${row.idsituacao}, 'Ativar')">Ativar</a></li>
+                        </ul>
+            </div>`;
                 }
+
             }
         ]
     });

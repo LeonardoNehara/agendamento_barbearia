@@ -77,7 +77,7 @@ function listar() {
         url: base + '/getusuarios',  
         params: null,
         onSuccess(res) {
-            Table(res[0].ret); 
+            Table(res[0].ret);
         },
         onFailure() {
             Swal.fire({
@@ -150,8 +150,6 @@ function cadastro(dados) {
     });
 }
 
-
-// Função de edição do usuário
 function setEditar(row) {
     $('#form-title').text('Editando Usuário').css('color', 'blue');
     $('#idusuario').val(row.idusuario);
@@ -160,16 +158,14 @@ function setEditar(row) {
     $('html, body').animate({ scrollTop: $(".form-container").offset().top }, 100);
 }
 
-// Limpar o formulário de cadastro/edição
 function limparForm() {
     $('#form-title').text('Cadastrando Usuários');
+    $('#idusuario').val('');
     $('#nome').val('');
     $('#login').val('');
     $('#senha').val('');
-    $('#idusuario').val('');
 }
 
-// Função de edição de usuário
 function editar(dados) {
     app.callController({
         method: 'POST',
@@ -226,4 +222,13 @@ function updateSituacao(id, idsituacao) {
             Swal.fire({ icon: "error", title: "Atenção!!", text: "Erro ao atualizar situação!" });
         }
     });
+}
+
+function mostrarSenha(){
+    let inputSenha = $('#senha')
+    if (inputSenha.attr('type') === 'password') {
+         inputSenha.attr('type', 'text');
+     } else {
+         inputSenha.attr('type', 'password');
+     }
 }
