@@ -3,7 +3,7 @@ namespace src\controllers;
 
 use \core\Controller;
 use \src\Config;
-use src\models\Agendamento;
+use src\models\AgendamentoModel;
 
 class AgendamentoController extends Controller {
 
@@ -28,7 +28,7 @@ class AgendamentoController extends Controller {
 
     // Buscar todos os agendamentos
     public function getAgendamentos() {
-        $agendamento = new Agendamento();
+        $agendamento = new AgendamentoModel();
         $ret = $agendamento->getAgendamentos();
 
         if ($ret['sucesso'] == true) {
@@ -42,17 +42,16 @@ class AgendamentoController extends Controller {
 
     // Cadastro de novo agendamento
     public function cadastro() {
-        $cliente = $_POST["cliente"];
+        $cliente = $_POST["nome_completo"];
         $telefone = $_POST["telefone"];
+        $datahora = $_POST["datahora"];
         $barbeiro_id = $_POST["barbeiro_id"];
         $servico_id = $_POST["servico_id"];
-        $datahora = $_POST["datahora"];
-        $situacao = isset($_POST["situacao"]) ? $_POST["situacao"] : 1; // Default: Agendado
 
-        $agendamento = new Agendamento();
+        $agendamento = new AgendamentoModel();
 
         // Realiza o cadastro de agendamento
-        $ret = $agendamento->cadastro($cliente, $telefone, $barbeiro_id, $servico_id, $datahora, $situacao);
+        $ret = $agendamento->cadastro($cliente, $telefone, $barbeiro_id, $servico_id, $datahora);
 
         if ($ret['sucesso'] == true) {
             echo json_encode(array([ "success" => true, "ret" => $ret ]));
@@ -68,7 +67,7 @@ class AgendamentoController extends Controller {
         $id = $_POST['id'];
         $situacao = $_POST['situacao'];
 
-        $agendamento = new Agendamento();
+        $agendamento = new AgendamentoModel();
         $ret = $agendamento->updateSituacao($id, $situacao);
 
         if ($ret['sucesso'] == false) {
@@ -90,7 +89,7 @@ class AgendamentoController extends Controller {
         $datahora = $_POST['datahora'];
         $situacao = $_POST['situacao'];
 
-        $agendamento = new Agendamento();
+        $agendamento = new AgendamentoModel();
         $result = $agendamento->editar($id, $cliente, $telefone, $barbeiro_id, $servico_id, $datahora, $situacao);
 
         if (!$result['sucesso']) {

@@ -35,7 +35,6 @@ $(document).ready(function () {
 });
 
 function listar() {
-    console.log('Teste');
     app.callController({
         method: 'GET',
         url: base + '/getbarbeiros',
@@ -64,7 +63,7 @@ function validarTelefone(telefone) {
     return telefoneFormatado;
 }
 
-// Função de cadastro de usuário
+// Função de cadastro de barbeiro
 function cadastro(dados) {
     app.callController({
         method: 'POST',

@@ -71,7 +71,6 @@ class BarbeiroController extends Controller {
 
     // Atualizar situação do barbeiro (Ativo/Inativo)
     public function updateSituacaoBarbeiro() {
-        echo('Teste');
         $id = $_POST['id'];
 
         $idsituacao = $_POST['idsituacao'];

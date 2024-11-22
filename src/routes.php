@@ -55,6 +55,12 @@ $router->post('/cadagendamento', 'AgendamentoController@cadastro');  // Cadastro
 $router->post('/updateSituacaoAgendamento', 'AgendamentoController@updateSituacaoAgendamento');  // Atualizar situação do agendamento
 $router->post('/editaragendamento', 'AgendamentoController@editar');  // Editar agendamento
 
+// Rota para listar agendamentos (página principal)
+$router->get('/listar-agendamentos', 'ListarAgendamentoController@index');  // Página para listar agendamentos
+
+// Rota para buscar todos os agendamentos (com filtros de barbeiro e cliente)
+$router->get('/getlistaragendamentos', 'ListarAgendamentoController@getAgendamentos');
+
 
 
 

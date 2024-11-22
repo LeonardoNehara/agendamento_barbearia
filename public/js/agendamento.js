@@ -1,19 +1,20 @@
 $(document).ready(function () {
-    carregarBarbeiros();  // Carregar lista de barbeiros
-    carregarServicos();   // Carregar lista de serviços
+    carregarBarbeiros();
+    carregarServicos();
+    listarAgendamentos();
+
     $('#telefone').mask('(00) 00000-0000', { placeholder: '(  ) _____-____' });
 
-    // Evento ao clicar no botão de agendamento
     $('#cadastro').on('click', function () {
         let dados = {
             nome_completo: $('#nome_completo').val(),
-            telefone: $('#telefone').val().replace(/[^\d]/g, ''),  // Remover máscara
+            telefone: $('#telefone').val().replace(/[^\d]/g, ''),
             barbeiro_id: $('#barbeiro_id').val(),
             servico_id: $('#servico_id').val(),
             datahora: $('#datahora').val()
         };
-    
-        if (!validarCampos(dados)) {
+
+        if (!app.validarCampos(dados)) {
             Swal.fire({
                 icon: "warning",
                 title: "Atenção!!",
@@ -31,24 +32,58 @@ $(document).ready(function () {
             return;
         }
 
-        agendar(dados);  // Chamar a função de agendamento
+        if ($('#id').val()) {
+            dados.id = $('#id').val();
+            editarAgendamento(dados);
+        } else {
+            agendar(dados);
+        }
     });
 });
+
+function validarTelefone(telefone) {
+
+    const apenasNumeros = telefone;
+    const ddd = apenasNumeros.slice(0, 2); // Primeiros dois dígitos
+    const numero = apenasNumeros.slice(2); // O restante do número
+    const telefoneFormatado = `(${ddd}) ${numero.slice(0, 5)}-${numero.slice(5)}`;
+ 
+
+    return telefoneFormatado;
+}
+
+
+function listarAgendamentos() {
+    app.callController({
+        method: 'GET',
+        url: base + '/getAgendamentos',
+        params: null,
+        onSuccess(res) {
+            Table(res[0].ret);
+        },
+        onFailure() {
+            Swal.fire({
+                icon: "error",
+                title: "Atenção!!",
+                text: "Erro ao listar agendamentos!"
+            });
+        }
+    });
+}
 
 // Função para carregar os barbeiros
 function carregarBarbeiros() {
     app.callController({
         method: 'GET',
-        url: base + '/getbarbeiros',  // API ou controller que retorna a lista de barbeiros
+        url: base + '/getbarbeiros',
         params: null,
         onSuccess(res) {
             let barbeiros = res[0].ret;
-            
             let options = '<option value="">Selecione o Barbeiro</option>';
             barbeiros.forEach(barbeiro => {
                 options += `<option value="${barbeiro.id}">${barbeiro.nome}</option>`;
             });
-            $('#barbeiro_id').html(options);  // Preenche o select com os barbeiros
+            $('#barbeiro_id').html(options);
         },
         onFailure() {
             Swal.fire({
@@ -64,16 +99,15 @@ function carregarBarbeiros() {
 function carregarServicos() {
     app.callController({
         method: 'GET',
-        url: base + '/getservicos',  // API ou controller que retorna a lista de serviços
+        url: base + '/getservicos',
         params: null,
         onSuccess(res) {
             let servicos = res[0].ret;
-
             let options = '<option value="">Selecione o Serviço</option>';
             servicos.forEach(servico => {
                 options += `<option value="${servico.id}">${servico.nome} - R$ ${servico.valor}</option>`;
             });
-            $('#servico_id').html(options);  // Preenche o select com os serviços
+            $('#servico_id').html(options);
         },
         onFailure() {
             Swal.fire({
@@ -85,39 +119,280 @@ function carregarServicos() {
     });
 }
 
-// Função para validar campos obrigatórios
-function validarCampos(dados) {
-    for (let key in dados) {
-        if (dados[key] === "") return false;  // Verifica se algum campo está vazio
-    }
-    return true;
+const Table = function (dados) {
+    const table = $('#mytable').DataTable({
+        dom: 'Bfrtip',
+        responsive: true,
+        stateSave: true,
+        bDestroy: true,
+        language: {
+            url: "https://cdn.datatables.net/plug-ins/1.10.25/i18n/Portuguese-Brasil.json"
+        },
+        data: dados,
+        columns: [
+            { title: 'Cliente', data: 'cliente', render: data => `<strong>${data}</strong>` },
+            {
+                title: 'Telefone',
+                data: 'telefone',
+                render: data => {
+                    if (data.length === 10) {
+                        return data.replace(/^(\d{2})(\d{4})(\d{4})$/, "($1) $2-$3");
+                    } else if (data.length === 11) {
+                        return data.replace(/^(\d{2})(\d{5})(\d{4})$/, "($1) $2-$3");
+                    }
+                    return data;
+                }
+            },
+            { title: 'Barbeiro', data: 'barbeiro' },
+            { title: 'Serviço', data: 'servico' },
+            { 
+                title: 'Data', 
+                data: 'datahora',
+                render: data => {
+                    const date = data.split(' ')[0]; // Extrai a data (YYYY-MM-DD)
+                    const time = data.split(' ')[1]; // Extrai a hora (HH:mm:ss)
+                    return `<strong>${date}</strong>`; // Exibe apenas a data
+                },
+                orderData: [4]  // Configura a ordenação da tabela pela data
+            },
+            { 
+                title: 'Hora', 
+                data: 'datahora',
+                render: data => {
+                    const time = data.split(' ')[1]; // Extrai apenas a hora
+                    return time ? time.substring(0, 5) : ''; // Exibe no formato HH:mm
+                },
+                orderData: [4]  // Ordena pelo mesmo índice de data, mas exibe apenas a hora
+            },
+            {
+                title: 'Ações',
+                data: null,
+                render: (data, type, row) => {
+                    const rowData = JSON.stringify(row).replace(/"/g, '&quot;');
+                    return `<div class="dropdown" style="display: inline-block; cursor: pointer;">
+                                <a class="text-secondary" id="actionsDropdown${row.id}" data-bs-toggle="dropdown" aria-expanded="false" style="text-decoration: none; cursor: pointer;">
+                                    <i class="fas fa-ellipsis-h"></i>
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="actionsDropdown${row.id}">
+                                    <li><a class="dropdown-item text-primary" onclick="setEditar(${rowData})">Editar</a></li>
+                                    <li><a class="dropdown-item text-danger" onclick="confirmCancelar(${row.id})">Cancelar</a></li>
+                                </ul>
+                            </div>`;
+                }
+            }
+        ],
+        order: [[4, 'asc']] // Ordenar a tabela inicialmente pela data (coluna 4)
+    });
+
+    // Limpar filtros ao recarregar a tabela
+    $('#btnBuscar').off('click').on('click', function () {
+        const startDate = $('#start_date').val();
+        const endDate = $('#end_date').val();
+    
+        // Verifica se a data final é menor que a data inicial
+        if (startDate && endDate && endDate < startDate) {
+            Swal.fire({
+                icon: "warning",
+                title: "Atenção!",
+                text: "A data final não pode ser menor que a data inicial."
+            });
+            return; // Impede a busca se a data for inválida
+        }
+    
+        // Atualiza a tabela com os filtros aplicados
+        $('#mytable').DataTable().draw();
+    });
+
+    // Customização do filtro para data e barbeiro
+    $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
+        const startDate = $('#start_date').val();
+        const endDate = $('#end_date').val();
+        const filterBarbeiro = $('#filter_barbeiro').val();
+
+        const dateColumnIndex = 4; // Índice da coluna com data
+        const rowDate = data[dateColumnIndex]; // A data está sendo armazenada sem a hora
+
+        const barbeiroColumnIndex = 2; // Índice da coluna com barbeiro
+        const rowBarbeiro = data[barbeiroColumnIndex];
+
+        // Filtro por data
+        if (startDate && rowDate < startDate) return false;
+        if (endDate && rowDate > endDate) return false;
+
+        // Filtro por barbeiro
+        if (filterBarbeiro && filterBarbeiro !== rowBarbeiro) return false;
+
+        return true;
+    });
+};
+
+
+// Atualizar filtro de barbeiros ao carregar dados
+function carregarBarbeirosFiltro() {
+    app.callController({
+        method: 'GET',
+        url: base + '/getbarbeiros',
+        params: null,
+        onSuccess(res) {
+            let barbeiros = res[0].ret;
+            let options = '<option value="">Todos os Barbeiros</option>'; // Opção para todos
+            barbeiros.forEach(barbeiro => {
+                options += `<option value="${barbeiro.nome}">${barbeiro.nome}</option>`;
+            });
+            $('#filter_barbeiro').html(options);
+        },
+        onFailure() {
+            Swal.fire({
+                icon: "error",
+                title: "Atenção!!",
+                text: "Erro ao carregar barbeiros!"
+            });
+        }
+    });
 }
 
-// Função para validar telefone
-function validarTelefone(telefone) {
-    const apenasNumeros = telefone.replace(/\D/g, '');
-    return apenasNumeros.length === 11;  // Verifica se o telefone tem o formato correto (11 dígitos)
-}
+// Chame esta função ao carregar a página para popular os filtros
+$(document).ready(function () {
+    carregarBarbeirosFiltro();
+});
 
-// Função para agendar o serviço
+$(document).ready(function () {
+    // Adicionar evento ao botão "Limpar Filtros"
+    $('#btnLimpar').on('click', function () {
+        // Limpar campos de filtro
+        $('#start_date').val('');
+        $('#end_date').val('');
+        $('#filter_barbeiro').val('');
+
+        // Atualizar a tabela sem filtros
+        $('#mytable').DataTable().draw();
+    });
+
+    // Evento de busca continua funcionando
+    $('#btnBuscar').on('click', function () {
+        const startDate = $('#start_date').val();
+        const endDate = $('#end_date').val();
+
+        // Validar se a data final é menor que a data inicial
+        if (startDate && endDate && endDate < startDate) {
+            Swal.fire({
+                icon: "warning",
+                title: "Atenção!",
+                text: "A data final não pode ser menor que a data inicial."
+            });
+            return;
+        }
+
+        // Atualiza a tabela com os filtros aplicados
+        $('#mytable').DataTable().draw();
+    });
+});
+
+// Função de agendamento
 function agendar(dados) {
     app.callController({
         method: 'POST',
-        url: base + '/agendar',  // API ou controller que realiza o agendamento
+        url: base + '/cadagendamento',
         params: dados,
         onSuccess() {
+            listarAgendamentos();
+            limparFormulario();
             Swal.fire({
                 icon: "success",
-                title: "Agendamento realizado!",
-                text: "Seu agendamento foi realizado com sucesso!"
+                title: "Sucesso!",
+                text: "Agendamento realizado com sucesso!"
             });
         },
         onFailure() {
             Swal.fire({
                 icon: "error",
                 title: "Atenção!!",
-                text: "Erro ao realizar o agendamento!"
+                text: "Erro ao realizar agendamento!"
             });
         }
     });
+}
+
+function setEditar(row) {
+    $('#form-title').text('Editando Agendamento').css('color', 'blue');
+    $('#id').val(row.id);
+    $('#nome_completo').val(row.nome_completo);
+    $('#telefone').val(row.telefone);
+    $('#barbeiro_id').val(row.barbeiro_id);
+    $('#servico_id').val(row.servico_id);
+    $('#datahora').val(row.datahora);
+    $('html, body').animate({ scrollTop: $(".form-container").offset().top }, 100);
+}
+
+function editarAgendamento(dados) {
+    app.callController({
+        method: 'POST',
+        url: base + '/editarAgendamento',
+        params: dados,
+        onSuccess() {
+            listarAgendamentos();
+            limparFormulario();
+            Swal.fire({
+                icon: "success",
+                title: "Sucesso!",
+                text: "Agendamento editado com sucesso!"
+            });
+        },
+        onFailure() {
+            Swal.fire({
+                icon: "error",
+                title: "Atenção!!",
+                text: "Erro ao editar agendamento!"
+            });
+        }
+    });
+}
+
+function confirmCancelar(id) {
+    Swal.fire({
+        title: 'Confirmação',
+        text: 'Você tem certeza que deseja cancelar este agendamento?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Sim',
+        cancelButtonText: 'Não',
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            cancelarAgendamento(id);
+        }
+    });
+}
+
+function cancelarAgendamento(id) {
+    app.callController({
+        method: 'POST',
+        url: base + '/updateSituacaoAgendamento',
+        params: { id, situacao: 'Cancelado' },
+        onSuccess() {
+            listarAgendamentos();
+            Swal.fire({
+                icon: "success",
+                title: "Sucesso!",
+                text: "Agendamento cancelado com sucesso!"
+            });
+        },
+        onFailure() {
+            Swal.fire({
+                icon: "error",
+                title: "Atenção!!",
+                text: "Erro ao cancelar agendamento!"
+            });
+        }
+    });
+}
+
+function limparFormulario() {
+    $('#form-title').text('Novo Agendamento').css('color', 'black');
+    $('#nome_completo').val('');
+    $('#telefone').val('');
+    $('#barbeiro_id').val('');
+    $('#servico_id').val('');
+    $('#datahora').val('');
+    $('#id').val('');
 }

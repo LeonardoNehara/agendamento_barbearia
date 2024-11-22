@@ -7,7 +7,7 @@ use core\Database;
 use PDO;
 use Throwable;
 
-class Agendamento extends Model
+class AgendamentoModel extends Model
 {
     // Cadastro de agendamento
     public function cadastro($cliente, $telefone, $barbeiro_id, $servico_id, $datahora)

@@ -101,15 +101,9 @@ if (!isset($_SESSION['token'])) {
             </li>
 
             <!-- Agendamento e Listagem para admins e outros grupos -->
-            <li class="<?= (basename($_SERVER['REQUEST_URI']) == 'agendamento') ? 'active' : ''; ?>">
+            <li class="<?= (basename($_SERVER['REQUEST_URI']) == 'agendamentos') ? 'active' : ''; ?>">
                 <a class="negrito" href="<?= $base; ?>/agendamentos">
                     <i class="fa-solid fa-clipboard-list" style="margin-right: 10px; font-size: 22px;"></i>Agendar
-                </a>
-            </li>
-
-            <li class="<?= (basename($_SERVER['REQUEST_URI']) == 'agendamento-listar') ? 'active' : ''; ?>">
-                <a class="negrito" href="<?= $base; ?>/agendamento-listar">
-                    <i class="fa-solid fa-list-check" style="margin-right: 10px; font-size: 22px;"></i>Listar Agendamentos
                 </a>
             </li>
 
