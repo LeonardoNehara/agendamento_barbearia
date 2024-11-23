@@ -7,7 +7,6 @@ use \src\models\Login;
 
 class LoginController extends Controller {
     
-    
     public function index() {
         $this->render('login', ['base' => Config::BASE_DIR]);
     }
@@ -16,7 +15,6 @@ class LoginController extends Controller {
         $dados = [];
         $dados['login'] = $_POST["login"];
         $dados['senha'] = $_POST["senha"];  
-
         
         if($dados['login'] && $dados['senha']){
             $acesso = new Login();

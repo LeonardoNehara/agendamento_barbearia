@@ -1,9 +1,6 @@
-
 var self = this;
 
 $(document).ready(function () {
-
-    
 
     $('#logar').on('click', function () {
         let dados = {

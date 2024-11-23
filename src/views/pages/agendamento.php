@@ -62,6 +62,14 @@
         border-radius: 4px;
     }
 
+    .form-container h1 {
+        text-align: center;
+    }
+
+    #mytable_filter{
+        margin-left: 100px;
+    }
+
     @media (max-width: 600px) {
         .form-container {
             padding: 15px;
@@ -114,7 +122,7 @@
         </div>  
     </div>
     <div class="form-container">
-            <h1><strong>Gestão de Agendamentos</strong></h1>
+            <h1><strong>Gestão de Agendamentos:</strong></h1>
             <br>
             <div class="filters">
                 <label for="start_date">Data Inicial:</label>

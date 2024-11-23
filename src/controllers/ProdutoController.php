@@ -8,23 +8,20 @@ use src\models\Produto;
 class ProdutoController extends Controller {
 
     public function __construct(){
-        // Verifica apenas o token na sessão (sem a necessidade de idgrupo)
         if (!isset($_SESSION['token'])) {
             header("Location: " . Config::BASE_DIR . '/');
             exit();
         }
     }
 
-    // Página principal de cadastro de produtos
     public function index() {
-        if ($_SESSION['token']) {  // Usuário autenticado
+        if ($_SESSION['token']) {
             $this->render('produtos', ['base' => Config::BASE_DIR]);
         } else {
             $this->render('404');
         }
     }
 
-    // Buscar todos os produtos cadastrados
     public function getProdutos() {
         $cad = new Produto();
         $ret = $cad->getProdutos();
@@ -38,7 +35,6 @@ class ProdutoController extends Controller {
         }
     }
 
-    // Cadastro de novo produto
     public function cadastro() {
         $nome = $_POST["nome"];
         $valorCompra = $_POST["valorCompra"];
@@ -46,7 +42,6 @@ class ProdutoController extends Controller {
 
         $cad = new Produto();
         
-        // Verifica se o produto já está cadastrado pelo nome
         $existe = $cad->verificarProduto($nome);
         
         if ($existe['result']['existeProduto'] == 1) {
@@ -54,7 +49,6 @@ class ProdutoController extends Controller {
             die;
         }
 
-        // Realiza o cadastro
         $ret = $cad->cadastro($nome, $valorCompra, $valorVenda);
         
         if ($ret['sucesso'] == true) {
@@ -66,7 +60,6 @@ class ProdutoController extends Controller {
         }   
     }
 
-    // Atualizar situação do produto (Ativo/Inativo)
     public function updateSituacaoProduto() {
         $id = $_POST['id'];
         $idsituacao = $_POST['situacao'];
@@ -83,7 +76,6 @@ class ProdutoController extends Controller {
         }
     }
 
-    // Editar dados do produto
     public function editar() {
         $id = $_POST['id'];
         $nome = $_POST['nome'];

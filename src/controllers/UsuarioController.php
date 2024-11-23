@@ -27,9 +27,6 @@ class UsuarioController extends Controller {
         $dados['nome'] = $_POST["nome"];
         $dados['login'] = $_POST["login"];
         $dados['senha'] = $_POST["senha"];
-        error_log("Dados recebidos para cadastro: " . print_r($dados, true)); 
-
-
         $cad = new Usuario();
         $hashedSenha = md5($dados['senha']); 
         $dados['senha'] = $hashedSenha;
@@ -62,11 +59,8 @@ class UsuarioController extends Controller {
         $dados['idusuario'] = $_POST['idusuario'];
         $dados['login'] = $_POST['login'];
         $dados['nome'] = $_POST['nome'];
-
         $hashedSenha = md5($_POST['senha']); 
-
         $dados['senha'] = $hashedSenha;
-
         $editar = new Usuario();
         $result = $editar->editar($dados);
 
@@ -82,7 +76,6 @@ class UsuarioController extends Controller {
     public function updateSituacaoUsuario() {
         $id = $_POST['idusuario'];
         $idsituacao = $_POST['idsituacao'];
-
         $cad = new Usuario();
         $ret = $cad->updateSituacao($id, $idsituacao);
 

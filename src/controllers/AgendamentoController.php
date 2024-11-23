@@ -23,24 +23,17 @@ class AgendamentoController extends Controller {
     }
 
     public function getAgendamentos() {
-        // Verifica se o parâmetro 'barbeiro' foi passado
         $barbeiro_id = isset($_GET['barbeiro']) ? $_GET['barbeiro'] : null;
-    
-        // Cria a instância do modelo
         $agendamento = new AgendamentoModel();
-        
-        // Chama o método getAgendamentos, passando o barbeiro_id, se houver
         $ret = $agendamento->getAgendamentos($barbeiro_id);
-    
-        // Verifica o retorno do modelo e retorna a resposta em formato JSON
+
         if ($ret['sucesso'] == true) {
             echo json_encode([["success" => true, "ret" => $ret['result']]]);
         } else {
             echo json_encode([["success" => false, "ret" => $ret['result']]]);
         }
         die;
-    }
-    
+    } 
 
     public function cadastro() {
         $cliente = $_POST["nome_completo"];

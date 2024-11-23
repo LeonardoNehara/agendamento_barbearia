@@ -76,7 +76,6 @@ class BarbeiroController extends Controller {
         $id = $_POST['id'];
         $nome = $_POST['nome'];
         $telefone = $_POST['telefone'];
-
         $editar = new Barbeiro();
         $result = $editar->editar($id, $nome, $telefone);
 

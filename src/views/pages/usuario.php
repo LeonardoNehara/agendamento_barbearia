@@ -27,6 +27,14 @@
         margin-left: 100px;
     }
 
+    .form-container h1 {
+        text-align: center;
+    }
+
+    #mytable_filter{
+        margin-left: 100px;
+    }
+
     @media (max-width: 395px) {
         .form-cad {
             font-size: 0.90rem;
@@ -111,7 +119,7 @@
 
     <div class="form-container">
         <h1><strong>Usuários</strong></h1>
-        Gestão de usuários e acessos
+        <h4>Gestão de usuários e acessos:</h4>
         <table id="mytable" class="table table-bordered display nowrap" style="width:100%"></table>
     </div>
 
