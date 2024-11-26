@@ -35,6 +35,19 @@ class ServicoController extends Controller {
         }
     }
 
+    public function getServicosAtivos() {
+        $cad = new Servico();
+        $ret = $cad->getServicosAtivos();
+
+        if ($ret['sucesso'] == true) {
+            echo json_encode(array(["success" => true,"ret" => $ret['result']]));
+            die;
+        } else {
+            echo json_encode(array(["success" => false,"ret" => $ret['result']]));
+            die;
+        }
+    }
+
     public function cadastro() {
         $nome = $_POST["nome"];
         $valor = $_POST["valor"];

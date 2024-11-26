@@ -33,7 +33,7 @@ $(document).ready(function () {
         }
 
         if ($('#id').val()) {
-            dados.id = $('#id').val();
+            dados.id = $('#id').val()
             editarAgendamento(dados);
         } else {
             agendar(dados);
@@ -68,16 +68,20 @@ function listarAgendamentos() {
     });
 }
 
+let barbeirosMap = {}; // Mapeamento nome -> ID
+let servicosMap = {};  // Mapeamento nome -> ID
+
 function carregarBarbeiros() {
     app.callController({
         method: 'GET',
-        url: base + '/getbarbeiros',
+        url: base + '/getbarbeirosativos',
         params: null,
         onSuccess(res) {
             let barbeiros = res[0].ret;
             let options = '<option value="">Selecione o Barbeiro</option>';
             barbeiros.forEach(barbeiro => {
                 options += `<option value="${barbeiro.id}">${barbeiro.nome}</option>`;
+                barbeirosMap[barbeiro.nome] = barbeiro.id; // Preenche o mapa
             });
             $('#barbeiro_id').html(options);
         },
@@ -94,13 +98,14 @@ function carregarBarbeiros() {
 function carregarServicos() {
     app.callController({
         method: 'GET',
-        url: base + '/getservicos',
+        url: base + '/getservicosativos',
         params: null,
         onSuccess(res) {
             let servicos = res[0].ret;
             let options = '<option value="">Selecione o Serviço</option>';
             servicos.forEach(servico => {
                 options += `<option value="${servico.id}">${servico.nome} - R$ ${servico.valor}</option>`;
+                servicosMap[servico.nome] = servico.id; // Preenche o mapa
             });
             $('#servico_id').html(options);
         },
@@ -295,10 +300,25 @@ function agendar(dados) {
 function setEditar(row) {
     $('#form-title').text('Editando Agendamento').css('color', 'blue');
     $('#id').val(row.id);
-    $('#nome_completo').val(row.nome_completo);
+    $('#nome_completo').val(row.cliente);
     $('#telefone').val(row.telefone);
-    $('#barbeiro_id').val(row.barbeiro_id);
-    $('#servico_id').val(row.servico_id);
+
+    // Usar o mapeamento para buscar os IDs
+    let barbeiroID = barbeirosMap[row.barbeiro];
+    let servicoID = servicosMap[row.servico];
+
+    if (barbeiroID) {
+        $('#barbeiro_id').val(barbeiroID);
+    } else {
+        console.warn(`Barbeiro não encontrado: ${row.barbeiro}`);
+    }
+
+    if (servicoID) {
+        $('#servico_id').val(servicoID);
+    } else {
+        console.warn(`Serviço não encontrado: ${row.servico}`);
+    }
+
     $('#datahora').val(row.datahora);
     $('html, body').animate({ scrollTop: $(".form-container").offset().top }, 100);
 }

@@ -69,12 +69,39 @@
             
             <!-- Calendário -->
             <div id="calendar"></div>
+            <!-- Modal Visualizar Agendamento -->
+            <div class="modal fade" id="visualizarAgendamentoModal" tabindex="-1" aria-labelledby="visualizarAgendamentoModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="visualizarAgendamentoModalLabel">Visualizar Agendamento</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <dl class="row">
+                                
+                                <dt class="col-sm-3">Cliente: </dt>
+                                <dd class="col-sm-9" id="visualizarAgendamento_cliente"></dd>
+
+                                <dt class="col-sm-3">Serviço: </dt>
+                                <dd class="col-sm-9" id="visualizarAgendamento_servico"></dd>
+
+                                <dt class="col-sm-3">Data e Hora: </dt>
+                                <dd class="col-sm-9" id="visualizarAgendamento_datahora"></dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 
 </main>
-
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+<script src='js/bootstrap5/index.global.min.js'></script>
 <script src="<?= $base; ?>/js/inicio.js"></script>
 <script>
+    
     const base = '<?= $base; ?>';
 </script>

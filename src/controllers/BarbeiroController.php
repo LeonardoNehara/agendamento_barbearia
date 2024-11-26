@@ -35,6 +35,19 @@ class BarbeiroController extends Controller {
         }
     }
 
+    public function getBarbeirosAtivos() {
+        $cad = new Barbeiro();
+        $ret = $cad->getBarbeirosAtivos();
+
+        if ($ret['sucesso'] == true) {
+            echo json_encode(array(["success" => true,"ret" => $ret['result']]));
+            die;
+        } else {
+            echo json_encode(array(["success" => false,"ret" => $ret['result']]));
+            die;
+        }
+    }
+
     public function cadastro() {
         $nome = $_POST["nome"];
         $telefone = $_POST["telefone"];

@@ -5,7 +5,7 @@ use \core\Controller;
 use \src\Config;
 use src\models\AgendamentoModel;
 
-class AgendamentoController extends Controller {
+class AgendamentoControllerCliente extends Controller {
 
     public function __construct() {
         if (!isset($_SESSION['token'])) {

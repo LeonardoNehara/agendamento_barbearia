@@ -81,6 +81,35 @@ class Barbeiro extends Model
         }
     }
 
+    public function getBarbeirosAtivos()
+    {
+        try {
+            $sql = Database::getInstance()->prepare("
+                SELECT
+                    b.id, 
+                    b.nome, 
+                    b.telefone,
+                    'Ativo' AS situacao
+                FROM barbeiro b
+                WHERE b.idsituacao = 1
+            ");
+            $sql->execute();
+            $result = $sql->fetchAll(PDO::FETCH_ASSOC);
+
+            return [
+                'sucesso' => true,
+                'result' => $result
+            ];
+        } catch (Throwable $error) {
+            return [
+                'sucesso' => false,
+                'result' => 'Falha ao buscar barbeiros ativos: ' . $error->getMessage()
+            ];
+        }
+    }
+
+    
+
     public function updateSituacao($id, $idsituacao)
     {
         try {

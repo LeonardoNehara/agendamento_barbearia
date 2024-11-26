@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
     calendar = new FullCalendar.Calendar(calendarEl, {
         locale: 'pt-br',
         initialView: 'dayGridMonth',
+        themeSystem: 'bootstrap5',
         headerToolbar: {
             left: 'prev,next today',
             center: 'title',
@@ -16,10 +17,19 @@ document.addEventListener('DOMContentLoaded', function() {
         editable: true,
         navLinks: true,
         events: [],
+
+        // Quando o evento for clicado
         eventClick: function(arg) {
-            if (confirm('Deseja realmente excluir este evento?')) {
-                arg.event.remove();
-            }
+            // Abre a modal de visualização com os dados do evento
+            const visualizarModal = new bootstrap.Modal(document.getElementById("visualizarAgendamentoModal"));
+
+            // Preenche os dados da modal
+            document.getElementById("visualizarAgendamento_cliente").innerText = arg.event.title.split(' - ')[0]; // Cliente
+            document.getElementById("visualizarAgendamento_servico").innerText = arg.event.title.split(' - ')[1]; // Serviço
+            document.getElementById("visualizarAgendamento_datahora").innerText = arg.event.start.toLocaleString(); // Data e Hora
+
+            // Exibe a modal
+            visualizarModal.show();
         }
     });
 

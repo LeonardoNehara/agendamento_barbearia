@@ -39,9 +39,7 @@ class ProdutoController extends Controller {
         $nome = $_POST["nome"];
         $valorCompra = $_POST["valorCompra"];
         $valorVenda = $_POST["valorVenda"];
-
         $cad = new Produto();
-        
         $existe = $cad->verificarProduto($nome);
         
         if ($existe['result']['existeProduto'] == 1) {
@@ -63,7 +61,6 @@ class ProdutoController extends Controller {
     public function updateSituacaoProduto() {
         $id = $_POST['id'];
         $idsituacao = $_POST['situacao'];
-
         $cad = new Produto();
         $ret = $cad->updateSituacao($id, $idsituacao);
 
@@ -81,7 +78,6 @@ class ProdutoController extends Controller {
         $nome = $_POST['nome'];
         $valorCompra = $_POST['valorCompra'];
         $valorVenda = $_POST['valorVenda'];
-
         $editar = new Produto();
         $result = $editar->editar($id, $nome, $valorCompra, $valorVenda);
 

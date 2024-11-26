@@ -22,6 +22,7 @@ $router->get('/dashboard', 'DashboardController@index');
 // Barbeiros
 $router->get('/barbeiros', 'BarbeiroController@index');  // Página de barbeiros
 $router->get('/getbarbeiros', 'BarbeiroController@getBarbeiros');  // Listagem de barbeiros
+$router->get('/getbarbeirosativos', 'BarbeiroController@getBarbeirosAtivos');  // Listagem de barbeiros ativos
 $router->post('/cadbarbeiro', 'BarbeiroController@cadastro');  // Cadastro de barbeiro
 $router->post('/updateSituacaoBarbeiro', 'BarbeiroController@updateSituacaoBarbeiro');  // Atualizar situação do barbeiro
 $router->post('/editarbarbeiro', 'BarbeiroController@editar');  // Editar barbeiro
@@ -43,6 +44,7 @@ $router->post('/updateSituacaoProduto', 'ProdutoController@updateSituacaoProduto
 // Serviços
 $router->get('/servicos', 'ServicoController@index');  // Página de serviços
 $router->get('/getservicos', 'ServicoController@getServicos');  // Listagem de serviços
+$router->get('/getservicosativos', 'ServicoController@getServicosAtivos');  // Listagem de serviços ativos
 $router->post('/cadServico', 'ServicoController@cadastro');  // Cadastro de serviço
 $router->post('/editarservico', 'ServicoController@editar');  // Editar serviço
 $router->post('/atualizarservico', 'ServicoController@atualizar');  // Atualizar serviço
@@ -53,7 +55,9 @@ $router->get('/agendamentos', 'AgendamentoController@index');  // Página de age
 $router->get('/getagendamentos', 'AgendamentoController@getAgendamentos');  // Listagem de agendamentos
 $router->post('/cadagendamento', 'AgendamentoController@cadastro');  // Cadastro de agendamento
 $router->post('/updateSituacaoAgendamento', 'AgendamentoController@updateSituacaoAgendamento');  // Atualizar situação do agendamento
-$router->post('/editaragendamento', 'AgendamentoController@editar');  // Editar agendamento
+
+// Pages Cliente
+$router->get('/agendamentosClient', 'AgendamentoControllerClient@index');  // Página de agendamentos
 
 // Rota para listar agendamentos (página principal)
 $router->get('/listar-agendamentos', 'ListarAgendamentoController@index');  // Página para listar agendamentos

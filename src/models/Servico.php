@@ -82,6 +82,35 @@ class Servico extends Model
         }
     }
 
+    public function getServicosAtivos()
+    {
+        try {
+            $sql = Database::getInstance()->prepare("
+                SELECT
+                    s.id, 
+                    s.nome, 
+                    s.valor, 
+                    s.tempo_minutos AS tempoMinutos,
+                    'Ativo' AS situacao
+                FROM servico s
+                WHERE s.idsituacao = 1
+            ");
+            $sql->execute();
+            $result = $sql->fetchAll(PDO::FETCH_ASSOC);
+
+            return [
+                'sucesso' => true,
+                'result' => $result
+            ];
+        } catch (Throwable $error) {
+            return [
+                'sucesso' => false,
+                'result' => 'Falha ao buscar serviços ativos: ' . $error->getMessage()
+            ];
+        }
+    }
+
+
     public function updateSituacao($id, $idsituacao)
     {
         try {
