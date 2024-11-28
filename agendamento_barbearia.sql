@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 22/11/2024 às 18:18
+-- Tempo de geração: 28/11/2024 às 20:45
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.2.12
 
@@ -42,21 +42,52 @@ CREATE TABLE `agendamento` (
 --
 
 INSERT INTO `agendamento` (`id`, `cliente`, `telefone`, `barbeiro_id`, `servico_id`, `datahora`, `situacao`) VALUES
-(1, 'José Santos', '988123456', 1, 1, '2024-11-23 10:00:00', 1),
-(2, 'Maria Oliveira', '999234567', 2, 2, '2024-11-23 11:00:00', 1),
-(3, 'Lucas Almeida', '977345678', 3, 3, '2024-11-23 12:00:00', 1),
-(4, 'Fernanda Costa', '966456789', 4, 4, '2024-11-23 13:00:00', 1),
-(5, 'Carlos Pereira', '955567890', 5, 5, '2024-11-23 14:00:00', 1),
-(6, 'Ricardo Lima', '944678901', 6, 6, '2024-11-23 15:00:00', 1),
-(7, 'Juliana Martins', '933789012', 7, 7, '2024-11-23 16:00:00', 1),
-(8, 'Bruna Rocha', '922890123', 8, 8, '2024-11-23 17:00:00', 1),
-(9, 'Thiago Souza', '911901234', 9, 9, '2024-11-23 18:00:00', 1),
-(10, 'Carla Pereira', '900012345', 10, 10, '2024-11-23 19:00:00', 1),
-(11, 'Ricardo Costa', '988123457', 11, 11, '2024-11-24 10:00:00', 1),
-(12, 'Eduardo Rocha', '977234568', 12, 12, '2024-11-24 11:00:00', 1),
-(13, 'Gustavo Oliveira', '966345679', 13, 13, '2024-11-24 12:00:00', 1),
-(14, 'Patricia Lima', '955456780', 14, 14, '2024-11-24 13:00:00', 1),
-(15, 'Tatiane Silva', '944567891', 15, 15, '2024-11-24 14:00:00', 1);
+(1, 'Marcos Manuel', '44999798433', 2, 1, '2024-11-29 17:00:00', 1),
+(2, 'Lucas Silva Marcos', '44998765432', 1, 3, '2024-11-29 08:00:00', 1),
+(3, 'Maria Oliveira', '44998876543', 2, 5, '2024-11-29 09:00:00', 1),
+(4, 'João Santos', '44997654321', 3, 2, '2024-11-29 10:00:00', 1),
+(5, 'Ana Costa', '44996543210', 1, 4, '2024-11-29 11:00:00', 1),
+(6, 'Pedro Almeida', '44995432109', 2, 6, '2024-11-29 12:00:00', 1),
+(7, 'Carla Rocha', '44994321098', 3, 1, '2024-11-29 13:00:00', 1),
+(8, 'Felipe Lima', '44993210987', 1, 7, '2024-11-29 14:00:00', 1),
+(9, 'Isabela Martins', '44992109876', 2, 3, '2024-11-29 15:00:00', 1),
+(10, 'Rafael Gomes', '44991098765', 3, 2, '2024-11-29 16:00:00', 1),
+(11, 'Beatriz Almeida', '44989987654', 1, 4, '2024-11-29 17:00:00', 1),
+(12, 'Lucas Silva', '44998765432', 2, 5, '2024-11-30 08:00:00', 1),
+(13, 'João Santos', '44997654321', 3, 1, '2024-11-30 09:00:00', 1),
+(14, 'Ana Costa', '44996543210', 1, 6, '2024-11-30 10:00:00', 1),
+(15, 'Pedro Almeida', '44995432109', 2, 2, '2024-11-30 11:00:00', 1),
+(16, 'Carla Rocha', '44994321098', 3, 7, '2024-11-30 12:00:00', 1),
+(17, 'Felipe Lima', '44993210987', 1, 3, '2024-11-30 13:00:00', 1),
+(18, 'Isabela Martins', '44992109876', 2, 4, '2024-11-30 14:00:00', 1),
+(19, 'Rafael Gomes', '44991098765', 3, 6, '2024-11-30 15:00:00', 1),
+(20, 'Beatriz Almeida', '44989987654', 1, 2, '2024-11-30 16:00:00', 1),
+(21, 'Lucas Silva', '44998765432', 2, 5, '2024-12-02 08:00:00', 1),
+(22, 'João Santos', '44997654321', 3, 1, '2024-12-02 09:00:00', 1),
+(23, 'Ana Costa', '44996543210', 1, 7, '2024-12-02 10:00:00', 1),
+(24, 'Pedro Almeida', '44995432109', 2, 4, '2024-12-02 11:00:00', 1),
+(25, 'Carla Rocha', '44994321098', 3, 3, '2024-12-02 12:00:00', 1),
+(26, 'Felipe Lima', '44993210987', 1, 6, '2024-12-02 13:00:00', 1),
+(27, 'Isabela Martins', '44992109876', 2, 2, '2024-12-02 14:00:00', 1),
+(28, 'Rafael Gomes', '44991098765', 3, 5, '2024-12-02 15:00:00', 1),
+(29, 'Beatriz Almeida', '44989987654', 1, 1, '2024-12-02 16:00:00', 1),
+(30, 'Lucas Silva', '44998765432', 2, 7, '2024-12-03 08:00:00', 1),
+(31, 'João Santos', '44997654321', 3, 6, '2024-12-03 09:00:00', 1),
+(32, 'Ana Costa', '44996543210', 1, 4, '2024-12-03 10:00:00', 1),
+(33, 'Pedro Almeida', '44995432109', 2, 5, '2024-12-03 11:00:00', 1),
+(34, 'Carla Rocha', '44994321098', 3, 2, '2024-12-03 12:00:00', 1),
+(35, 'Felipe Lima', '44993210987', 1, 3, '2024-12-03 13:00:00', 1),
+(36, 'Isabela Martins', '44992109876', 2, 6, '2024-12-03 14:00:00', 1),
+(37, 'Rafael Gomes', '44991098765', 3, 7, '2024-12-03 15:00:00', 1),
+(38, 'Beatriz Almeida', '44989987654', 1, 1, '2024-12-03 16:00:00', 1),
+(39, 'Lucas Silva', '44998765432', 2, 5, '2024-12-04 08:00:00', 1),
+(40, 'João Santos', '44997654321', 3, 3, '2024-12-04 09:00:00', 1),
+(41, 'Ana Costa', '44996543210', 1, 4, '2024-12-04 10:00:00', 1),
+(42, 'Pedro Almeida', '44995432109', 2, 7, '2024-12-04 11:00:00', 1),
+(43, 'Carla Rocha', '44994321098', 3, 2, '2024-12-04 12:00:00', 1),
+(44, 'Felipe Lima', '44993210987', 1, 1, '2024-12-04 13:00:00', 1),
+(45, 'Isabela Martins', '44992109876', 2, 6, '2024-12-04 14:00:00', 1),
+(46, 'Rafael Gomes', '44991098765', 3, 4, '2024-12-04 15:00:00', 1);
 
 -- --------------------------------------------------------
 
@@ -77,22 +108,9 @@ CREATE TABLE `barbeiro` (
 --
 
 INSERT INTO `barbeiro` (`id`, `nome`, `telefone`, `idsituacao`, `criado_em`) VALUES
-(1, 'João Silva', '999999999', 1, '2024-11-22 17:14:46'),
-(2, 'Carlos Pereira', '988888888', 1, '2024-11-22 17:14:46'),
-(3, 'Ana Souza', '977777777', 1, '2024-11-22 17:14:46'),
-(4, 'Luciano Santos', '966666666', 1, '2024-11-22 17:14:46'),
-(5, 'Marcos Oliveira', '955555555', 1, '2024-11-22 17:14:46'),
-(6, 'Ricardo Costa', '944444444', 1, '2024-11-22 17:14:46'),
-(7, 'Paula Lima', '933333333', 1, '2024-11-22 17:14:46'),
-(8, 'Eduardo Rocha', '922222222', 1, '2024-11-22 17:14:46'),
-(9, 'Renata Alves', '911111111', 1, '2024-11-22 17:14:46'),
-(10, 'Fábio Costa', '900000000', 1, '2024-11-22 17:14:46'),
-(11, 'Thiago Martins', '899999999', 1, '2024-11-22 17:14:46'),
-(12, 'Camila Ferreira', '888888888', 1, '2024-11-22 17:14:46'),
-(13, 'Juliana Gomes', '877777777', 1, '2024-11-22 17:14:46'),
-(14, 'André Oliveira', '866666666', 1, '2024-11-22 17:14:46'),
-(15, 'Felipe Martins', '855555555', 1, '2024-11-22 17:14:46'),
-(16, 'Jorginho', '33333333333', 1, '2024-11-22 17:17:57');
+(1, 'Marcos Silva', '44988778432', 1, '2024-11-28 18:49:12'),
+(2, 'Marcio Vinicius', '44999892388', 1, '2024-11-28 18:49:33'),
+(3, 'Bruno Alonso Silva', '44999832981', 1, '2024-11-28 18:49:48');
 
 -- --------------------------------------------------------
 
@@ -113,21 +131,16 @@ CREATE TABLE `produto` (
 --
 
 INSERT INTO `produto` (`id`, `nome`, `valor_compra`, `valor_venda`, `idsituacao`) VALUES
-(1, 'Shampoo', 10.00, 20.00, 1),
-(2, 'Cera para cabelo', 15.00, 30.00, 1),
-(3, 'Pente', 5.00, 10.00, 1),
-(4, 'Tesoura', 20.00, 40.00, 1),
-(5, 'Navalha', 25.00, 50.00, 1),
-(6, 'Gel fixador', 7.00, 15.00, 1),
-(7, 'Creme de barbear', 12.00, 25.00, 1),
-(8, 'Pomada', 18.00, 35.00, 1),
-(9, 'Óleo de cabelo', 8.00, 18.00, 1),
-(10, 'Escova', 6.00, 12.00, 1),
-(11, 'Cabelo sintético', 50.00, 100.00, 1),
-(12, 'Spray fixador', 9.00, 18.00, 1),
-(13, 'Tintura', 30.00, 60.00, 1),
-(14, 'Loção pós-barba', 14.00, 28.00, 1),
-(15, 'Condicionador', 11.00, 22.00, 1);
+(1, 'Máquina de Cortar Cabelo', 150.00, 250.00, 1),
+(2, 'Capa de Chuva', 25.00, 50.00, 1),
+(3, 'Escova de Cabelo', 15.00, 30.00, 1),
+(4, 'Pente Profissional', 5.00, 15.00, 1),
+(5, 'Tesoura de Cabeleireiro', 40.00, 80.00, 1),
+(6, 'Creme de Barba', 12.00, 25.00, 1),
+(7, 'Espelho de Aumento', 35.00, 60.00, 1),
+(8, 'Toalha para Barbearia', 8.00, 18.00, 1),
+(9, 'Pomada Modeladora', 20.00, 40.00, 1),
+(10, 'Óleo Pós Barba', 18.00, 35.00, 1);
 
 -- --------------------------------------------------------
 
@@ -148,21 +161,13 @@ CREATE TABLE `servico` (
 --
 
 INSERT INTO `servico` (`id`, `nome`, `valor`, `tempo_minutos`, `idsituacao`) VALUES
-(1, 'Corte de cabelo', 30.00, 30, 1),
-(2, 'Barba', 20.00, 20, 1),
-(3, 'Corte e barba', 50.00, 45, 1),
-(4, 'Sobrancelha', 15.00, 15, 1),
-(5, 'Hidratação capilar', 40.00, 60, 1),
-(6, 'Tinte de cabelo', 60.00, 90, 1),
-(7, 'Corte infantil', 25.00, 25, 1),
-(8, 'Corte masculino', 35.00, 40, 1),
-(9, 'Corte feminino', 45.00, 50, 1),
-(10, 'Shampoo e corte', 40.00, 40, 1),
-(11, 'Lavagem de cabelo', 10.00, 10, 1),
-(12, 'Barba e sobrancelha', 25.00, 30, 1),
-(13, 'Corte e hidratação', 60.00, 70, 1),
-(14, 'Corte e penteado', 50.00, 60, 1),
-(15, 'Corte e coloração', 80.00, 100, 1);
+(1, 'Corte de Cabelo', 50.00, 30, 1),
+(2, 'Barba Completa', 30.00, 25, 1),
+(3, 'Sobrancelha', 15.00, 10, 1),
+(4, 'Corte de Cabelo + Barba', 70.00, 45, 1),
+(5, 'Penteado', 40.00, 25, 1),
+(6, 'Hidratação Capilar', 25.00, 20, 1),
+(7, 'Shampoo e Secagem', 20.00, 15, 1);
 
 -- --------------------------------------------------------
 
@@ -183,37 +188,8 @@ CREATE TABLE `usuarios` (
 --
 
 INSERT INTO `usuarios` (`idusuario`, `nome`, `login`, `senha`, `idsituacao`) VALUES
-(1, 'Administrador', 'admin', 'senha123', 1),
-(2, 'João Silva', 'joao', 'senha123', 1),
-(3, 'Carlos Pereira', 'carlos', 'senha123', 1),
-(4, 'Ana Souza', 'ana', 'senha123', 1),
-(5, 'Luciano Santos', 'luciano', 'senha123', 1),
-(6, 'Marcos Oliveira', 'marcos', 'senha123', 1),
-(7, 'Ricardo Costa', 'ricardo', 'senha123', 1),
-(8, 'Paula Lima', 'paula', 'senha123', 1),
-(9, 'Eduardo Rocha', 'eduardo', 'senha123', 1),
-(10, 'Renata Alves', 'renata', 'senha123', 1),
-(11, 'Fábio Costa', 'fabio', 'senha123', 1),
-(12, 'Thiago Martins', 'thiago', 'senha123', 1),
-(13, 'Camila Ferreira', 'camila', 'senha123', 1),
-(14, 'Juliana Gomes', 'juliana', 'senha123', 1),
-(15, 'André Oliveira', 'andre', 'senha123', 1),
-(16, 'Administrador', 'admin', 'senha123', 1),
-(17, 'João Silva', 'joao', 'senha123', 1),
-(18, 'Carlos Pereira', 'carlos', 'senha123', 1),
-(19, 'Ana Souza', 'ana', 'senha123', 1),
-(20, 'Luciano Santos', 'luciano', 'senha123', 1),
-(21, 'Marcos Oliveira', 'marcos', 'senha123', 1),
-(22, 'Ricardo Costa', 'ricardo', 'senha123', 1),
-(23, 'Paula Lima', 'paula', 'senha123', 1),
-(24, 'Eduardo Rocha', 'eduardo', 'senha123', 1),
-(25, 'Renata Alves', 'renata', 'senha123', 1),
-(26, 'Fábio Costa', 'fabio', 'senha123', 1),
-(27, 'Thiago Martins', 'thiago', 'senha123', 1),
-(28, 'Camila Ferreira', 'camila', 'senha123', 1),
-(29, 'Juliana Gomes', 'juliana', 'senha123', 1),
-(30, 'André Oliveira', 'andre', 'senha123', 1),
-(31, 'Leonardo Nehara', 'Leonardo.Nehara', 'b4d2459a8fc2c8d3210aff517588962c', 1);
+(1, 'Leonardo Nehara', 'Leonardo.Nehara', 'b4d2459a8fc2c8d3210aff517588962c', 1),
+(2, 'Admin', 'Admin', '0e7517141fb53f21ee439b355b5a1d0a', 1);
 
 --
 -- Índices para tabelas despejadas
@@ -259,31 +235,31 @@ ALTER TABLE `usuarios`
 -- AUTO_INCREMENT de tabela `agendamento`
 --
 ALTER TABLE `agendamento`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 
 --
 -- AUTO_INCREMENT de tabela `barbeiro`
 --
 ALTER TABLE `barbeiro`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de tabela `produto`
 --
 ALTER TABLE `produto`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT de tabela `servico`
 --
 ALTER TABLE `servico`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT de tabela `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `idusuario` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `idusuario` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Restrições para tabelas despejadas
