@@ -1,6 +1,7 @@
 <?php $render('header'); ?>
 
 <style>
+    /* Mantendo o estilo já existente */
     .form-container {
         max-width: 80%;
         margin: 20px auto;
@@ -66,9 +67,10 @@
                     <!-- Opções serão carregadas dinamicamente -->
                 </select>
             </div>
-            
+
             <!-- Calendário -->
             <div id="calendar"></div>
+
             <!-- Modal Visualizar Agendamento -->
             <div class="modal fade" id="visualizarAgendamentoModal" tabindex="-1" aria-labelledby="visualizarAgendamentoModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
@@ -79,7 +81,6 @@
                         </div>
                         <div class="modal-body">
                             <dl class="row">
-                                
                                 <dt class="col-sm-3">Cliente: </dt>
                                 <dd class="col-sm-9" id="visualizarAgendamento_cliente"></dd>
 
@@ -94,14 +95,55 @@
                 </div>
             </div>
 
+            <!-- Modal Cadastrar Agendamento -->
+            <div class="modal fade" id="cadastrarAgendamentoModal" tabindex="-1" aria-labelledby="cadastrarAgendamentoModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="cadastrarAgendamentoModalLabel">Cadastrar Agendamento</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="formCadastroAgendamento">
+                                <div class="mb-3">
+                                    <label for="nome_completo" class="form-label">Cliente:</label>
+                                    <input type="text" class="form-control" id="nome_completo" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="telefone" class="form-label">Telefone:</label>
+                                    <input type="tel" class="form-control" id="telefone" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="servico" class="form-label">Serviço:</label>
+                                    <select class="form-control" id="servico" required>
+                                        <!-- Os serviços serão carregados aqui -->
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="barbeiroSelectModal" class="form-label">Barbeiro:</label>
+                                    <select class="form-control" id="barbeiroSelectModal" required>
+                                        <option value="">Selecione um barbeiro</option>
+                                        <!-- Os barbeiros serão carregados aqui -->
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="dataHora" class="form-label">Data e Hora:</label>
+                                    <input type="datetime-local" class="form-control" id="dataHora" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Cadastrar</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
-
 </main>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 <script src='js/bootstrap5/index.global.min.js'></script>
 <script src="<?= $base; ?>/js/inicio.js"></script>
 <script>
-    
     const base = '<?= $base; ?>';
 </script>
