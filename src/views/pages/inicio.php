@@ -71,7 +71,7 @@
             <!-- Calendário -->
             <div id="calendar"></div>
 
-            <!-- Modal Visualizar Agendamento -->
+           <!-- Modal Visualizar Agendamento -->
             <div class="modal fade" id="visualizarAgendamentoModal" tabindex="-1" aria-labelledby="visualizarAgendamentoModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -80,20 +80,67 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <dl class="row">
-                                <dt class="col-sm-3">Cliente: </dt>
-                                <dd class="col-sm-9" id="visualizarAgendamento_cliente"></dd>
 
-                                <dt class="col-sm-3">Serviço: </dt>
-                                <dd class="col-sm-9" id="visualizarAgendamento_servico"></dd>
+                            <!-- Visualização do Evento -->
+                            <div class="visualisarEvento">
+                                <dl class="row">
+                                    <dt class="col-sm-3">Cliente: </dt>
+                                    <dd class="col-sm-9" id="visualizarAgendamento_cliente"></dd>
 
-                                <dt class="col-sm-3">Data e Hora: </dt>
-                                <dd class="col-sm-9" id="visualizarAgendamento_datahora"></dd>
-                            </dl>
+                                    <dt class="col-sm-3">Serviço: </dt>
+                                    <dd class="col-sm-9" id="visualizarAgendamento_servico"></dd>
+
+                                    <dt class="col-sm-3">Barbeiro: </dt>
+                                    <dd class="col-sm-9" id="visualizarAgendamento_barbeiro"></dd>
+
+                                    <dt class="col-sm-3">Telefone: </dt>
+                                    <dd class="col-sm-9" id="visualizarAgendamento_telefone"></dd>
+
+                                    <dt class="col-sm-3">Data e Hora: </dt>
+                                    <dd class="col-sm-9" id="visualizarAgendamento_datahora"></dd>
+                                </dl>
+
+                                <button class="btn btn-warning" id="btnViewEditEvento">Editar</button>
+                            </div>
+
+                            <!-- Edição do Evento (inicialmente escondido) -->
+                            <div class="editarEvento" style="display: none;">
+                                <form id="formEditarAgendamento">
+                                    <div class="modal-body">
+                                        <input type="hidden" id="editar_id" name="editar_id">
+                                        <div class="mb-3">
+                                            <label for="editar_nome_completo" class="form-label">Nome Completo</label>
+                                            <input type="text" class="form-control" id="editar_nome_completo" name="editar_nome_completo" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="editar_telefone" class="form-label">Telefone</label>
+                                            <input type="text" class="form-control" id="editar_telefone" name="editar_telefone" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="editar_barbeiro" class="form-label">Barbeiro</label>
+                                            <select class="form-select" id="editar_barbeiro" name="editar_barbeiro" required></select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="editar_servico" class="form-label">Serviço</label>
+                                            <select class="form-select" id="editar_servico" name="editar_servico" required></select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="editar_dataHora" class="form-label">Data e Hora</label>
+                                            <input type="datetime-local" class="form-control" id="editar_dataHora" name="editar_dataHora" required>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" id="btnCancelarEdicao">Cancelar</button>
+                                        <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                                    </div>
+                                </form>
+                            </div>
+
                         </div>
                     </div>
                 </div>
             </div>
+
 
             <!-- Modal Cadastrar Agendamento -->
             <div class="modal fade" id="cadastrarAgendamentoModal" tabindex="-1" aria-labelledby="cadastrarAgendamentoModalLabel" aria-hidden="true">
@@ -104,7 +151,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
-                            <form id="formCadastroAgendamento">
+                            <form method="POST" id="formCadastroAgendamento">
                                 <div class="mb-3">
                                     <label for="nome_completo" class="form-label">Cliente:</label>
                                     <input type="text" class="form-control" id="nome_completo" required>
