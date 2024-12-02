@@ -287,12 +287,21 @@ function agendar(dados) {
                 text: "Agendamento realizado com sucesso!"
             });
         },
-        onFailure() {
-            Swal.fire({
-                icon: "error",
-                title: "Atenção!!",
-                text: "Erro ao realizar agendamento!"
-            });
+        onFailure(res) {
+            // Verifique a resposta do servidor para mensagens específicas de erro
+            if (res[0].ret && res[0].ret.sucesso === false && res[0].ret.result) {
+                Swal.fire({
+                    icon: "error",
+                    title: "Atenção!!",
+                    text: res[0].ret.result // Exibe a mensagem retornada do backend
+                });
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "Atenção!!",
+                    text: "Erro ao realizar agendamento!"
+                });
+            }
         }
     });
 }
@@ -303,7 +312,6 @@ function setEditar(row) {
     $('#nome_completo').val(row.cliente);
     $('#telefone').val(row.telefone);
 
-    // Usar o mapeamento para buscar os IDs
     let barbeiroID = barbeirosMap[row.barbeiro];
     let servicoID = servicosMap[row.servico];
 
@@ -395,3 +403,48 @@ function limparFormulario() {
     $('#datahora').val('');
     $('#id').val('');
 }
+
+$(document).ready(function () {
+    // Desabilita os domingos (0)
+    $('#datahora').on('focus', function () {
+        $(this).datepicker('option', 'beforeShowDay', function (date) {
+            var day = date.getDay();
+            // Desabilita apenas o domingo (0)
+            return [(day != 0)];
+        });
+    });
+
+    // Limita a seleção de horário para 8:00, 9:00, 10:00, 11:00, 14:00, 15:00, 16:00, 17:00, 18:00 e 19:00
+    $('#datahora').on('change', function () {
+        const horariosDisponiveis = ['08:00', '09:00', '10:00', '11:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00'];
+        const dataHoraSelecionada = $(this).val();
+        
+        // Verifica se a data foi selecionada
+        if (dataHoraSelecionada) {
+            const data = new Date(dataHoraSelecionada);
+            const diaSemana = data.getDay(); // 0 = Domingo
+            const horaSelecionada = dataHoraSelecionada.split('T')[1].substring(0, 5); // Formato HH:mm
+
+            // Verifica se a data é domingo (0)
+            if (diaSemana == 0) {
+                Swal.fire({
+                    icon: "warning",
+                    title: "Atenção!",
+                    text: "Não é permitido agendar para domingo."
+                });
+                $(this).val(''); // Limpa o campo de data
+                return;
+            }
+
+            // Verifica se o horário selecionado está na lista de horários permitidos
+            if (!horariosDisponiveis.includes(horaSelecionada)) {
+                Swal.fire({
+                    icon: "warning",
+                    title: "Atenção!",
+                    text: "Selecione um horário válido (8:00, 9:00, 10:00, etc.) entre 8:00 e 19:00."
+                });
+                $(this).val(''); // Limpa o campo de data
+            }
+        }
+    });
+});

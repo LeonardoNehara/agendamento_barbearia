@@ -12,6 +12,17 @@ class AgendamentoModel extends Model
     public function cadastro($cliente, $telefone, $barbeiro_id, $servico_id, $datahora)
     {
         try {
+            // Verifica se o barbeiro está disponível para o horário solicitado
+            $verificacao = $this->verificarDisponibilidade($barbeiro_id, $datahora);
+            if (!$verificacao['sucesso'] || $verificacao['result']['disponivel'] == 1) {
+                // Se não estiver disponível, retorna uma mensagem de erro
+                return [
+                    'sucesso' => false,
+                    'result' => 'Este barbeiro já está ocupado no horário solicitado.'
+                ];
+            }
+    
+            // Se estiver disponível, realiza o cadastro do agendamento
             $sql = Database::getInstance()->prepare("
                 INSERT INTO agendamento (cliente, telefone, barbeiro_id, servico_id, datahora, situacao)
                 VALUES (:cliente, :telefone, :barbeiro_id, :servico_id, :datahora, 1)
@@ -21,9 +32,9 @@ class AgendamentoModel extends Model
             $sql->bindValue(':barbeiro_id', $barbeiro_id);
             $sql->bindValue(':servico_id', $servico_id);
             $sql->bindValue(':datahora', $datahora);
-
+    
             $sql->execute();
-
+    
             return [
                 'sucesso' => true,
                 'result' => 'Agendamento realizado com sucesso!'
@@ -70,6 +81,7 @@ class AgendamentoModel extends Model
                 INNER JOIN barbeiro b ON a.barbeiro_id = b.id
                 INNER JOIN servico s ON a.servico_id = s.id
                 WHERE 1=1
+                AND a.situacao = 1
             ";
 
             // Adiciona filtro por barbeiro, se necessário

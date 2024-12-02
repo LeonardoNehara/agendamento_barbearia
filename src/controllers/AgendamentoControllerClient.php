@@ -5,7 +5,7 @@ use \core\Controller;
 use \src\Config;
 use src\models\AgendamentoModel;
 
-class AgendamentoController extends Controller {
+class AgendamentoControllerClient extends Controller {
 
     public function __construct() {
         if (!isset($_SESSION['token'])) {
@@ -16,7 +16,7 @@ class AgendamentoController extends Controller {
 
     public function index() {
         if ($_SESSION['token']) {  
-            $this->render('agendamento', ['base' => Config::BASE_DIR]);
+            $this->render('agendamentoClient', ['base' => Config::BASE_DIR]);
         } else {
             $this->render('404');
         }
@@ -88,5 +88,4 @@ class AgendamentoController extends Controller {
             die;
         }
     }
-    
 }

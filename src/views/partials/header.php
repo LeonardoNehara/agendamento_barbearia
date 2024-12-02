@@ -43,6 +43,7 @@ if (!isset($_SESSION['token'])) {
     <link rel="stylesheet" href="<?= $base; ?>/css/header/body.css">
     <link rel="stylesheet" href="<?= $base; ?>/css/tabela/tabela-responsive.css">
     
+    
     <!-- MaskPlugin -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
     <!-- Font -->
