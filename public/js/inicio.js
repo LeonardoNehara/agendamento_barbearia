@@ -265,6 +265,12 @@ function cadastrarAgendamento() {
             listarAgendamentosNoCalendario(calendar);
             const modalCadastrar = bootstrap.Modal.getInstance(document.getElementById("cadastrarAgendamentoModal"));
             modalCadastrar.hide();
+
+            // Limpa os campos do formulário
+            document.getElementById('formCadastroAgendamento').reset(); // Resetar o formulário
+            document.getElementById('telefone').value = ''; // Limpar o campo de telefone (caso tenha a máscara)
+            document.getElementById('dataHora').value = ''; // Limpar o campo de dataHora
+
             Swal.fire({
                 icon: "success",
                 title: "Sucesso!",
@@ -290,6 +296,7 @@ function cadastrarAgendamento() {
     });
 }
 
+
 // Função para abrir a modal de cadastro
 function abrirModalCadastro(info) {
     document.getElementById('dataHora').value = info.start.toISOString().slice(0, 16); // Formato: YYYY-MM-DDTHH:mm
@@ -307,8 +314,6 @@ document.getElementById("formCadastroAgendamento").addEventListener("submit", fu
 function filtrarPorBarbeiro() {
     const barbeiroSelect = document.getElementById('barbeiroSelect');
     const filtroBarbeiro = barbeiroSelect.value; // ID do barbeiro selecionado
-
-    console.log('Barbeiro Selecionado:', filtroBarbeiro);
     listarAgendamentosNoCalendario(calendar, filtroBarbeiro);
 }
 

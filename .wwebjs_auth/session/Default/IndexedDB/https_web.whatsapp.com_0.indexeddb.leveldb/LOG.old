@@ -1,0 +1,4 @@
+2024/12/03-16:41:52.064 3e38 Reusing MANIFEST C:\xampp\htdocs\agendamento-barbearia\.wwebjs_auth\session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2024/12/03-16:41:52.065 3e38 Recovering log #58
+2024/12/03-16:41:52.076 3e38 Reusing old log C:\xampp\htdocs\agendamento-barbearia\.wwebjs_auth\session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/000058.log 
+2024/12/03-16:41:56.639 3e38 Manual compaction at level-0 from '\x00\x19\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x1a\x00\x00\x00' @ 0 : 0; will stop at (end)

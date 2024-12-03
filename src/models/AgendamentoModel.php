@@ -166,5 +166,32 @@ class AgendamentoModel extends Model
             ];
         }
     }
+
+    public function getBarbeiroNome($barbeiro_id) {
+        try {
+            $sql = Database::getInstance()->prepare("SELECT nome FROM barbeiro WHERE id = :id");
+            $sql->bindValue(':id', $barbeiro_id);
+            $sql->execute();
+            $result = $sql->fetch(PDO::FETCH_ASSOC);
+    
+            return $result ? $result['nome'] : 'Desconhecido';
+        } catch (Throwable $error) {
+            return 'Falha ao recuperar nome do barbeiro: ' . $error->getMessage();
+        }
+    }
+    
+    public function getServicoNome($servico_id) {
+        try {
+            $sql = Database::getInstance()->prepare("SELECT nome FROM servico WHERE id = :id");
+            $sql->bindValue(':id', $servico_id);
+            $sql->execute();
+            $result = $sql->fetch(PDO::FETCH_ASSOC);
+    
+            return $result ? $result['nome'] : 'Desconhecido';
+        } catch (Throwable $error) {
+            return 'Falha ao recuperar nome do serviço: ' . $error->getMessage();
+        }
+    }
+    
 }
 
