@@ -1,3 +1,6 @@
-2024/12/03-16:41:51.543 3e38 Reusing MANIFEST C:\xampp\htdocs\agendamento-barbearia\.wwebjs_auth\session\Default\Local Storage\leveldb/MANIFEST-000001
-2024/12/03-16:41:51.544 3e38 Recovering log #3
-2024/12/03-16:41:51.545 3e38 Reusing old log C:\xampp\htdocs\agendamento-barbearia\.wwebjs_auth\session\Default\Local Storage\leveldb/000003.log 
+2024/12/03-20:33:23.402 4ae8 Reusing MANIFEST C:\xampp\htdocs\agendamento-barbearia\.wwebjs_auth\session\Default\Local Storage\leveldb/MANIFEST-000001
+2024/12/03-20:33:23.405 4ae8 Recovering log #3
+2024/12/03-20:33:23.421 4ae8 Reusing old log C:\xampp\htdocs\agendamento-barbearia\.wwebjs_auth\session\Default\Local Storage\leveldb/000003.log 
+2024/12/03-20:34:26.800 1154 Level-0 table #5: started
+2024/12/03-20:34:26.805 1154 Level-0 table #5: 15490 bytes OK
+2024/12/03-20:34:26.807 1154 Delete type=0 #3

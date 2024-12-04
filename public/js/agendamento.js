@@ -149,18 +149,17 @@ const Table = function (dados) {
                 title: 'Data', 
                 data: 'datahora',
                 render: data => {
-                    const date = data.split(' ')[0]; 
-                    const time = data.split(' ')[1]; 
-                    return `<strong>${date}</strong>`; 
+                    const date = new Date(data);  // Cria o objeto Date a partir da string de data
+                    return `<strong>${date.toLocaleDateString('pt-BR')}</strong>`;  // Formata a data no formato pt-BR
                 },
-                orderData: [4]  
+                orderData: [4]
             },
             { 
                 title: 'Hora', 
                 data: 'datahora',
                 render: data => {
-                    const time = data.split(' ')[1]; 
-                    return time ? time.substring(0, 5) : ''; 
+                    const date = new Date(data);  // Cria o objeto Date a partir da string de data
+                    return date.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });  // Formata a hora no formato HH:mm
                 },
                 orderData: [4] 
             },
@@ -448,3 +447,5 @@ $(document).ready(function () {
         }
     });
 });
+
+

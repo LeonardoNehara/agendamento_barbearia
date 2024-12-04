@@ -1,9 +1,4 @@
-<?php
-if (!isset($_SESSION['token'])) {
-    header("Location: " . $base . '/');
-    exit();
-}
-?>
+
 <!DOCTYPE html>
 <html lang="pt-br">
 

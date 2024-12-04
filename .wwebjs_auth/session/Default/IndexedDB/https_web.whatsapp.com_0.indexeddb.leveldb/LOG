@@ -1,15 +1,15 @@
-2024/12/03-17:10:21.633 aa8 Reusing MANIFEST C:\xampp\htdocs\agendamento-barbearia\.wwebjs_auth\session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
-2024/12/03-17:10:21.633 aa8 Recovering log #58
-2024/12/03-17:10:21.707 aa8 Reusing old log C:\xampp\htdocs\agendamento-barbearia\.wwebjs_auth\session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/000058.log 
-2024/12/03-17:10:25.982 2acc Level-0 table #65: started
-2024/12/03-17:10:26.000 2acc Level-0 table #65: 433668 bytes OK
-2024/12/03-17:10:26.002 2acc Delete type=0 #58
-2024/12/03-17:10:26.002 2acc Manual compaction at level-0 from '\x00\x1a\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x1b\x00\x00\x00' @ 0 : 0; will stop at (end)
-2024/12/03-17:10:26.058 32a8 Compacting 1@1 + 2@2 files
-2024/12/03-17:10:26.147 32a8 Generated table #66@1: 47392 keys, 2210618 bytes
-2024/12/03-17:10:26.172 32a8 Generated table #67@1: 9944 keys, 282424 bytes
-2024/12/03-17:10:26.172 32a8 Compacted 1@1 + 2@2 files => 2493042 bytes
-2024/12/03-17:10:26.173 32a8 compacted to: files[ 0 0 2 0 0 0 0 ]
-2024/12/03-17:10:26.174 32a8 Delete type=2 #61
-2024/12/03-17:10:26.174 32a8 Delete type=2 #62
-2024/12/03-17:10:26.174 32a8 Delete type=2 #65
+2024/12/03-22:27:59.148 13ec Reusing MANIFEST C:\xampp\htdocs\agendamento-barbearia\.wwebjs_auth\session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/MANIFEST-000001
+2024/12/03-22:27:59.149 13ec Recovering log #64
+2024/12/03-22:27:59.286 13ec Reusing old log C:\xampp\htdocs\agendamento-barbearia\.wwebjs_auth\session\Default\IndexedDB\https_web.whatsapp.com_0.indexeddb.leveldb/000064.log 
+2024/12/03-22:28:03.891 4fe0 Level-0 table #70: started
+2024/12/03-22:28:03.939 4fe0 Level-0 table #70: 766328 bytes OK
+2024/12/03-22:28:03.941 4fe0 Delete type=0 #64
+2024/12/03-22:28:03.944 4fe0 Manual compaction at level-0 from '\x00\x1c\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x1d\x00\x00\x00' @ 0 : 0; will stop at (end)
+2024/12/03-22:28:04.052 4724 Compacting 1@1 + 2@2 files
+2024/12/03-22:28:04.196 4724 Generated table #71@1: 47333 keys, 2208387 bytes
+2024/12/03-22:28:04.230 4724 Generated table #72@1: 14687 keys, 435786 bytes
+2024/12/03-22:28:04.230 4724 Compacted 1@1 + 2@2 files => 2644173 bytes
+2024/12/03-22:28:04.231 4724 compacted to: files[ 0 0 2 0 0 0 0 ]
+2024/12/03-22:28:04.235 4724 Delete type=2 #66
+2024/12/03-22:28:04.236 4724 Delete type=2 #67
+2024/12/03-22:28:04.236 4724 Delete type=2 #70

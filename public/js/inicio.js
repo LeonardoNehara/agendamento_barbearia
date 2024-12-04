@@ -26,7 +26,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Quando o evento for clicado
         eventClick: function(arg) {
-            console.log('Evento clicado:', arg.event);
             // Preenche os dados da modal de visualização
             document.getElementById("visualizarAgendamento_cliente").innerText = arg.event.title.split(' - ')[0]; // Cliente
             document.getElementById("visualizarAgendamento_servico").innerText = arg.event.title.split(' - ')[1]; // Serviço
@@ -39,12 +38,6 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('editar_id').value = arg.event.id;
             document.getElementById('editar_nome_completo').value = arg.event.title.split(' - ')[0]; // Cliente
             document.getElementById('editar_telefone').value = telefoneSemMascara; // Telefone sem máscara
-            document.getElementById('editar_barbeiro').value = arg.event.extendedProps.barbeiro;
-            const teste = document.getElementById('editar_barbeiro').selectedIndex = arg.event.extendedProps.barbeiro.id;
-            console.log(teste);
-            document.getElementById('editar_servico').value = arg.event.extendedProps.servico; 
-            const teste2 = document.getElementById('editar_servico').value = arg.event.extendedProps.servico;
-            console.log(teste2);
             document.getElementById('editar_dataHora').value = arg.event.start.toISOString().slice(0, 16); // Data e Hora
 
             // Exibe a modal de visualização e esconde a de edição
@@ -135,7 +128,6 @@ document.getElementById("btnCancelarEdicao").addEventListener("click", function(
 
     // Mostra novamente a seção de visualização
     document.querySelector('.visualisarEvento').style.display = 'block';
-    location.reload();
 });
 
 // Evento de submissão do formulário de edição
@@ -153,7 +145,7 @@ function carregarBarbeiros() {
         params: null,
         onSuccess(res) {
             let barbeiros = res[0].ret;
-            let options = '<option value="">Selecione o Barbeiro</option>';
+            let options = '<option value="" selected>Selecione o Barbeiro</option>';
             barbeiros.forEach(barbeiro => {
                 options += `<option value="${barbeiro.id}">${barbeiro.nome}</option>`;
             });
@@ -180,7 +172,7 @@ function carregarServicos() {
         params: null,
         onSuccess(res) {
             let servicos = res[0].ret;
-            let options = '';
+            let options = '<option value="">Selecione o Serviço</option>';
             servicos.forEach(servico => {
                 options += `<option value="${servico.id}">${servico.nome}</option>`;
             });

@@ -3,17 +3,30 @@ $(document).ready(function () {
 
     $('#cadastro').on('click', function () {
         const idServico = $('#idServico').val();
-        let dados = {
-            nome: $('#nome').val(),
-            valor: parseFloat(($('#valor').val() || '').replace(',', '.')) || 0,
-            tempoMinutos: parseInt($('#tempoMinutos').val()) || 0
-        };
-        console.log(idServico);
-        if (!app.validarCampos(dados) || dados.valor <= 0 || dados.tempoMinutos <= 0) {
+        let valorInput = $('#valor').val().replace(',', '.');  // Substitui a vírgula por ponto
+        let valor = parseFloat(valorInput);
+
+        // Verifica se o valor é um número válido e maior que zero
+        if (isNaN(valor) || valor <= 0) {
             Swal.fire({
                 icon: "warning",
                 title: "Atenção!!",
-                text: "Preencha todos os campos corretamente! O valor e o tempo devem ser maiores que zero."
+                text: "O valor precisa ser um número válido e maior que zero."
+            });
+            return;
+        }
+
+        let dados = {
+            nome: $('#nome').val(),
+            valor: valor,
+            tempoMinutos: parseInt($('#tempoMinutos').val()) || 0
+        };
+
+        if (!app.validarCampos(dados) || dados.tempoMinutos <= 0) {
+            Swal.fire({
+                icon: "warning",
+                title: "Atenção!!",
+                text: "Preencha todos os campos corretamente! O tempo deve ser maior que zero."
             });
             return;
         }
@@ -26,6 +39,7 @@ $(document).ready(function () {
         }
     });
 });
+
 
 function listar() {
     app.callController({

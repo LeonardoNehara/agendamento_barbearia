@@ -7,19 +7,15 @@ use src\models\AgendamentoModel;
 
 class AgendamentoControllerClient extends Controller {
 
-    public function __construct() {
-        if (!isset($_SESSION['token'])) {
-            header("Location: " . Config::BASE_DIR . '/');
-            exit();
-        }
-    }
+    // public function __construct() {
+    //     if (!isset($_SESSION['token'])) {
+    //         header("Location: " . Config::BASE_DIR . '/');
+    //         exit();
+    //     }
+    // }
 
     public function index() {
-        if ($_SESSION['token']) {  
             $this->render('agendamentoClient', ['base' => Config::BASE_DIR]);
-        } else {
-            $this->render('404');
-        }
     }
 
     public function getAgendamentos() {
