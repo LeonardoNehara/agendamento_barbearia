@@ -1,7 +1,6 @@
 <?php $render('header'); ?>
 
 <style>
-    /* Mantendo o estilo já existente */
     .form-container {
         max-width: 80%;
         margin: 20px auto;
@@ -43,6 +42,11 @@
         max-width: 1100px;
         margin: 0 auto;
     }
+    
+    .barbeiroSelect{
+        padding: 5px;
+    }
+    
 
     @media (max-width: 600px) {
         .form-cad {
@@ -60,18 +64,14 @@
 <main class='main-div' style="width:100%;">
     <div class="calendario">
         <div class="form-container">
-            <!-- Filtro de barbeiro -->
             <div class="filtrar">
-                <label for="barbeiroSelect">Filtrar por Barbeiro:</label>
-                <select id="barbeiroSelect" onchange="filtrarPorBarbeiro()">
-                    <!-- Opções serão carregadas dinamicamente -->
+                <label class="barbeiroSelect" for="barbeiroSelect">Filtrar por Barbeiro:</label>
+                <select class="form-select form-select-lg mb-3" id="barbeiroSelect" onchange="filtrarPorBarbeiro()">
                 </select>
             </div>
 
-            <!-- Calendário -->
             <div id="calendar"></div>
 
-           <!-- Modal Visualizar Agendamento -->
             <div class="modal fade" id="visualizarAgendamentoModal" tabindex="-1" aria-labelledby="visualizarAgendamentoModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -81,7 +81,6 @@
                         </div>
                         <div class="modal-body">
 
-                            <!-- Visualização do Evento -->
                             <div class="visualisarEvento">
                                 <dl class="row">
                                     <dt class="col-sm-3">Cliente: </dt>
@@ -100,10 +99,9 @@
                                     <dd class="col-sm-9" id="visualizarAgendamento_datahora"></dd>
                                 </dl>
 
-                                <button class="btn btn-warning" id="btnViewEditEvento">Editar</button>
+                                <button class="btn btn-success" id="btnViewEditEvento">Editar</button>
                             </div>
 
-                            <!-- Edição do Evento (inicialmente escondido) -->
                             <div class="editarEvento" style="display: none;">
                                 <form id="formEditarAgendamento">
                                     <div class="modal-body">
@@ -142,7 +140,6 @@
             </div>
 
 
-            <!-- Modal Cadastrar Agendamento -->
             <div class="modal fade" id="cadastrarAgendamentoModal" tabindex="-1" aria-labelledby="cadastrarAgendamentoModalLabel" aria-hidden="true">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -163,14 +160,12 @@
                                 <div class="mb-3">
                                     <label for="servico" class="form-label">Serviço:</label>
                                     <select class="form-control" id="servico" required>
-                                        <!-- Os serviços serão carregados aqui -->
                                     </select>
                                 </div>
                                 <div class="mb-3">
                                     <label for="barbeiroSelectModal" class="form-label">Barbeiro:</label>
                                     <select class="form-control" id="barbeiroSelectModal" required>
                                         <option value="">Selecione um barbeiro</option>
-                                        <!-- Os barbeiros serão carregados aqui -->
                                     </select>
                                 </div>
                                 <div class="mb-3">

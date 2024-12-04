@@ -12,17 +12,14 @@ class AgendamentoModel extends Model
     public function cadastro($cliente, $telefone, $barbeiro_id, $servico_id, $datahora)
     {
         try {
-            // Verifica se o barbeiro está disponível para o horário solicitado
             $verificacao = $this->verificarDisponibilidade($barbeiro_id, $datahora);
             if (!$verificacao['sucesso'] || $verificacao['result']['disponivel'] == 1) {
-                // Se não estiver disponível, retorna uma mensagem de erro
                 return [
                     'sucesso' => false,
                     'result' => 'Este barbeiro já está ocupado no horário solicitado.'
                 ];
             }
     
-            // Se estiver disponível, realiza o cadastro do agendamento
             $sql = Database::getInstance()->prepare("
                 INSERT INTO agendamento (cliente, telefone, barbeiro_id, servico_id, datahora, situacao)
                 VALUES (:cliente, :telefone, :barbeiro_id, :servico_id, :datahora, 1)
@@ -74,7 +71,6 @@ class AgendamentoModel extends Model
     {
         
         try {
-            // Query base com cláusula WHERE dinâmica
             $sqlQuery = "
                 SELECT a.id, a.cliente, a.telefone, b.nome AS barbeiro, s.nome AS servico, a.datahora, a.situacao
                 FROM agendamento a
@@ -84,20 +80,16 @@ class AgendamentoModel extends Model
                 AND a.situacao = 1
             ";
 
-            // Adiciona filtro por barbeiro, se necessário
             if ($barbeiro_id) {
                 $sqlQuery .= " AND a.barbeiro_id = :barbeiro_id";
             }
 
-            // Prepara a query
             $sql = Database::getInstance()->prepare($sqlQuery);
 
-            // Vincula o parâmetro barbeiro_id, se fornecido
             if ($barbeiro_id) {
                 $sql->bindValue(':barbeiro_id', $barbeiro_id, PDO::PARAM_INT);
             }
 
-            // Executa a query
             $sql->execute();
             $result = $sql->fetchAll(PDO::FETCH_ASSOC);
 

@@ -27,7 +27,7 @@ $(document).ready(function () {
             Swal.fire({
                 icon: "warning",
                 title: "Atenção!!",
-                text: "Telefone inválido! Por favor, insira um telefone válido."
+                text: "Telefone inválido! O número de telefone deve conter 11 dígitos (incluindo o DDD)."
             });
             return;
         }
@@ -42,12 +42,26 @@ $(document).ready(function () {
 });
 
 function validarTelefone(telefone) {
-    const apenasNumeros = telefone;
+    const apenasNumeros = telefone.replace(/\D/g, '');
+
+    if (apenasNumeros.length !== 11) {
+        return null; 
+    }
+
     const ddd = apenasNumeros.slice(0, 2);
     const numero = apenasNumeros.slice(2);
     const telefoneFormatado = `(${ddd}) ${numero.slice(0, 5)}-${numero.slice(5)}`;
 
     return telefoneFormatado;
+}
+
+function validarNome(nome) {
+    const nomeRegex = /^[A-Za-zÀ-ÿ\s]+$/;
+    if (!nomeRegex.test(nome)) {
+        Swal.fire({ icon: "warning", title: "Atenção!!", text: "O nome pode conter apenas letras e espaços." });
+        return false;
+    }
+    return true;
 }
 
 function listarAgendamentos() {
@@ -68,8 +82,8 @@ function listarAgendamentos() {
     });
 }
 
-let barbeirosMap = {}; // Mapeamento nome -> ID
-let servicosMap = {};  // Mapeamento nome -> ID
+let barbeirosMap = {}; 
+let servicosMap = {};
 
 function carregarBarbeiros() {
     app.callController({
@@ -81,7 +95,7 @@ function carregarBarbeiros() {
             let options = '<option value="">Selecione o Barbeiro</option>';
             barbeiros.forEach(barbeiro => {
                 options += `<option value="${barbeiro.id}">${barbeiro.nome}</option>`;
-                barbeirosMap[barbeiro.nome] = barbeiro.id; // Preenche o mapa
+                barbeirosMap[barbeiro.nome] = barbeiro.id;
             });
             $('#barbeiro_id').html(options);
         },
@@ -149,8 +163,8 @@ const Table = function (dados) {
                 title: 'Data', 
                 data: 'datahora',
                 render: data => {
-                    const date = new Date(data);  // Cria o objeto Date a partir da string de data
-                    return `<strong>${date.toLocaleDateString('pt-BR')}</strong>`;  // Formata a data no formato pt-BR
+                    const date = new Date(data); 
+                    return `<strong>${date.toLocaleDateString('pt-BR')}</strong>`;  
                 },
                 orderData: [4]
             },
@@ -158,8 +172,8 @@ const Table = function (dados) {
                 title: 'Hora', 
                 data: 'datahora',
                 render: data => {
-                    const date = new Date(data);  // Cria o objeto Date a partir da string de data
-                    return date.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });  // Formata a hora no formato HH:mm
+                    const date = new Date(data);
+                    return date.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }); 
                 },
                 orderData: [4] 
             },
@@ -193,28 +207,32 @@ const Table = function (dados) {
                 title: "Atenção!",
                 text: "A data final não pode ser menor que a data inicial."
             });
-            return; 
+            return;
         }
     
         $('#mytable').DataTable().draw();
     });
 
     $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
-        const startDate = $('#start_date').val();
-        const endDate = $('#end_date').val();
+        const startDateInput = $('#start_date').val();
+        const endDateInput = $('#end_date').val();
         const filterBarbeiro = $('#filter_barbeiro').val();
-
-        const dateColumnIndex = 4; 
-        const rowDate = data[dateColumnIndex];
-
-        const barbeiroColumnIndex = 2; 
+    
+        const dateColumnIndex = 4;
+        const rowDateStr = data[dateColumnIndex];
+    
+        const barbeiroColumnIndex = 2;
         const rowBarbeiro = data[barbeiroColumnIndex];
+    
+        const rowDate = new Date(rowDateStr.split('/').reverse().join('-'));
+        const startDate = startDateInput ? new Date(startDateInput) : null;
+        const endDate = endDateInput ? new Date(endDateInput) : null;
 
         if (startDate && rowDate < startDate) return false;
         if (endDate && rowDate > endDate) return false;
 
         if (filterBarbeiro && filterBarbeiro !== rowBarbeiro) return false;
-
+    
         return true;
     });
 };
@@ -287,12 +305,11 @@ function agendar(dados) {
             });
         },
         onFailure(res) {
-            // Verifique a resposta do servidor para mensagens específicas de erro
             if (res[0].ret && res[0].ret.sucesso === false && res[0].ret.result) {
                 Swal.fire({
                     icon: "error",
                     title: "Atenção!!",
-                    text: res[0].ret.result // Exibe a mensagem retornada do backend
+                    text: res[0].ret.result
                 });
             } else {
                 Swal.fire({
@@ -404,45 +421,39 @@ function limparFormulario() {
 }
 
 $(document).ready(function () {
-    // Desabilita os domingos (0)
     $('#datahora').on('focus', function () {
         $(this).datepicker('option', 'beforeShowDay', function (date) {
             var day = date.getDay();
-            // Desabilita apenas o domingo (0)
             return [(day != 0)];
         });
     });
 
-    // Limita a seleção de horário para 8:00, 9:00, 10:00, 11:00, 14:00, 15:00, 16:00, 17:00, 18:00 e 19:00
     $('#datahora').on('change', function () {
         const horariosDisponiveis = ['08:00', '09:00', '10:00', '11:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00'];
         const dataHoraSelecionada = $(this).val();
         
-        // Verifica se a data foi selecionada
         if (dataHoraSelecionada) {
             const data = new Date(dataHoraSelecionada);
-            const diaSemana = data.getDay(); // 0 = Domingo
-            const horaSelecionada = dataHoraSelecionada.split('T')[1].substring(0, 5); // Formato HH:mm
+            const diaSemana = data.getDay();
+            const horaSelecionada = dataHoraSelecionada.split('T')[1].substring(0, 5);
 
-            // Verifica se a data é domingo (0)
             if (diaSemana == 0) {
                 Swal.fire({
                     icon: "warning",
                     title: "Atenção!",
                     text: "Não é permitido agendar para domingo."
                 });
-                $(this).val(''); // Limpa o campo de data
+                $(this).val('');
                 return;
             }
 
-            // Verifica se o horário selecionado está na lista de horários permitidos
             if (!horariosDisponiveis.includes(horaSelecionada)) {
                 Swal.fire({
                     icon: "warning",
                     title: "Atenção!",
-                    text: "Selecione um horário válido (8:00, 9:00, 10:00, etc.) entre 8:00 e 19:00."
+                    text: "Selecione um horário: 8h-11h ou 14h-19h (intervalos de 1h)"
                 });
-                $(this).val(''); // Limpa o campo de data
+                $(this).val('');
             }
         }
     });

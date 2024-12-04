@@ -3,10 +3,9 @@ $(document).ready(function () {
 
     $('#cadastro').on('click', function () {
         const idServico = $('#idServico').val();
-        let valorInput = $('#valor').val().replace(',', '.');  // Substitui a vírgula por ponto
+        let valorInput = $('#valor').val().replace(',', '.');
         let valor = parseFloat(valorInput);
 
-        // Verifica se o valor é um número válido e maior que zero
         if (isNaN(valor) || valor <= 0) {
             Swal.fire({
                 icon: "warning",

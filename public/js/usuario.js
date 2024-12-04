@@ -7,12 +7,21 @@ $(document).ready(function () {
             login: $('#login').val(),
             senha: $('#senha').val()
         };
-        if (!validarCampos(dados)) {
+        if (!app.validarCampos(dados)) {
             Swal.fire({
                 icon: "warning",
                 title: "Atenção!!",
                 text: "Preencha todos os campos!"
             });
+            return;
+        }
+        if (!validarNome(dados.nome)) {
+            return;
+        }
+        if (!validarSenha(dados.senha)) {
+            return;
+        }
+        if (!validarLogin(dados.login)) {
             return;
         }
 
@@ -25,15 +34,6 @@ $(document).ready(function () {
     });
 });
 
-function validarCampos(dados) {
-    if (!dados.nome || !dados.login || !dados.senha) {
-        return false;
-    }
-    if (!validarLogin(dados.login) || !validarSenha(dados.senha) || !validarNome(dados.nome)) {
-        return false;
-    }
-    return true;
-}
 
 function validarLogin(login) {
     let mensagens = [];

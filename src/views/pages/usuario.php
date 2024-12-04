@@ -90,7 +90,7 @@
         <div class="header-container">
             <button id="novo" class="btn-custom" onclick="limparForm()">Novo</button>
             <h5 id="form-title" class="form-cad">Cadastrando Usuários</h5>
-            <h5 class="media-h5">Informações básicas</h5>
+            <h5></h5>
         </div>
 
         <div style="margin-top: 50px;">

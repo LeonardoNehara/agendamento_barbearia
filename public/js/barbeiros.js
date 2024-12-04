@@ -20,7 +20,7 @@ $(document).ready(function () {
             Swal.fire({
                 icon: "warning",
                 title: "Atenção!!",
-                text: "Telefone inválido! Por favor, insira um telefone válido no formato (XX) XXXXX-XXXX."
+                text: "Telefone inválido! O número de telefone deve conter 11 dígitos (incluindo o DDD)."
             });
             return;
         }
@@ -53,7 +53,12 @@ function listar() {
 }
 
 function validarTelefone(telefone) {
-    const apenasNumeros = telefone;
+    const apenasNumeros = telefone.replace(/\D/g, '');
+
+    if (apenasNumeros.length !== 11) {
+        return null;
+    }
+
     const ddd = apenasNumeros.slice(0, 2);
     const numero = apenasNumeros.slice(2);
     const telefoneFormatado = `(${ddd}) ${numero.slice(0, 5)}-${numero.slice(5)}`;

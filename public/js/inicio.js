@@ -3,13 +3,10 @@ let calendar;
 document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');
 
-    // Adiciona a máscara no campo de telefone da modal de cadastro
     $('#telefone').mask('(00) 00000-0000', { placeholder: '(  ) _____-____' });
 
-    // Adiciona a máscara no campo de telefone da modal de edição
     $('#editar_telefone').mask('(00) 00000-0000', { placeholder: '(  ) _____-____' });
 
-    // Inicializa o calendário
     calendar = new FullCalendar.Calendar(calendarEl, {
         locale: 'pt-br',
         initialView: 'dayGridMonth',
@@ -24,33 +21,27 @@ document.addEventListener('DOMContentLoaded', function() {
         navLinks: true,
         events: [],
 
-        // Quando o evento for clicado
         eventClick: function(arg) {
-            // Preenche os dados da modal de visualização
-            document.getElementById("visualizarAgendamento_cliente").innerText = arg.event.title.split(' - ')[0]; // Cliente
-            document.getElementById("visualizarAgendamento_servico").innerText = arg.event.title.split(' - ')[1]; // Serviço
-            document.getElementById("visualizarAgendamento_barbeiro").innerText = arg.event.extendedProps.barbeiro; // Barbeiro
+            document.getElementById("visualizarAgendamento_cliente").innerText = arg.event.title.split(' - ')[0];
+            document.getElementById("visualizarAgendamento_servico").innerText = arg.event.title.split(' - ')[1];
+            document.getElementById("visualizarAgendamento_barbeiro").innerText = arg.event.extendedProps.barbeiro;
             const telefoneSemMascara = arg.event.extendedProps.telefone.replace(/[^\d]/g, '');
-            document.getElementById("visualizarAgendamento_telefone").innerText = telefoneSemMascara; // Telefone sem máscara
-            document.getElementById("visualizarAgendamento_datahora").innerText = arg.event.start.toLocaleString(); // Data e Hora
+            document.getElementById("visualizarAgendamento_telefone").innerText = telefoneSemMascara;
+            document.getElementById("visualizarAgendamento_datahora").innerText = arg.event.start.toLocaleString();
 
-            // Preenche os dados do formulário de edição
             document.getElementById('editar_id').value = arg.event.id;
-            document.getElementById('editar_nome_completo').value = arg.event.title.split(' - ')[0]; // Cliente
-            document.getElementById('editar_telefone').value = telefoneSemMascara; // Telefone sem máscara
-            document.getElementById('editar_dataHora').value = arg.event.start.toISOString().slice(0, 16); // Data e Hora
+            document.getElementById('editar_nome_completo').value = arg.event.title.split(' - ')[0];
+            document.getElementById('editar_telefone').value = telefoneSemMascara;
+            document.getElementById('editar_dataHora').value = arg.event.start.toISOString().slice(0, 16);
 
-            // Exibe a modal de visualização e esconde a de edição
             const visualizarModal = new bootstrap.Modal(document.getElementById("visualizarAgendamentoModal"));
             visualizarModal.show();
         },
 
-        // Quando o dia for clicado
         select: function(info) {
-            // Chama a função para preencher o formulário com a data selecionada
-            document.getElementById("dataHora").value = info.start.toISOString().slice(0, 16); // Formato: YYYY-MM-DDTHH:mm
 
-            // Abre o modal de cadastro
+            document.getElementById("dataHora").value = info.start.toISOString().slice(0, 16);
+
             const cadastrarModal = new bootstrap.Modal(document.getElementById("cadastrarAgendamentoModal"));
             cadastrarModal.show();
         }
@@ -58,15 +49,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     calendar.render();
 
-    // Carregar barbeiros e serviços dinamicamente
     carregarBarbeiros();
     carregarServicos();
 
-    // Carregar agendamentos no calendário inicialmente
     listarAgendamentosNoCalendario(calendar);
 });
 
-// Função para editar o agendamento
 function editarAgendamento() {
     const dados = {
         id: document.getElementById('editar_id').value,
@@ -77,7 +65,6 @@ function editarAgendamento() {
         datahora: document.getElementById('editar_dataHora').value
     };
 
-    // Validação dos campos
     if (!dados.nome_completo || !dados.servico_id || !dados.datahora || !dados.telefone || !dados.barbeiro_id) {
         Swal.fire({
             icon: "warning",
@@ -87,13 +74,11 @@ function editarAgendamento() {
         return;
     }
 
-    // Enviar os dados para o backend
     app.callController({
         method: 'POST',
-        url: base + '/editarAgendamento', // A URL para editar o agendamento
+        url: base + '/editarAgendamento',
         params: dados,
         onSuccess() {
-            // Após sucesso, atualiza o calendário e fecha a modal
             listarAgendamentosNoCalendario(calendar);
             const visualizarModal = bootstrap.Modal.getInstance(document.getElementById("visualizarAgendamentoModal"));
             visualizarModal.hide();
@@ -113,31 +98,32 @@ function editarAgendamento() {
     });
 }
 
-// Evento de click no botão de editar na modal de visualização
 document.getElementById("btnViewEditEvento").addEventListener("click", function() {
-    // Exibe a seção de edição e esconde a de visualização
     document.querySelector('.visualisarEvento').style.display = 'none';
     document.querySelector('.editarEvento').style.display = 'block';
     
 });
 
-// Evento de clique no botão "Cancelar" da seção de edição
-document.getElementById("btnCancelarEdicao").addEventListener("click", function() {
-    // Esconde a seção de edição
-    document.querySelector('.editarEvento').style.display = 'none';
 
-    // Mostra novamente a seção de visualização
+document.getElementById("btnCancelarEdicao").addEventListener("click", function() {
+    document.querySelector('.editarEvento').style.display = 'none';
     document.querySelector('.visualisarEvento').style.display = 'block';
 });
 
-// Evento de submissão do formulário de edição
 document.getElementById("formEditarAgendamento").addEventListener("submit", function(event) {
-    event.preventDefault(); // Previne o comportamento padrão do formulário
+    event.preventDefault();
     editarAgendamento();
 });
 
+document.getElementById("visualizarAgendamentoModal").addEventListener("hidden.bs.modal", function () {
+    document.querySelector('.visualisarEvento').style.display = 'block';
+    document.querySelector('.editarEvento').style.display = 'none';
+});
 
-// Função para carregar barbeiros e preencher o select
+document.getElementById("cadastrarAgendamentoModal").addEventListener("hidden.bs.modal", function () {
+    document.getElementById('formCadastroAgendamento').reset(); 
+});
+
 function carregarBarbeiros() {
     app.callController({
         method: 'GET',
@@ -164,7 +150,6 @@ function carregarBarbeiros() {
     });
 }
 
-// Função para carregar os serviços no select
 function carregarServicos() {
     app.callController({
         method: 'GET',
@@ -189,7 +174,6 @@ function carregarServicos() {
     });
 }
 
-// Função para listar agendamentos no calendário
 function listarAgendamentosNoCalendario(calendar, filtroBarbeiro = null) {
     app.callController({
         method: 'GET',
@@ -227,7 +211,6 @@ function listarAgendamentosNoCalendario(calendar, filtroBarbeiro = null) {
     });
 }
 
-// Função para cadastrar um agendamento
 function cadastrarAgendamento() {
     const dados = {
         nome_completo: document.getElementById('nome_completo').value,
@@ -237,7 +220,6 @@ function cadastrarAgendamento() {
         datahora: document.getElementById('dataHora').value
     };
 
-    // Validação dos campos
     if (!dados.nome_completo || !dados.telefone || !dados.barbeiro_id || !dados.servico_id || !dados.datahora) {
         Swal.fire({
             icon: "warning",
@@ -247,21 +229,19 @@ function cadastrarAgendamento() {
         return;
     }
 
-    // Enviar os dados para o backend
     app.callController({
         method: 'POST',
         url: base + '/cadagendamento',
         params: dados,
         onSuccess() {
-            // Após sucesso, atualiza o calendário e fecha a modal
+
             listarAgendamentosNoCalendario(calendar);
             const modalCadastrar = bootstrap.Modal.getInstance(document.getElementById("cadastrarAgendamentoModal"));
             modalCadastrar.hide();
 
-            // Limpa os campos do formulário
-            document.getElementById('formCadastroAgendamento').reset(); // Resetar o formulário
-            document.getElementById('telefone').value = ''; // Limpar o campo de telefone (caso tenha a máscara)
-            document.getElementById('dataHora').value = ''; // Limpar o campo de dataHora
+            document.getElementById('formCadastroAgendamento').reset();
+            document.getElementById('telefone').value = '';
+            document.getElementById('dataHora').value = '';
 
             Swal.fire({
                 icon: "success",
@@ -270,12 +250,11 @@ function cadastrarAgendamento() {
             });
         },
         onFailure(res) {
-            // Verifique a resposta do servidor para mensagens específicas de erro
             if (res[0].ret && res[0].ret.sucesso === false && res[0].ret.result) {
                 Swal.fire({
                     icon: "error",
                     title: "Atenção!!",
-                    text: res[0].ret.result // Exibe a mensagem retornada do backend
+                    text: res[0].ret.result
                 });
             } else {
                 Swal.fire({
@@ -289,67 +268,62 @@ function cadastrarAgendamento() {
 }
 
 
-// Função para abrir a modal de cadastro
 function abrirModalCadastro(info) {
-    document.getElementById('dataHora').value = info.start.toISOString().slice(0, 16); // Formato: YYYY-MM-DDTHH:mm
+    document.getElementById('dataHora').value = info.start.toISOString().slice(0, 16);
     const modalCadastrar = new bootstrap.Modal(document.getElementById("cadastrarAgendamentoModal"));
     modalCadastrar.show();
 }
 
-// Eventos de submissão do formulário de cadastro
 document.getElementById("formCadastroAgendamento").addEventListener("submit", function(event) {
-    event.preventDefault(); // Previne o comportamento padrão do formulário
+    event.preventDefault();
     cadastrarAgendamento();
 });
 
-// Função para filtrar agendamentos por barbeiro
 function filtrarPorBarbeiro() {
     const barbeiroSelect = document.getElementById('barbeiroSelect');
-    const filtroBarbeiro = barbeiroSelect.value; // ID do barbeiro selecionado
+    const filtroBarbeiro = barbeiroSelect.value;
     listarAgendamentosNoCalendario(calendar, filtroBarbeiro);
 }
 
 $(document).ready(function () {
-    // Desabilita os domingos (0)
     $('#dataHora').on('focus', function () {
         $(this).datepicker('option', 'beforeShowDay', function (date) {
             var day = date.getDay();
-            // Desabilita apenas o domingo (0)
             return [(day != 0)];
         });
     });
 
-    // Limita a seleção de horário para 8:00, 9:00, 10:00, 11:00, 14:00, 15:00, 16:00, 17:00, 18:00 e 19:00
     $('#dataHora').on('change', function () {
         const horariosDisponiveis = ['08:00', '09:00', '10:00', '11:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00'];
         const dataHoraSelecionada = $(this).val();
-        
-        // Verifica se a data foi selecionada
+
         if (dataHoraSelecionada) {
             const data = new Date(dataHoraSelecionada);
-            const diaSemana = data.getDay(); // 0 = Domingo
-            const horaSelecionada = dataHoraSelecionada.split('T')[1].substring(0, 5); // Formato HH:mm
+            const diaSemana = data.getDay()
+            const horaSelecionada = dataHoraSelecionada.split('T')[1].substring(0, 5);
 
-            // Verifica se a data é domingo (0)
             if (diaSemana == 0) {
                 Swal.fire({
                     icon: "warning",
                     title: "Atenção!",
                     text: "Não é permitido agendar para domingo."
                 });
-                $(this).val(''); // Limpa o campo de data
+                $(this).val('');
                 return;
             }
 
-            // Verifica se o horário selecionado está na lista de horários permitidos
             if (!horariosDisponiveis.includes(horaSelecionada)) {
                 Swal.fire({
                     icon: "warning",
                     title: "Atenção!",
-                    text: "Selecione um horário válido (8:00, 9:00, 10:00, etc.) entre 8:00 e 19:00."
+                    text: "Selecione um horário: 8h-11h ou 14h-19h (intervalos de 1h)"
                 });
-                $(this).val(''); // Limpa o campo de data
+                $(this).val('');
             }
         }
     });
 });
+
+
+
+

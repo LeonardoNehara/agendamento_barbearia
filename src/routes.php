@@ -20,12 +20,12 @@ $router->get('/get-dashboard-qtd', 'InicioController@getTotalSolicitacoes');
 $router->get('/dashboard', 'DashboardController@index');
 
 // Barbeiros
-$router->get('/barbeiros', 'BarbeiroController@index');  // Página de barbeiros
-$router->get('/getbarbeiros', 'BarbeiroController@getBarbeiros');  // Listagem de barbeiros
-$router->get('/getbarbeirosativos', 'BarbeiroController@getBarbeirosAtivos');  // Listagem de barbeiros ativos
-$router->post('/cadbarbeiro', 'BarbeiroController@cadastro');  // Cadastro de barbeiro
-$router->post('/updateSituacaoBarbeiro', 'BarbeiroController@updateSituacaoBarbeiro');  // Atualizar situação do barbeiro
-$router->post('/editarbarbeiro', 'BarbeiroController@editar');  // Editar barbeiro
+$router->get('/barbeiros', 'BarbeiroController@index');  
+$router->get('/getbarbeiros', 'BarbeiroController@getBarbeiros'); 
+$router->get('/getbarbeirosativos', 'BarbeiroController@getBarbeirosAtivos');
+$router->post('/cadbarbeiro', 'BarbeiroController@cadastro');
+$router->post('/updateSituacaoBarbeiro', 'BarbeiroController@updateSituacaoBarbeiro');
+$router->post('/editarbarbeiro', 'BarbeiroController@editar');
 
 // Cadastro de Usuário
 $router->get('/usuario', 'UsuarioController@index');
@@ -35,33 +35,33 @@ $router->post('/updatesituacaousuario', 'UsuarioController@updateSituacaoUsuario
 $router->post('/editarusuario', 'UsuarioController@editar');
 
 // Produtos
-$router->get('/produtos', 'ProdutoController@index');  // Página de produtos
-$router->get('/getProdutos', 'ProdutoController@getProdutos');  // Listagem de produtos
-$router->post('/cadProduto', 'ProdutoController@cadastro');  // Cadastro de produto
-$router->post('/editarProduto', 'ProdutoController@editar');  // Editar produto
-$router->post('/updateSituacaoProduto', 'ProdutoController@updateSituacaoProduto');  // Atualizar situação do produto
+$router->get('/produtos', 'ProdutoController@index');
+$router->get('/getProdutos', 'ProdutoController@getProdutos'); 
+$router->post('/cadProduto', 'ProdutoController@cadastro');
+$router->post('/editarProduto', 'ProdutoController@editar');
+$router->post('/updateSituacaoProduto', 'ProdutoController@updateSituacaoProduto');
 
 // Serviços
-$router->get('/servicos', 'ServicoController@index');  // Página de serviços
-$router->get('/getservicos', 'ServicoController@getServicos');  // Listagem de serviços
-$router->get('/getservicosativos', 'ServicoController@getServicosAtivos');  // Listagem de serviços ativos
-$router->post('/cadServico', 'ServicoController@cadastro');  // Cadastro de serviço
-$router->post('/editarservico', 'ServicoController@editar');  // Editar serviço
-$router->post('/atualizarservico', 'ServicoController@atualizar');  // Atualizar serviço
-$router->post('/updateSituacao', 'ServicoController@updateSituacao');  // Atualizar situação do serviço
+$router->get('/servicos', 'ServicoController@index');
+$router->get('/getservicos', 'ServicoController@getServicos');
+$router->get('/getservicosativos', 'ServicoController@getServicosAtivos');
+$router->post('/cadServico', 'ServicoController@cadastro');
+$router->post('/editarservico', 'ServicoController@editar');
+$router->post('/atualizarservico', 'ServicoController@atualizar');
+$router->post('/updateSituacao', 'ServicoController@updateSituacao');
 
 // Agendamentos
-$router->get('/agendamentos', 'AgendamentoController@index');  // Página de agendamentos
-$router->post('/editarAgendamento', 'AgendamentoController@editar');  // editar
-$router->get('/getagendamentos', 'AgendamentoController@getAgendamentos');  // Listagem de agendamentos
-$router->post('/cadagendamento', 'AgendamentoController@cadastro');  // Cadastro de agendamento
-$router->post('/updateSituacaoAgendamento', 'AgendamentoController@updateSituacaoAgendamento');  // Atualizar situação do agendamento
+$router->get('/agendamentos', 'AgendamentoController@index');
+$router->post('/editarAgendamento', 'AgendamentoController@editar');
+$router->get('/getagendamentos', 'AgendamentoController@getAgendamentos');
+$router->post('/cadagendamento', 'AgendamentoController@cadastro');
+$router->post('/updateSituacaoAgendamento', 'AgendamentoController@updateSituacaoAgendamento');
 
 // Pages Cliente
-$router->get('/agendamentosClient', 'AgendamentoControllerClient@index');  // Página de agendamentos
+$router->get('/agendamentosClient', 'AgendamentoControllerClient@index');
 
 // Rota para listar agendamentos (página principal)
-$router->get('/listar-agendamentos', 'ListarAgendamentoController@index');  // Página para listar agendamentos
+$router->get('/listar-agendamentos', 'ListarAgendamentoController@index');
 
 // Rota para buscar todos os agendamentos (com filtros de barbeiro e cliente)
 $router->get('/getlistaragendamentos', 'ListarAgendamentoController@getAgendamentos');

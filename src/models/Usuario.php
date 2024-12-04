@@ -64,10 +64,9 @@ class Usuario extends Model
 
     public function editar($dados)
     {
-        // Removendo idgrupo e idfilial do SQL de atualização
         $sql = "UPDATE usuarios 
                 SET nome = ':nome', login = ':login', senha = ':senha'
-                WHERE idusuario = :idusuario";  // Removido idgrupo e idfilial
+                WHERE idusuario = :idusuario"; 
 
         $sql = $this->switchParams($sql, $dados);
 

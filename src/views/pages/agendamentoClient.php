@@ -7,7 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Área Administrativa</title>
 
-    <!-- Scripts e Links de Bibliotecas -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -18,17 +17,13 @@
     <script src="js/core/locales-all.global.min.js"></script>
     <link href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css' rel='stylesheet'>
 
-    <!-- Arquivos CSS personalizados -->
     <link rel="stylesheet" href="<?= $base; ?>/css/header/botoes.css">
     <link rel="stylesheet" href="<?= $base; ?>/css/header/header.css">
     <link rel="stylesheet" href="<?= $base; ?>/css/header/body.css">
     <link rel="stylesheet" href="<?= $base; ?>/css/tabela/tabela-responsive.css">
     
-    <!-- MaskPlugin -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
-    <!-- Font -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
-    <!-- inputmask -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.7/jquery.inputmask.min.js"></script>
 </head>
 
@@ -98,6 +93,21 @@
         text-align: center;
     }
 
+    .cabecalho {
+    width: 100%;
+    height: 300px;
+    overflow: hidden;
+    position: relative;
+    }
+
+    .img-cabecalho {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
+    }
+
+
     #mytable_filter{
         margin-left: 100px;
     }
@@ -109,8 +119,12 @@
     }
 </style>
 
+
 <main class='main-div' style="width:100%;">
     <div class="form-container">
+    <div class="cabecalho">
+        <img src="img/barbearia.jpg" alt="Imagem da Barbearia" class="img-cabecalho">
+    </div>
         <div class="titulo-container">
             <h1><strong>Agendamento de Barbearia</strong></h1>
             <div class="header-container">

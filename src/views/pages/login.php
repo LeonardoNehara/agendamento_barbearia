@@ -2,9 +2,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title></title>
-
-
-  <!-- font -->
+  
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -126,9 +124,9 @@
 
       <input type="button" value="Acessar" id="logar" class="btn btn-custom w-100">
 
-      <div class="forgot-password mt-3">
+      <!-- <div class="forgot-password mt-3">
         <a href="#" class="text-decoration-none">Esqueceu a senha?</a>
-      </div>
+      </div> -->
     </div>
 
     <script src="<?= $base; ?>/js/login.js" defer></script>
